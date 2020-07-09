@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="content_width">340.0dp</dimen>
+    <dimen name="content_heigth">280.0dp</dimen>
+    <dimen name="content_purchase_heigth">250.0dp</dimen>
+
+    <dimen name="button_heigth">40.0dp</dimen>
+    <dimen name="button_font">16.0sp</dimen>
+
+    <dimen name="title_font">16.0sp</dimen>
+    <dimen name="sub_title_font">10.0sp</dimen>
+
+    <dimen name="line_height">1.0dp</dimen>
+
+    <dimen name="edit_height">24.0dp</dimen>
+
+    <dimen name="float_icon_width">64dp</dimen>
+    <dimen name="float_icon_height">64dp</dimen>
+    <dimen name="float_panel_width">200dp</dimen>
+    <dimen name="float_panel_height">200dp</dimen>
+    <!-- 点击的item区域实际小于panel的半径，需要有一定的偏移使文字显示在合适区域 -->
+    <dimen name="float_panel_item_font_padding">10dp</dimen>
+    <dimen name="float_panel_item_font_size">12sp</dimen>
+    <dimen name="float_message_notify_point_size">10dp</dimen>
+    <dimen name="float_message_notify_point_padding">6dp</dimen>
+
+
+    <dimen name="text_size_f16">16sp</dimen>
+    <dimen name="text_size_f15">15sp</dimen>
+    <dimen name="text_size_f14">14sp</dimen>
+    <dimen name="text_size_f13">13sp</dimen>
+    <dimen name="text_size_f12">12sp</dimen>
+
+
+    <dimen name="ymcontent_width">340.0dp</dimen>
+    <dimen name="ymcontent_heigth">280.0dp</dimen>
+
+</resources>

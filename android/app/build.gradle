@@ -1,0 +1,72 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+    defaultConfig {
+        applicationId "com.ym.ysfj"
+        minSdkVersion 17
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        ndk{
+            //输出armeabi的so
+            abiFilters "armeabi-v7a","arm64-v8a"
+        }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        debug {
+            keyAlias 'ysfj'
+            keyPassword 'yunmiao2020'
+            storeFile file('./ysfj_cn.jks')
+            storePassword 'yunmiao2020'
+        }
+        release {
+            keyAlias 'ysfj'
+            keyPassword 'yunmiao2020'
+            storeFile file('./ysfj_cn.jks')
+            storePassword 'yunmiao2020'
+            v1SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+            debuggable true
+            minifyEnabled false
+
+        }
+
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+repositories {
+    flatDir {
+        dirs 'libs','../ymsdk/libs'
+    }
+}
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.android.support:multidex:1.0.3'
+
+    implementation project(':ymsdk')
+
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+    //其中lat est.release指代最新版本号，也可以指定明确的版本号，例如2.1.5
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
+}

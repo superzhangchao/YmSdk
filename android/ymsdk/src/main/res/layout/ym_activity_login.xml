@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+    <include
+        android:id="@+id/in_title"
+        layout="@layout/ym_view_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+
+
+    <LinearLayout
+        android:id="@+id/lin_third_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/in_title"
+        android:visibility="visible"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:orientation="horizontal">
+
+
+    <LinearLayout
+        android:id="@+id/ll_weixin_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_weixin_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableTop="@mipmap/weixin"
+            android:gravity="center_horizontal"
+            android:text="@string/ym_weixin"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tv_weixin_recent_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/holo_red_light"
+            android:visibility="visible"
+            android:textSize="12dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/ym_recent_login"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_qq_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_qq_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableTop="@mipmap/qq"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/white"
+            android:text="@string/ym_qq" />
+        <TextView
+            android:id="@+id/tv_qq_recent_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12dp"
+            android:visibility="invisible"
+            android:layout_marginTop="10dp"
+
+            android:text="@string/ym_recent_login"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_guest_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_guest_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableTop="@mipmap/guest"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/white"
+            android:text="@string/ym_guest" />
+
+        <TextView
+            android:id="@+id/tv_guest_recent_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12dp"
+            android:visibility="invisible"
+            android:layout_marginTop="10dp"
+            android:text="@string/ym_recent_login"/>
+
+
+    </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

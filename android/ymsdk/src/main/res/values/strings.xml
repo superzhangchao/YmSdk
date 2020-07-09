@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">ymsdk</string>
+    <string name="weixinappid">wxd02fbae564a0c256</string>
+    <string name="qq_appid">101877131</string>
+    <string name="qq_appscheme">tencent101877131</string>
+    <string name="qq_authorities">com.ym.game.sdk.fileprovider</string>
+
+
+    <string name="ym_select_login_mode">请选择登录方式</string>
+    <string name="ym_weixin">微信</string>
+    <string name="ym_qq">QQ</string>
+    <string name="ym_guest">游客</string>
+    <string name="ym_recent_login">最近登入</string>
+    <string name="ym_no_install_wechat">检测到您未安装微信客户端，请先安装微信客户端</string>
+
+    <string name="tourist">立刻一键试玩</string>
+    <string name="login">登录</string>
+    <string name="accountlogin">帐号登录</string>
+    <string name="accountregister">注册帐号</string>
+    <string name="account_hint">请输入手机号</string>
+    <string name="passport_hint">请输入密码</string>
+    <string name="login_title">怪猫通行证登录</string>
+    <string name="register_title">注册怪猫通行证</string>
+    <string name="address">GM88.COM</string>
+</resources>
