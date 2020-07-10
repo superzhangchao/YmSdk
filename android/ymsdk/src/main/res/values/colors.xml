@@ -11,4 +11,11 @@
     <color name="line_color">#6e6e6f</color>
     <color name="edit_bg">#232325</color>
     <color name="edit_text">@android:color/white</color>
+
+
+    <color name="ym_edit_name">#727272</color>
+    <color name="ym_edit_hintcolor">#adc8e4</color>
+    <color name="ym_edit_color">#000000</color>
+    <color name="ym_psdlogin_color">#f56060</color>
+
 </resources>

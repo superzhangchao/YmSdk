@@ -36,7 +36,10 @@
     <dimen name="text_size_f12">12sp</dimen>
 
 
-    <dimen name="ymcontent_width">340.0dp</dimen>
-    <dimen name="ymcontent_heigth">280.0dp</dimen>
-
+    <dimen name="ym_content_width">360.0dp</dimen>
+    <dimen name="ym_content_heigth">234.0dp</dimen>
+    <dimen name="ym_edit_height">26.0dp</dimen>
+    <dimen name="ym_xieyi_height">13.0dp</dimen>
+    <dimen name="ym_edit_font">12.0sp</dimen>
+    <dimen name="ym_xieyi_font">10.0sp</dimen>
 </resources>

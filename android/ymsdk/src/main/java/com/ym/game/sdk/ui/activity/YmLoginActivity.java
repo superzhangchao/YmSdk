@@ -26,6 +26,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 
@@ -109,6 +110,7 @@ public class YmLoginActivity extends AppCompatActivity {
     private String currentLoginType;
     private TextView tvWeixinLogin;
     private LinearLayout llWeixinLogin;
+    private String currentTs;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -156,7 +158,8 @@ public class YmLoginActivity extends AppCompatActivity {
                 saveLastLoginType(SHOW_WEIXIN_RECENT_LOGIN);
                 api = WXAPIFactory.createWXAPI(YmLoginActivity.this, YmConstants.Wechat_APP_ID, false);
                 if (api.isWXAppInstalled()) {
-                    loginByWechat();
+//                    loginByWechat();
+                    getTime(LOGINTYPEWEIXIN);
                 } else {
                     ToastUtils.showToast(YmLoginActivity.this, getString(ResourseIdUtils.getStringId("ym_no_install_wechat")));
                 }
@@ -169,14 +172,14 @@ public class YmLoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 saveLastLoginType(SHOW_QQ_RECENT_LOGIN);
 //                loginByQQ();
-                getTime();
+                getTime(LOGINTYPEQQ);
             }
         });
         findViewById(ResourseIdUtils.getId("tv_guest_login")).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveLastLoginType(SHOW_GUEST_RECENT_LOGIN);
-                guestLogin();
+                getTime(LOGINTYPEGUEST);
             }
         });
 
@@ -322,7 +325,10 @@ public class YmLoginActivity extends AppCompatActivity {
                     getToken(LOGINTYPEQQ, response.toString());
                     break;
                 case SENDTIME:
-                    String ts = (String) msg.obj;
+                    JSONObject timeInfo = (JSONObject) msg.obj;
+                    String logintype = timeInfo.optString("logintype");
+                    currentTs = timeInfo.optString("ts");
+                    openLogin(logintype);
 
                     break;
                 case SENDTIMEERROR:
@@ -334,6 +340,22 @@ public class YmLoginActivity extends AppCompatActivity {
             }
         }
     };
+
+    private void openLogin(String logintype) {
+        switch(logintype){
+            case LOGINTYPEWEIXIN:
+                loginByWechat();
+                break;
+            case LOGINTYPEQQ:
+                loginByQQ();
+                break;
+            case LOGINTYPEGUEST:
+                guestLogin();
+                break;
+            default:
+                break;
+        }
+    }
 
 
     private void resultLoginSuc(String uid, String token, String currentLoginType, String nickName) {
@@ -361,7 +383,7 @@ public class YmLoginActivity extends AppCompatActivity {
         resetFastLogin(false);
     }
 
-    private  void getTime(){
+    private  void getTime(final String logintype){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -370,9 +392,18 @@ public class YmLoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         String body = response.body();
+                        JSONObject timeInfo = new JSONObject();
                         Message message = new Message();
-                        message.obj= body;
-                        message.what = SENDTIME;
+                        try {
+                            timeInfo.put("logintype",logintype);
+                            timeInfo.put("ts",body);
+                            message.obj= timeInfo;
+                            message.what = SENDTIME;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            message.what = SENDTIMEERROR;
+                        }
+
                         handler.sendMessage(message);
                     }
 
@@ -388,17 +419,17 @@ public class YmLoginActivity extends AppCompatActivity {
     }
 
     private void getToken(final String accessType, final String accessParam) {
-        final String ts = (int) (System.currentTimeMillis() / 1000) + "";
+
         Map<String, String> param = new HashMap<>();
         //app_id=**&from=client'
         param.put(YmConstants.APPIDKEY, YmConstants.APPID);
-        param.put(YmConstants.TS, ts);
+        param.put(YmConstants.TS, currentTs);
         param.put(YmConstants.FROMKEY, YmConstants.FROM);
         final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Call<TokenBean> token = YmApi.getInstance().getTokenInfo(YmConstants.APPID, YmConstants.FROM, ts, sign);
+                Call<TokenBean> token = YmApi.getInstance().getTokenInfo(YmConstants.APPID, YmConstants.FROM, currentTs, sign);
                 token.enqueue(new Callback<TokenBean>() {
                     @Override
                     public void onResponse(@NonNull Call<TokenBean> call, @NonNull Response<TokenBean> response) {
@@ -461,11 +492,10 @@ public class YmLoginActivity extends AppCompatActivity {
     }
 
     private void getWeixinInfo(String weixinCode, String accessToken) {
-        int ts = (int) (System.currentTimeMillis() / 1000);
         final Map<String, String> param = new HashMap<>();
         //app_id=**&from=client'
         param.put(YmConstants.APPIDKEY, YmConstants.APPID);
-        param.put(YmConstants.TS, ts + "");
+        param.put(YmConstants.TS, currentTs);
         param.put(YmConstants.WEIXINCODE, weixinCode);
         param.put(YmConstants.ACCESSTOKEN, accessToken);
         final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
@@ -511,11 +541,10 @@ public class YmLoginActivity extends AppCompatActivity {
     }
 
     private void getQQInfo(String qqOpenId, String nickName, String accessToken) {
-        int ts = (int) (System.currentTimeMillis() / 1000);
         final Map<String, String> param = new HashMap<>();
         //app_id=**&from=client'
         param.put(YmConstants.APPIDKEY, YmConstants.APPID);
-        param.put(YmConstants.TS, ts + "");
+        param.put(YmConstants.TS, currentTs);
         param.put(YmConstants.OPENID, qqOpenId);
         param.put(YmConstants.NICKNAME, nickName);
         param.put(YmConstants.ACCESSTOKEN, accessToken);
@@ -564,11 +593,10 @@ public class YmLoginActivity extends AppCompatActivity {
     }
 
     private void getGusetInfo(String uuid, String accessToken) {
-        int ts = (int) (System.currentTimeMillis() / 1000);
         final Map<String, String> param = new HashMap<>();
         //app_id=**&from=client'
         param.put(YmConstants.APPIDKEY, YmConstants.APPID);
-        param.put(YmConstants.TS, ts + "");
+        param.put(YmConstants.TS, currentTs);
         param.put(YmConstants.UUID, uuid);
         param.put(YmConstants.ACCESSTOKEN, accessToken);
         final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);

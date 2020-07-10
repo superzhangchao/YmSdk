@@ -4,27 +4,195 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
     <LinearLayout
-        android:layout_width="@dimen/ymcontent_width"
-        android:layout_height="@dimen/ymcontent_heigth"
+        android:id="@+id/ll_content"
+        android:layout_width="@dimen/ym_content_width"
+        android:layout_height="@dimen/ym_content_heigth"
         android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:background="@mipmap/background">
+        android:background="@mipmap/ym_bg">
+
+        <RelativeLayout
+            android:id="@+id/rl_title"
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:background="@mipmap/ym_titlebg">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5.0dp"
+                android:layout_marginBottom="5.0dp"
+                android:src="@mipmap/ym_back"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5.0dp"
+                android:layout_marginBottom="5.0dp"
+                android:src="@mipmap/ym_logo"/>
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60.0dp"
-            android:layout_marginLeft="10.0dp"
-            android:layout_marginRight="10.0dp"
-            android:layout_marginBottom="6.0dp"
-            android:layout_marginTop="10.0dp">
+            android:layout_height="@dimen/ym_edit_height"
+            android:layout_marginTop="15.0dp"
+            android:layout_marginLeft="50.0dp"
+            android:layout_marginRight="50.0dp"
+            android:background="@mipmap/ym_edbg">
 
-            <ImageButton android:id="@+id/login_back"
-                android:layout_width="30.0dp"
-                android:layout_height="60.0dp"
-                android:src="@mipmap/back"
-                android:background="@android:color/transparent"/>
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="6.0dp"
+                android:textColor="@color/ym_edit_name"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/ym_edit_font"
+                android:text="手机号:"/>
+
+
+                <EditText android:id="@+id/login_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="50.0dp"
+                    android:paddingLeft="6.0dp"
+                    android:hint="@string/ym_account_hint"
+                    android:textColorHint="@color/ym_edit_hintcolor"
+                    android:textSize="@dimen/ym_edit_font"
+                    android:textColor="@color/ym_edit_color"
+                    android:background="@null"
+                    android:inputType="phone"/>
+
 
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ym_edit_height"
+            android:layout_marginTop="10.0dp"
+            android:layout_marginLeft="50.0dp"
+            android:layout_marginRight="50.0dp"
+            android:background="@mipmap/ym_edbg">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="6.0dp"
+                android:textColor="@color/ym_edit_name"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/ym_edit_font"
+                android:text="验证码:"/>
+
+
+            <EditText android:id="@+id/login_phonecode"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="50.0dp"
+                android:paddingLeft="6.0dp"
+                android:hint="@string/ym_tv_phonecode"
+                android:textColorHint="@color/ym_edit_hintcolor"
+                android:textSize="@dimen/ym_edit_font"
+                android:textColor="@color/ym_edit_color"
+                android:layout_alignEnd="@id/phonecode"
+                android:background="@null"
+                android:inputType="textVisiblePassword"/>
+
+            <TextView android:id="@+id/phonecode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="6.0dp"
+                android:visibility="visible"
+                android:textSize="@dimen/ym_edit_font"
+                android:text="@string/ym_tv_phonecode"/>
+        </RelativeLayout>
+
+        <!--用户协议-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ym_xieyi_height"
+            android:layout_marginTop="5.0dp"
+            android:layout_marginLeft="50.0dp"
+            android:layout_marginRight="50.0dp">
+
+            <TextView
+                android:layout_width="17.0dp"
+                android:layout_height="14dp"
+                android:paddingStart="1.0dp"
+                android:textSize="@dimen/ym_edit_font"
+
+                android:background="@mipmap/ym_ckbox_unck"/>
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="14dp"
+                android:layout_marginStart="20dp"
+                android:layout_alignParentStart="true"
+                android:textSize="@dimen/ym_xieyi_font"
+                android:text="@string/ym_xieyi"/>
+
+
+            <TextView
+                android:id="@+id/ym_psd_login"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="6.0dp"
+                android:textSize="@dimen/ym_xieyi_font"
+                android:textColor="@color/ym_psdlogin_color"
+                android:layout_centerVertical="true"
+                android:text="@string/ym_tv_psdlogin"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="64.0dp"
+                android:layout_alignParentEnd="true"
+                android:src="@mipmap/ym_phone" />
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="32.0dp"
+            android:layout_marginStart="50.0dp"
+            android:layout_marginEnd="50.0dp"
+            android:layout_marginTop="5.0dp"
+            android:background="@mipmap/ym_button_long"/>
+
+        <!--登录分割线-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="18.0dp"
+            android:layout_marginTop="5.0dp">
+
+            <TextView
+                android:id="@+id/ym_other_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/ym_edit_name"
+                android:textSize="@dimen/ym_edit_font"
+                android:text="@string/ym_tv_otherlogin"/>
+
+            <ImageView
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignLeft="@id/ym_other_title"
+                android:src="@mipmap/ym_fenjiexian"/>
+
+
+        </RelativeLayout>
+
+
+
+
+
     </LinearLayout>
 
 

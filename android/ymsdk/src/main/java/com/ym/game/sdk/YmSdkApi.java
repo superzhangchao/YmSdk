@@ -105,7 +105,7 @@ public class YmSdkApi {
     }
 
     private void openYmLoginPage(Activity activity) {
-        Intent intent = new Intent(activity, YmLoginActivity.class);
+        Intent intent = new Intent(activity, UserActivity.class);
         intent.putExtra("type", LOGIN);
 
         activity.startActivityForResult(intent, YmConstants.LOGINPAGE);
