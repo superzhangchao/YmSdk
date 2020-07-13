@@ -23,7 +23,7 @@ public class AccountLoginFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(ResourseIdUtils.getLayoutId("fragment_account_logins"), null, true);
+        View view = inflater.inflate(ResourseIdUtils.getLayoutId("fragment_shiming"), null, true);
         ll_content = view.findViewById(ResourseIdUtils.getId("ll_content"));
         rl_title = view.findViewById(ResourseIdUtils.getId("rl_title"));
 
