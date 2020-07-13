@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/edit_bg"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/bt_init"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="初始化"/>
+
+    <Button
+        android:id="@+id/bt_login"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="登入"/>
+
+    <Button
+        android:id="@+id/bt_logout"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="登出"/>
+
+    <Button
+        android:id="@+id/bt_pay"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="支付"/>
+
+    <Button
+        android:id="@+id/bt_sendinfo"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="数据上报"/>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_light"
+        android:text="账号信息"/>
+</LinearLayout>
