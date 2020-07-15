@@ -18,12 +18,17 @@ import com.ym.game.net.api.YmApi;
 import com.ym.game.net.bean.AccoutBean;
 import com.ym.game.net.bean.TokenBean;
 import com.ym.game.sdk.bean.AccountBean;
+import com.ym.game.sdk.bean.PurchaseBean;
+import com.ym.game.sdk.callback.CallbackMananger;
 import com.ym.game.sdk.callback.LoginCallBack;
+import com.ym.game.sdk.callback.PayCallBack;
 import com.ym.game.sdk.config.ApplicationCache;
 import com.ym.game.sdk.config.Config;
 
+import com.ym.game.sdk.presenter.PurchasePresenter;
 import com.ym.game.sdk.ui.activity.UserActivity;
 import com.ym.game.sdk.ui.activity.YmLoginActivity;
+import com.ym.game.sdk.ui.activity.YmPurchaseActivity;
 import com.ym.game.utils.ResourseIdUtils;
 import com.ym.game.utils.YmSignUtils;
 
@@ -41,6 +46,7 @@ import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.ym.game.sdk.base.config.TypeConfig.LOGIN;
+import static com.ym.game.sdk.base.config.TypeConfig.PAY;
 
 public class YmSdkApi {
 
@@ -282,6 +288,16 @@ public class YmSdkApi {
             mTencent.logout(activity);
         }
 
+    }
+
+    public void pay(Activity activity, PurchaseBean purchaseBean, PayCallBack payCallBack){
+
+        CallbackMananger.setPayCallBack(payCallBack);
+        PurchasePresenter.showPurchasePage(activity, purchaseBean);
+//        Intent intent = new Intent(activity, YmPurchaseActivity.class);
+//        intent.putExtra("type", PAY);
+//
+//        activity.startActivityForResult(intent, YmConstants.PAY_SUCC_CODE);
     }
 
     public void onResume(Activity activity) {

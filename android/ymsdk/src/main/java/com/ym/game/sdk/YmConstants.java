@@ -29,11 +29,15 @@ public class YmConstants {
     public static final int OTHERFAILCODE = -1;
 
     public static final int LOGINPAGE = 101;
+    public static final int PAYPAGE = 102;
 
     public static final int LOGIN_SUCC_CODE = 201;
 
     public static final int LOGIN_CANCEL_CODE = 202;
     public static final int LOGIN_FAIL_CODE = 203;
 
+    public static final int PAY_SUCC_CODE = 211;
 
+    public static final int PAY_CANCEL_CODE = 212;
+    public static final int PAY_FAIL_CODE = 213;
 }

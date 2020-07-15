@@ -123,23 +123,6 @@
                 android:textSize="@dimen/ym_xieyi_font"
                 android:text="@string/ym_xieyi"/>
 
-
-            <TextView
-                android:id="@+id/ym_psd_login"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="6dp"
-                android:textSize="@dimen/ym_xieyi_font"
-                android:textColor="@color/ym_tip_red"
-                android:layout_centerVertical="true"
-                android:text="@string/ym_tv_psdlogin"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toStartOf="@id/ym_psd_login"
-                android:src="@mipmap/ym_phone" />
         </RelativeLayout>
 
         <Button

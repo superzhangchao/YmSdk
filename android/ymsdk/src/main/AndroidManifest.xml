@@ -18,9 +18,14 @@
             android:theme="@style/YmTheme" />
 
         <activity android:name=".ui.activity.UserActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/YmTheme"/>
 
+        <activity android:name=".ui.activity.YmPurchaseActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/YmTheme"/>
 
 
         <activity android:name=".ui.activity.YmWXEntryActivity" />

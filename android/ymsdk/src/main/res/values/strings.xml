@@ -35,8 +35,8 @@
     <string name="ym_tv_price">648.00</string>
 
     <string name="ym_tv_paytype">选择支付方式</string>
-    <string name="ym_tv_payali">支付宝</string>
-    <string name="ym_tv_payweixin">微信支付</string>
+    <string name="ym_tv_alipay">支付宝</string>
+    <string name="ym_tv_wxpay">微信支付</string>
     <string name="ym_tv_pay_ok">确认支付</string>
 
 </resources>

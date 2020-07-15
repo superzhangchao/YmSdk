@@ -83,7 +83,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/ym_rl_ali"
+            android:id="@+id/ym_rl_pay"
             android:layout_width="match_parent"
             android:layout_height="@dimen/ym_edit_height"
             android:layout_marginLeft="50dp"
@@ -92,20 +92,21 @@
             android:background="@mipmap/ym_edbg">
 
             <ImageView
-                android:id="@+id/ym_im_payali"
+                android:id="@+id/ym_im_pay"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="6dp"
-                android:src="@mipmap/ym_pay_ali" />
+                android:src="@mipmap/ym_alipay" />
 
             <TextView
+                android:id="@+id/ym_tv_pay"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/ym_im_payali"
+                android:layout_toEndOf="@id/ym_im_pay"
                 android:lines="1"
-                android:paddingLeft="6.0dp"
+                android:paddingStart="6dp"
                 android:text="@string/ym_tv_payali"
                 android:textColor="@color/ym_edit_name"
                 android:textSize="@dimen/ym_edit_font" />
@@ -121,11 +122,12 @@
         </RelativeLayout>
 
         <Button
+            android:id="@+id/ym_bt_payok"
             android:layout_width="match_parent"
-            android:layout_height="32.0dp"
-            android:layout_marginStart="50.0dp"
-            android:layout_marginEnd="50.0dp"
-            android:layout_marginTop="15.0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="15dp"
             android:text="@string/ym_tv_pay_ok"
             android:textColor="@color/ym_bt_login"
             android:background="@mipmap/ym_button_long"/>

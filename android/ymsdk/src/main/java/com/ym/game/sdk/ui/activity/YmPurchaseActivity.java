@@ -1,8 +1,16 @@
 package com.ym.game.sdk.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.ym.game.sdk.bean.PurchaseBean;
+import com.ym.game.sdk.ui.fragment.AccountLoginFragment;
+import com.ym.game.sdk.ui.fragment.PurchaseFragment;
+
 import androidx.annotation.Nullable;
+
+import static com.ym.game.sdk.base.config.TypeConfig.LOGIN;
+import static com.ym.game.sdk.base.config.TypeConfig.PAY;
 
 public class YmPurchaseActivity extends BaseActivity {
 
@@ -10,12 +18,14 @@ public class YmPurchaseActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Purchase purchase = (Purchase) getIntent().getSerializableExtra("purchase");
-//        PurchaseChannelFragment purchaseChannelFragment = PurchaseChannelFragment.getFragmentByName(this, PurchaseChannelFragment.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("purchase", purchase);
-//        purchaseChannelFragment.setArguments(bundle);
-//        initFragment(purchaseChannelFragment);
+        Intent intent = getIntent();
+
+        PurchaseBean purchaseBean = (PurchaseBean) getIntent().getSerializableExtra("purchaseBean");
+        PurchaseFragment purchaseFragment = PurchaseFragment.getFragmentByName(this, PurchaseFragment.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("purchaseBean", purchaseBean);
+        purchaseFragment.setArguments(bundle);
+        initFragment(purchaseFragment);
     }
 }
 

@@ -33,7 +33,9 @@ public class ResourseIdUtils {
     public static int getDrawableId(String name) {
         return getResourceIdByName("drawable", name);
     }
-
+    public static int getMipmapId(String name) {
+        return getResourceIdByName("mipmap", name);
+    }
     public static int getLayoutId(String name) {
         return getResourceIdByName("layout", name);
     }

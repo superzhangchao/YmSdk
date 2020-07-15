@@ -14,10 +14,16 @@ import android.widget.TextView;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.ym.game.sdk.YmSdkApi;
 import com.ym.game.sdk.bean.AccountBean;
+import com.ym.game.sdk.bean.PurchaseBean;
 import com.ym.game.sdk.callback.LoginCallBack;
+import com.ym.game.sdk.callback.PayCallBack;
 import com.ym.game.utils.ToastUtils;
+import com.ym.game.utils.YmSignUtils;
 import com.ym.ysfj.R;
 
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -67,17 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                }
 //            }
 //        });
-        btPay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-//                    String decryptDES = decryptDES(encryptDES, key);
-//                    Log.i(TAG, "onClick:decryptDES "+decryptDES);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        btPay.setOnClickListener(this);
         btSendinfo.setOnClickListener(this);
         YmSdkApi.getInstance().initPlatform(this,"5012");
     }
@@ -183,14 +179,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else if (btSendinfo.getId()==v.getId()){
             YmSdkApi.getInstance().resetFastLogin(false);
         }else if(btLogout.getId() ==v.getId()){
-//            YmSdkApi.getInstance().logout(this);
-            String nickname = "          ";
-            String trim = nickname.trim();
-            if (trim.length()==0){
-                Log.i(TAG, "onClick: "+ trim);
-            }
+            YmSdkApi.getInstance().logout(this);
+        }else if(btPay.getId()==v.getId()){
 
+            YmSdkApi.getInstance().pay(this,getPurchaseBean(), new PayCallBack() {
+                @Override
+                public void onSuccess(Object o) {
 
+                }
+
+                @Override
+                public void onFailure(int code, String msg) {
+
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
         }
     }
+
+    public PurchaseBean getPurchaseBean(){
+
+        String gameSign = getGameSign("itemId_60","新手装备大礼包","6.00","123456",
+                "s1","147258","张三","1","gt-1258");
+        PurchaseBean purchaseBean = new PurchaseBean.PurchaseBeanBuilder()
+                .setProductDesc("新手装备大礼包")
+                .setProductId("itemId_60")
+                .setProductName("新手装备大礼包")
+                .setProductPrice("6.00")
+                .setOrderId("123456")
+                .setServerId("s1")
+                .setRoleId("147258")
+                .setRoleName("张三")
+                .setRoleLevel("1")
+                .setUserId("gt-1258")
+                .setGameSign(gameSign)
+                .build();
+        return purchaseBean;
+    }
+
+    public String getGameSign(String productId, String productName, String productPrice, String orderId,
+                               String serverId, String roleId, String roleName, String rolelevel, String userId) {
+        Map<String,String> parasign = new HashMap<>();
+        parasign.put("product_id",productId);
+        parasign.put("product_name",productName);
+        parasign.put("product_price",productPrice);
+        parasign.put("order_id",orderId);
+        parasign.put("server_id",serverId);
+        parasign.put("role_id",roleId);
+        return YmSignUtils.getYmSign(parasign,"");
+
+    }
+
 }
