@@ -2,7 +2,6 @@ package com.ym.game.sdk;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,13 +21,10 @@ import com.ym.game.sdk.bean.PurchaseBean;
 import com.ym.game.sdk.callback.CallbackMananger;
 import com.ym.game.sdk.callback.LoginCallBack;
 import com.ym.game.sdk.callback.PayCallBack;
-import com.ym.game.sdk.config.ApplicationCache;
 import com.ym.game.sdk.config.Config;
 
 import com.ym.game.sdk.presenter.PurchasePresenter;
-import com.ym.game.sdk.ui.activity.UserActivity;
-import com.ym.game.sdk.ui.activity.YmLoginActivity;
-import com.ym.game.sdk.ui.activity.YmPurchaseActivity;
+import com.ym.game.sdk.ui.activity.YmUserActivity;
 import com.ym.game.utils.ResourseIdUtils;
 import com.ym.game.utils.YmSignUtils;
 
@@ -46,7 +42,6 @@ import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.ym.game.sdk.base.config.TypeConfig.LOGIN;
-import static com.ym.game.sdk.base.config.TypeConfig.PAY;
 
 public class YmSdkApi {
 
@@ -111,7 +106,7 @@ public class YmSdkApi {
     }
 
     private void openYmLoginPage(Activity activity) {
-        Intent intent = new Intent(activity, UserActivity.class);
+        Intent intent = new Intent(activity, YmUserActivity.class);
         intent.putExtra("type", LOGIN);
 
         activity.startActivityForResult(intent, YmConstants.LOGINPAGE);

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class PurchaseBean implements Serializable {
     private String payType;
+    private String accessToken;
     private String mProductDesc;//可以为空不签名
     private String mProductId;
     private String mProductName;
@@ -15,6 +16,7 @@ public class PurchaseBean implements Serializable {
     private String mRoleLevel;//可以为空不签名
     private String mUserId;//平台的唯一标识
     private String mGameSign;
+    private String mExt;
 //    private String notifyUrl;//不签名
 
 
@@ -24,6 +26,14 @@ public class PurchaseBean implements Serializable {
 
     public void setPayType(String payType) {
         this.payType = payType;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public String getProductDesc() {
@@ -69,6 +79,9 @@ public class PurchaseBean implements Serializable {
     public String getGameSign() {
         return mGameSign;
     }
+    public String getExt() {
+        return mExt;
+    }
 
     private  PurchaseBean(PurchaseBeanBuilder builder){
           mProductDesc = builder.mProductDesc;//可以为空不签名
@@ -82,6 +95,7 @@ public class PurchaseBean implements Serializable {
           mRoleLevel = builder.mRoleLevel;//可以为空不签名
           mUserId = builder.mUserId;//平台的唯一标识
           mGameSign = builder.mGameSign;
+          mExt = builder.mExt;
     }
 
     public static  class  PurchaseBeanBuilder{
@@ -96,6 +110,7 @@ public class PurchaseBean implements Serializable {
         private String mRoleLevel;
         private String mUserId;
         private String mGameSign;
+        private String mExt;
 
         public PurchaseBeanBuilder() {
 
@@ -145,7 +160,10 @@ public class PurchaseBean implements Serializable {
             mGameSign = gameSign;
             return this;
         }
-
+        public PurchaseBeanBuilder setExt(String ext){
+            mExt = ext;
+            return this;
+        }
         public PurchaseBean build(){
             return new PurchaseBean(this);
         }

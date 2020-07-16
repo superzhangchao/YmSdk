@@ -107,7 +107,7 @@
                 android:layout_toEndOf="@id/ym_im_pay"
                 android:lines="1"
                 android:paddingStart="6dp"
-                android:text="@string/ym_tv_payali"
+                android:text="@string/ym_tv_alipay"
                 android:textColor="@color/ym_edit_name"
                 android:textSize="@dimen/ym_edit_font" />
             <ImageView

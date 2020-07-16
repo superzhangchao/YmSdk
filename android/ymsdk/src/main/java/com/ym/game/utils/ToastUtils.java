@@ -1,5 +1,6 @@
 package com.ym.game.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ public class ToastUtils {
 
     private static Toast toast;
 
+    @SuppressLint("ShowToast")
     public static void showToast(Context context,
                                  String content) {
 

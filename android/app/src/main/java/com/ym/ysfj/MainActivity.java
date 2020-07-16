@@ -216,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setRoleName("张三")
                 .setRoleLevel("1")
                 .setUserId("gt-1258")
+                .setExt("sdfsdfsf")
                 .setGameSign(gameSign)
                 .build();
         return purchaseBean;
@@ -227,10 +228,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         parasign.put("product_id",productId);
         parasign.put("product_name",productName);
         parasign.put("product_price",productPrice);
-        parasign.put("order_id",orderId);
+        parasign.put("game_order_no",orderId);
         parasign.put("server_id",serverId);
         parasign.put("role_id",roleId);
-        return YmSignUtils.getYmSign(parasign,"");
+        return YmSignUtils.getYmSign(parasign,"CE40D7B08558ED0BBD1C653276C91E44");
 
     }
 

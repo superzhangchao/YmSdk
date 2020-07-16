@@ -2,6 +2,7 @@ package com.ym.game.net.api;
 
 import com.ym.game.net.bean.TokenBean;
 import com.ym.game.net.bean.AccoutBean;
+import com.ym.game.net.bean.ResultOrderBean;
 
 import java.util.Map;
 
@@ -22,13 +23,6 @@ public interface YmApiService {
     @GET("user/login/weixin")
     Call<AccoutBean> getWeixinAccoutInfo(@QueryMap Map<String, String> accountReq);
 
-    //Map<String, String> weixinAccountReq = new HashMap<>();
-    //map.put("app_id", "小王子");
-    //map.put("ts", null);
-    //map.put("code", "0");
-    //map.put("access_token", "3");
-    //map.put("sign", "3");
-    //Call<WeiximAccoutBean> call = ymApiService.getWeixinAccoutInfo(weixinAccountReq);
 
     @GET("user/login/qq")
     Call<AccoutBean> getQQAccoutInfo(@QueryMap Map<String, String> accountReq);
@@ -38,4 +32,7 @@ public interface YmApiService {
 
     @GET("user/login/quick")
     Call<AccoutBean> quickLogin(@QueryMap Map<String, String> accountReq);
+
+    @GET("pay")
+    Call<ResultOrderBean> checkorder(@QueryMap Map<String, String> orderReq);
 }

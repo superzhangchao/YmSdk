@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 import static com.ym.game.sdk.base.config.TypeConfig.LOGIN;
 
-public class UserActivity extends BaseActivity {
+public class YmUserActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

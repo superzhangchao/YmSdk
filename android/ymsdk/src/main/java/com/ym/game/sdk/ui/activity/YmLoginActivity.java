@@ -119,7 +119,7 @@ public class YmLoginActivity extends AppCompatActivity {
         setLoginScreenSize();
         setFullScreen();
         initView();
-        IntentFilter filter = new IntentFilter(YmConstants.WECHATLOGINACTION);
+        IntentFilter filter = new IntentFilter(YmConstants.WXLOGINACTION);
         this.registerReceiver(broadcastReceiver, filter);
 
     }
@@ -156,7 +156,7 @@ public class YmLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveLastLoginType(SHOW_WEIXIN_RECENT_LOGIN);
-                api = WXAPIFactory.createWXAPI(YmLoginActivity.this, YmConstants.Wechat_APP_ID, false);
+                api = WXAPIFactory.createWXAPI(YmLoginActivity.this, YmConstants.WX_APP_ID, false);
                 if (api.isWXAppInstalled()) {
 //                    loginByWechat();
                     getTime(LOGINTYPEWEIXIN);

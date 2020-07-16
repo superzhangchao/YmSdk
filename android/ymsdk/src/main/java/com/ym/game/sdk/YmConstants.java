@@ -1,8 +1,9 @@
 package com.ym.game.sdk;
 
 public class YmConstants {
-    public static final String Wechat_APP_ID = "wxd02fbae564a0c256";
-    public static final String WECHATLOGINACTION = "com.wechat.login";
+    public static final String WX_APP_ID = "wxd02fbae564a0c256";
+    public static final String WXLOGINACTION = "com.wx.login";
+    public static final String WXPAYACTION = "com.wx.pay";
 
 
 //    public static final String BASEURL = "http://api.ysfj.loologames.com/";
@@ -21,8 +22,28 @@ public class YmConstants {
     public static final String LOGINTOKEN = "login_token";
     public static final String NICKNAME = "nick_name";
     public static final String QQTOKEN = "qq_access_token";
+
+    public static final String CPID = "cp_id";
+    public static final String PAYTYPE = "pay_type";
+    public static final String PRODUCTDESC = "product_desc";
+    public static final String PRODUCTID = "product_id";
+    public static final String PRODUCTNAME = "product_name";
+    public static final String PRODUCTPRICE = "product_price";
+    public static final String ORDERID = "game_order_no";
+    public static final String SERVERID = "server_id";
+    public static final String ROLEID = "role_id";
+    public static final String ROLENAME = "role_name";
+    public static final String ROLELEVEL = "role_level";
+    public static final String USERID = "uid";
+    public static final String GAMESIGN = "game_sign";
+    public static final String VERSIONKEY = "version";
+    public static final String VERSION = "1.0.0";
+    public static final String EXT = "ext";
+
     public static final String SVAE_LOGIN_TYPE = "loginType";
     public static final String SVAE_LOGIN_INFO = "loginInfo";
+
+
     //通用错误码
     public static final int SUCCESSCODE = 0;
     public static final int FAILCODE = 1;
@@ -40,4 +61,10 @@ public class YmConstants {
 
     public static final int PAY_CANCEL_CODE = 212;
     public static final int PAY_FAIL_CODE = 213;
+
+    public static final int WXPAY_RESULT_SUCC_CODE = 214;
+    public static final int WXPAY_RESULT_CANCEL_CODE = 215;
+    public static final int WXPAY_RESULT_FAIL_CODE = 216;
+
+
 }

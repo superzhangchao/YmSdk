@@ -1,5 +1,6 @@
 package com.ym.game.net.api;
 
+import com.ym.game.net.bean.ResultOrderBean;
 import com.ym.game.net.bean.TokenBean;
 import com.ym.game.net.bean.AccoutBean;
 
@@ -63,4 +64,9 @@ public class YmApi {
     public Call<AccoutBean> quickLogin(Map<String, String> accountReq){
         return service.quickLogin(accountReq);
     }
+
+    public Call<ResultOrderBean> checkorder(Map<String, String> orderReq){
+        return service.checkorder(orderReq);
+    }
+
 }

@@ -63,6 +63,7 @@ public class PurchaseFragment extends BaseFragment implements View.OnClickListen
         ymRlPay.setOnClickListener(this);
         ymBtPayok.setOnClickListener(this);
         EventBus.getDefault().register(this);
+        PurchasePresenter.initPay(baseActivity);
         return view;
     }
 
@@ -96,14 +97,7 @@ public class PurchaseFragment extends BaseFragment implements View.OnClickListen
             redirectFragment(choosePayTypeFragment);
 
         }else if (view.getId()==ymBtPayok.getId()){
-
-            //TODO:先验证订单再根据支付类型去发起支付
-            if (TextUtils.equals(PAYTYPEALI,payType)){
-                //TODO:支付宝支付
-
-            }else if (TextUtils.equals(PAYTYPEWEIXIN,payType)){
-                //TODO:微信支付
-            }
+            PurchasePresenter.startPay(this,payType);
         }
     }
 
@@ -117,16 +111,11 @@ public class PurchaseFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    private void checkPayState(String payType){
-        PurchasePresenter.checkPayState(this,payType);
-    }
-
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        PurchasePresenter.destroy(baseActivity);
     }
 
     @Override

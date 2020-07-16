@@ -57,7 +57,7 @@
             android:background="@mipmap/ym_edbg">
 
             <TextView
-                android:layout_width="50dp"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:paddingStart="6dp"
                 android:textColor="@color/ym_edit_name"
@@ -71,7 +71,7 @@
             <EditText android:id="@+id/ym_real_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="60dp"
                 android:paddingStart="6dp"
                 android:paddingEnd="6dp"
                 android:layout_centerVertical="true"
@@ -94,7 +94,7 @@
             android:background="@mipmap/ym_edbg">
 
             <TextView
-                android:layout_width="50dp"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:paddingStart="6dp"
                 android:textColor="@color/ym_edit_name"
@@ -108,7 +108,7 @@
             <EditText android:id="@+id/ym_idcard_code"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="60dp"
                 android:paddingStart="6dp"
                 android:paddingEnd="6dp"
                 android:layout_centerVertical="true"
@@ -128,7 +128,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
-            android:text="@string/ym_bt_login"
+            android:text="@string/ym_bt_bind"
             android:textColor="@color/ym_bt_login"
             android:background="@mipmap/ym_button_long"/>
 

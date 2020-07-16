@@ -17,7 +17,7 @@
             android:screenOrientation="sensorLandscape"
             android:theme="@style/YmTheme" />
 
-        <activity android:name=".ui.activity.UserActivity"
+        <activity android:name=".ui.activity.YmUserActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/YmTheme"/>
