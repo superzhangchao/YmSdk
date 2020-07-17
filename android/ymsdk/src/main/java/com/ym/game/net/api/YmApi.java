@@ -1,6 +1,7 @@
 package com.ym.game.net.api;
 
 import com.ym.game.net.bean.ResultOrderBean;
+import com.ym.game.net.bean.ResultVcodeBean;
 import com.ym.game.net.bean.TokenBean;
 import com.ym.game.net.bean.AccoutBean;
 
@@ -48,6 +49,10 @@ public class YmApi {
     }
     public Call<String> getTime(){
         return service.getTime();
+    }
+
+    public Call<ResultVcodeBean> getVcode(Map<String, String> vcodeReq){
+        return service.getVcode(vcodeReq);
     }
 
     public Call<AccoutBean>  getWeixinAccoutInfo(Map<String, String> accountReq){

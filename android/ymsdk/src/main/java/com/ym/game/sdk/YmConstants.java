@@ -16,6 +16,8 @@ public class YmConstants {
     public static final String TS = "ts";
     public static final String WEIXINCODE = "code";
     public static final String ACCESSTOKEN = "access_token";
+    public static final String SIGN = "sign";
+    public static final String NUMBER = "number";
     public static final String OPENID = "open_id";
     public static final String UUID = "uuid";
     public static final String UID = "uid";

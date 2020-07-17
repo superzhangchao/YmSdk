@@ -1,5 +1,6 @@
 package com.ym.game.net.api;
 
+import com.ym.game.net.bean.ResultVcodeBean;
 import com.ym.game.net.bean.TokenBean;
 import com.ym.game.net.bean.AccoutBean;
 import com.ym.game.net.bean.ResultOrderBean;
@@ -19,6 +20,9 @@ public interface YmApiService {
 
     @GET("time")
     Call<String> getTime();
+
+    @GET("sms")
+    Call<ResultVcodeBean> getVcode(@QueryMap Map<String, String> vcodeReq);
 
     @GET("user/login/weixin")
     Call<AccoutBean> getWeixinAccoutInfo(@QueryMap Map<String, String> accountReq);

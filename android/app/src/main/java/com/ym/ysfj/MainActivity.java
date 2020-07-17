@@ -177,9 +177,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
 
         }else if (btSendinfo.getId()==v.getId()){
-            YmSdkApi.getInstance().resetFastLogin(false);
+//            YmSdkApi.getInstance().resetFastLogin(false);
         }else if(btLogout.getId() ==v.getId()){
-            YmSdkApi.getInstance().logout(this);
+//            YmSdkApi.getInstance().logout(this);
         }else if(btPay.getId()==v.getId()){
 
             YmSdkApi.getInstance().pay(this,getPurchaseBean(), new PayCallBack() {
