@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
 import com.ym.game.utils.ResourseIdUtils;
@@ -34,11 +35,11 @@ public class ShowXieyiFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        WebSettings settings = ymWbXieyi.getSettings();
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-        String url = "http://wwww.baidu.com";
-        ymWbXieyi.loadUrl(url);
+        String url = "http://www.baidu.com";
+
+        ymWbXieyi.getSettings().setJavaScriptEnabled(true);
+        ymWbXieyi.setWebViewClient(new WebViewClient());
+        ymWbXieyi.loadUrl("http://www.baidu.com");
 
 
     }

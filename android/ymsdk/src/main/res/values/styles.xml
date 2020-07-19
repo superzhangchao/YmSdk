@@ -28,4 +28,9 @@
     <style name="Assist_Style" parent="@android:style/Theme.Translucent.NoTitleBar">
         <item name="android:windowIsTranslucent">false</item>
     </style>
+
+    <style name="Ym_CheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
+
+       <item name="android:button">@drawable/ym_selector_ck</item>
+    </style>
 </resources>

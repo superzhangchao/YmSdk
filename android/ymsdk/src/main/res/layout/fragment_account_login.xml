@@ -113,18 +113,20 @@
                 android:id="@+id/ym_im_unck_xieyi"
                 android:layout_width="17dp"
                 android:layout_height="14dp"
-                android:paddingStart="1dp"
-                android:textSize="@dimen/ym_edit_font"
+                android:clickable="true"
+                android:visibility="visible"
+                android:focusable="true"
                 android:src="@mipmap/ym_ckbox_unck"/>
 
             <ImageView
                 android:id="@+id/ym_im_ck_xieyi"
                 android:layout_width="17dp"
                 android:layout_height="14dp"
-                android:paddingStart="1dp"
-                android:textSize="@dimen/ym_edit_font"
+                android:clickable="true"
                 android:visibility="invisible"
+                android:focusable="true"
                 android:src="@mipmap/ym_ckbox_ck"/>
+
 
             <TextView
                 android:id="@+id/ym_tv_xieyi"
@@ -141,6 +143,7 @@
                 android:layout_toEndOf="@id/ym_tv_xieyi"
                 android:textSize="@dimen/ym_xieyi_font"
                 android:textColor="@color/ym_xieyi"
+                android:clickable="true"
                 android:text="@string/ym_xieyi2"/>
         </RelativeLayout>
 

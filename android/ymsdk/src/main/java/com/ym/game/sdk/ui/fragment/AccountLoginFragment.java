@@ -69,25 +69,30 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         ymLoginQq = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_login_qq"));
         ymLoginGt = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_login_gt"));
 
+
         ymImBack.setOnClickListener(this);
         ymTvPhonecode.setOnClickListener(this);
+        ymImUnCkXieyi.setOnClickListener(this);
         ymImCkXieyi.setOnClickListener(this);
         ymTvXieyiText.setOnClickListener(this);
         ymBtLogin.setOnClickListener(this);
-        ymLoginWeixin.setOnClickListener(this);
-        ymLoginQq.setOnClickListener(this);
-        ymBtLogin.setOnClickListener(this);
+//        ymLoginWeixin.setOnClickListener(this);
+//        ymLoginQq.setOnClickListener(this);
+//        ymBtLogin.setOnClickListener(this);
+
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+
         ymImBack.setVisibility(View.VISIBLE);
         ymImClose.setVisibility(View.INVISIBLE);
         ymTvPhonecode.setText(ResourseIdUtils.getStringId("ym_tv_getphonecode"));
         ymTvPhonecode.setTimesandText(getString(ResourseIdUtils.getStringId("ym_tv_getphonecode")),"已发送（","s)",6);
-
 //        ymTvXieyi.setText("dfsdfsf");
 //        ll_content.post(new Runnable(){
 //
@@ -120,14 +125,16 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
             if (!TextUtils.isEmpty(getPhone())&&!ymTvPhonecode.isRun()){
                 ymTvPhonecode.start();
                 UserPresenter.sendVcode(this,getPhone());
-            }else if (view.getId()==ymTvXieyiText.getId()){
-                ShowXieyiFragment showXieyiFragment = ShowXieyiFragment.getFragmentByName(baseActivity,ShowXieyiFragment.class);
-                redirectFragment(showXieyiFragment);
-            }else if(view.getId()==ymImCkXieyi.getId()){
-                int visibility = ymImCkXieyi.getVisibility();
-//                ymImCkXieyi.setVisibility((visibility==View.VISIBLE)?View.INVISIBLE:View.VISIBLE);
-                ymImCkXieyi.setVisibility(View.VISIBLE);
             }
+        }else if (view.getId()==this.ymTvXieyiText.getId()){
+            ShowXieyiFragment showXieyiFragment = ShowXieyiFragment.getFragmentByName(baseActivity,ShowXieyiFragment.class);
+            redirectFragment(showXieyiFragment);
+        }else if(view.getId()==ymImCkXieyi.getId()){
+            ymImCkXieyi.setVisibility(View.INVISIBLE);
+        }else if(view.getId()==ymImUnCkXieyi.getId()){
+            ymImCkXieyi.setVisibility(View.VISIBLE);
+        }else if(view.getId()==ymBtLogin.getId()){
+            
         }
     }
 
@@ -143,11 +150,32 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
             return "";
         } else {
             String phone_number = ymEtPhone.getText().toString().trim();
-            String num = "[1][358]\\d{9}";
+            String num = "\\d{11}";
             if (phone_number.matches(num))
                 return phone_number;
             else {
                 ToastUtils.showToast(baseActivity, "请输入正确的手机号码");
+                return "";
+            }
+        }
+    }
+
+    private String getVcode(){
+        if (TextUtils.isEmpty(ymEtPhonecode.getText().toString().trim())) {
+            ToastUtils.showToast(baseActivity, "请输入您的验证码");
+            ymEtPhonecode.requestFocus();
+            return "";
+        } else if (ymEtPhonecode.getText().toString().trim().length() != 6) {
+            ToastUtils.showToast(baseActivity, "您的验证码位数不正确");
+            ymEtPhonecode.requestFocus();
+            return "";
+        } else {
+            String phone_number = ymEtPhonecode.getText().toString().trim();
+            String num = "\\d{6}";
+            if (phone_number.matches(num))
+                return phone_number;
+            else {
+                ToastUtils.showToast(baseActivity, "请输入正确的验证");
                 return "";
             }
         }
