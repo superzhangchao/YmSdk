@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.ym.game.sdk.R;
+import com.ym.game.sdk.base.config.ErrorCode;
+import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.bean.PurchaseBean;
 
 import com.ym.game.sdk.callback.CallbackMananger;
@@ -11,6 +14,8 @@ import com.ym.game.sdk.model.IPurchaseView;
 import com.ym.game.sdk.model.PurchaseModel;
 import com.ym.game.sdk.ui.activity.YmPurchaseActivity;
 import com.ym.game.sdk.ui.fragment.PurchaseFragment;
+import com.ym.game.utils.ResourseIdUtils;
+import com.ym.game.utils.ToastUtils;
 
 import java.io.Serializable;
 
@@ -22,14 +27,14 @@ public class PurchasePresenter {
      * @param activity
      */
     public static void showPurchasePage(Activity activity, PurchaseBean purchaseBean){
-//        if (UserPresenter.isLogin()){
+        if (UserPresenter.isLogin()){
             Intent intent = new Intent(activity, YmPurchaseActivity.class);
             intent.putExtra("purchaseBean", purchaseBean);
             activity.startActivity(intent);
-//        }else{
-//            Toast.makeText(activity,"请先登录",Toast.LENGTH_SHORT).show();
-//            CallbackManager.getPurchaseCallback().onFail("未登录");
-//        }
+        }else{
+            ToastUtils.showToast(activity,activity.getString(ResourseIdUtils.getStringId("ym_text_please_login")));
+            CallbackMananger.getPayCallBack().onFailure(ErrorCode.PAY_FAIL,activity.getString(ResourseIdUtils.getStringId("ym_text_nologin")));
+        }
 
     }
 
@@ -42,16 +47,24 @@ public class PurchasePresenter {
         CallbackMananger.getPayCallBack().onCancel();
     }
     public static void startPay(final IPurchaseView purchaseView, String payType){
-        PurchaseBean purchaseDate = purchaseView.getPurchaseDate();
+        purchaseView.showLoading();
+        AccountBean loginAccountInfo = UserPresenter.getLoginAccountInfo();
+        PurchaseBean purchaseDate = purchaseView.getPurchaseData();
         purchaseDate.setPayType(payType);
+        purchaseDate.setUserId(loginAccountInfo.getUid());
         PurchaseModel.getInstance().startPay(purchaseView.getContext(), purchaseDate, new PurchaseModel.PurchaseStatusListener() {
-
 
             @Override
             public void onSuccess(String platformOrderId) {
                 purchaseView.dismissLoading();
                 purchaseView.closeActivity();
                 CallbackMananger.getPayCallBack().onSuccess(platformOrderId);
+            }
+
+            @Override
+            public void onCancel() {
+                purchaseView.dismissLoading();
+                purchaseView.cancelPay();
             }
 
             @Override

@@ -24,6 +24,8 @@ import org.greenrobot.eventbus.Logger;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -59,7 +61,7 @@ public class PurchaseFragment extends BaseFragment implements View.OnClickListen
 
         ymBtPayok = (Button) view.findViewById(ResourseIdUtils.getId("ym_bt_payok"));
 
-        ymImClose.setOnClickListener(this);
+        ymImBack.setOnClickListener(this);
         ymRlPay.setOnClickListener(this);
         ymBtPayok.setOnClickListener(this);
         EventBus.getDefault().register(this);
@@ -70,26 +72,30 @@ public class PurchaseFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        PurchaseBean purchaseDate = getPurchaseDate();
+        PurchaseBean purchaseDate = getPurchaseData();
 
         String productName = purchaseDate.getProductName();
         String productPrice = purchaseDate.getProductPrice();
-//        String productName = "新手装备大礼包648元";
-//        String productPrice = "648";
+
+        Double price = Double.parseDouble(productPrice)/100;
+        DecimalFormat df = new DecimalFormat("0.00");//格式化
+        String formatPrice = df.format(price);
         payType = PAYTYPEALI;
 
-        ymImBack.setVisibility(View.INVISIBLE);
-        ymImClose.setVisibility(View.VISIBLE);
+        ymImBack.setVisibility(View.VISIBLE);
+        ymImClose.setVisibility(View.INVISIBLE);
+        ymImBack.setImageResource(ResourseIdUtils.getMipmapId("ym_close"));
+
         fengjiexianRight.setImageBitmap(ImageUtils.rotateIm(baseActivity,ResourseIdUtils.getMipmapId("ym_fenjiexian")));
         ymProductName.setText(productName);
-        ymPrice.setText(productPrice);
+        ymPrice.setText(formatPrice);
         ymImPay.setImageResource(ResourseIdUtils.getMipmapId("ym_"+ payType));
         ymTvPay.setText(ResourseIdUtils.getStringId("ym_tv_"+ payType));
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId()==ymImClose.getId()){
+        if (view.getId()==ymImBack.getId()){
             //关闭界面
             PurchasePresenter.cancelPay(this);
         }else if(view.getId()==ymRlPay.getId()){
@@ -97,6 +103,7 @@ public class PurchaseFragment extends BaseFragment implements View.OnClickListen
             redirectFragment(choosePayTypeFragment);
 
         }else if (view.getId()==ymBtPayok.getId()){
+            ymBtPayok.setClickable(false);
             PurchasePresenter.startPay(this,payType);
         }
     }
@@ -105,8 +112,8 @@ public class PurchaseFragment extends BaseFragment implements View.OnClickListen
     public void onBaseEvent(BaseEvent event){
         if (event instanceof PayTypeEvent){
             payType = ((PayTypeEvent) event).getPayType();
-            ymImPay.setImageResource(ResourseIdUtils.getMipmapId("ym_pay_"+ payType));
-            ymTvPay.setText(ResourseIdUtils.getStringId("ym_tv_pay"+ payType));
+            ymImPay.setImageResource(ResourseIdUtils.getMipmapId("ym_"+ payType));
+            ymTvPay.setText(ResourseIdUtils.getStringId("ym_tv_"+ payType));
             Log.i(TAG, "onBaseEvent: "+payType);
         }
     }
@@ -119,13 +126,13 @@ public class PurchaseFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void showLoading(String msg) {
-
+    public void showLoading() {
+        baseActivity.showLoading();
     }
 
     @Override
     public void dismissLoading() {
-
+        baseActivity.dismissLoading();
     }
 
     @Override
@@ -134,8 +141,19 @@ public class PurchaseFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public PurchaseBean getPurchaseDate() {
+    public void cancelPay() {
+        ymBtPayok.setClickable(true);
+    }
+
+    @Override
+    public PurchaseBean getPurchaseData() {
         PurchaseBean purchaseBean = (PurchaseBean) getArguments().getSerializable("purchaseBean");
         return purchaseBean;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        PurchasePresenter.cancelPay(this);
+        return true;
     }
 }

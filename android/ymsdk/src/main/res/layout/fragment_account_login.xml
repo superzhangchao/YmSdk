@@ -46,6 +46,7 @@
                     android:maxLength="11"
                     android:textColor="@color/ym_edit_color"
                     android:background="@null"
+                    android:imeOptions="actionDone"
                     android:digits="1234567890"
                     android:inputType="phone"/>
 
@@ -206,6 +207,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
+                android:clickable="true"
+                android:focusable="true"
                 android:src="@mipmap/ym_login_weixin"/>
 
             <ImageView
@@ -214,6 +217,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@id/ym_login_weixin"
+                android:clickable="true"
+                android:focusable="true"
                 android:src="@mipmap/ym_login_qq"/>
             <ImageView
                 android:id="@+id/ym_login_gt"
@@ -221,6 +226,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/ym_login_weixin"
+                android:clickable="true"
+                android:focusable="true"
                 android:src="@mipmap/ym_login_gt"/>
 
         </RelativeLayout>

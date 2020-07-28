@@ -1,9 +1,11 @@
 package com.ym.game.sdk.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -32,20 +34,27 @@ public class ShowXieyiFragment extends BaseFragment implements View.OnClickListe
         return view;
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String url = "http://www.baidu.com";
+        String url = "file:///android_res/mipmap/ym_xieyi2.png";
+        WebSettings settings = ymWbXieyi.getSettings();
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
 
-        ymWbXieyi.getSettings().setJavaScriptEnabled(true);
-        ymWbXieyi.setWebViewClient(new WebViewClient());
-        ymWbXieyi.loadUrl("http://www.baidu.com");
+        ymWbXieyi.loadUrl(url);
 
 
     }
 
     @Override
     public void onClick(View view) {
-        onBackPressed();
+        back();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return super.onBackPressed();
     }
 }

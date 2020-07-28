@@ -7,11 +7,13 @@ import com.ym.game.sdk.bean.PurchaseBean;
 
 public interface IPurchaseView {
     Context getContext();
-    void showLoading(String msg);
+    void showLoading();
     void dismissLoading();
-    PurchaseBean getPurchaseDate();
+    PurchaseBean getPurchaseData();
 //    Purchase getPurchase();
     void closeActivity();
+
+    void cancelPay();
 //    void showToast(String msg);
 //    int getCoins();
 //    void setCoins(int coins);

@@ -1,32 +1,37 @@
 package com.ym.game.sdk.ui.fragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
+
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
-import com.ym.game.sdk.R;
+
+import com.ym.game.sdk.YmConstants;
+import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.presenter.UserPresenter;
 import com.ym.game.sdk.ui.widget.TimerTextView;
+import com.ym.game.utils.DpPxUtils;
+import com.ym.game.utils.ImageUtils;
 import com.ym.game.utils.ResourseIdUtils;
 import com.ym.game.utils.ToastUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.ym.game.sdk.ui.fragment.BaseFragment.getFragmentByName;
 
 public class AccountLoginFragment extends UserBaseFragment implements View.OnClickListener {
 
@@ -52,7 +57,7 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(ResourseIdUtils.getLayoutId("fragment_account_login"), null, true);
-//        ll_content = view.findViewById(ResourseIdUtils.getId("ll_content"));
+        ll_content = view.findViewById(ResourseIdUtils.getId("ll_content"));
 //        rl_title = view.findViewById(ResourseIdUtils.getId("rl_title"));
 
         ymImBack = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_im_back"));
@@ -76,10 +81,9 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         ymImCkXieyi.setOnClickListener(this);
         ymTvXieyiText.setOnClickListener(this);
         ymBtLogin.setOnClickListener(this);
-//        ymLoginWeixin.setOnClickListener(this);
-//        ymLoginQq.setOnClickListener(this);
-//        ymBtLogin.setOnClickListener(this);
-
+        ymLoginWeixin.setOnClickListener(this);
+        ymLoginQq.setOnClickListener(this);
+        ymLoginGt.setOnClickListener(this);
         return view;
     }
 
@@ -89,23 +93,30 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
 
 
 
-        ymImBack.setVisibility(View.VISIBLE);
+        ymImBack.setVisibility(View.INVISIBLE);
         ymImClose.setVisibility(View.INVISIBLE);
+        boolean xieyiStatus = UserPresenter.getXieyiStatus(this);
+        if (xieyiStatus){
+            ymImCkXieyi.setVisibility(View.VISIBLE);
+        }
         ymTvPhonecode.setText(ResourseIdUtils.getStringId("ym_tv_getphonecode"));
-        ymTvPhonecode.setTimesandText(getString(ResourseIdUtils.getStringId("ym_tv_getphonecode")),"已发送（","s)",6);
-//        ymTvXieyi.setText("dfsdfsf");
-//        ll_content.post(new Runnable(){
-//
-//            @Override
-//            public void run() {
-//                int height = ll_content.getMeasuredHeight();
-//                int width = ll_content.getMeasuredWidth();
-//
-//                Log.i(TAG, "run: ll_content height:"+height+" width:"+width);
-//            }
-//
-//
-//        });
+        ymTvPhonecode.setTimesandText(getString(ResourseIdUtils.getStringId("ym_tv_getphonecode")),"已发送（","s)",60);
+        fengjiexianRight.setImageBitmap(ImageUtils.rotateIm(baseActivity,ResourseIdUtils.getMipmapId("ym_fenjiexian")));
+
+        ll_content.post(new Runnable(){
+
+            @Override
+            public void run() {
+                int height = ll_content.getMeasuredHeight();
+                int width = ll_content.getMeasuredWidth();
+                int hdp = DpPxUtils.px2dip(getContext(), height);
+                int wdp = DpPxUtils.px2dip(getContext(),width);
+                Log.i(TAG, "run: ll_content height:"+height+" width:"+width);
+                Log.i(TAG, "run: ll_content hdp:"+hdp+" wdp:"+wdp);
+            }
+
+
+        });
 //
 //        rl_title.post(new Runnable() {
 //            @Override
@@ -121,31 +132,70 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        if(view.getId()==ymTvPhonecode.getId()){
+        AccountBean accountBean = new AccountBean();
+        if (view.getId()==ymImBack.getId()){
+//            UserPresenter.cancelLogin(this);
+        }else if(view.getId()==ymTvPhonecode.getId()){
             if (!TextUtils.isEmpty(getPhone())&&!ymTvPhonecode.isRun()){
                 ymTvPhonecode.start();
                 UserPresenter.sendVcode(this,getPhone());
             }
         }else if (view.getId()==this.ymTvXieyiText.getId()){
-            ShowXieyiFragment showXieyiFragment = ShowXieyiFragment.getFragmentByName(baseActivity,ShowXieyiFragment.class);
+            ShowXieyiFragment showXieyiFragment = getFragmentByName(baseActivity,ShowXieyiFragment.class);
             redirectFragment(showXieyiFragment);
         }else if(view.getId()==ymImCkXieyi.getId()){
             ymImCkXieyi.setVisibility(View.INVISIBLE);
         }else if(view.getId()==ymImUnCkXieyi.getId()){
             ymImCkXieyi.setVisibility(View.VISIBLE);
+            UserPresenter.saveXieyiStatud(this,true);
         }else if(view.getId()==ymBtLogin.getId()){
-            
+            if (!TextUtils.isEmpty(getPhone())&&!TextUtils.isEmpty(getVcode())&&isShowCk()){
+                accountBean.setNumber(getPhone());
+                accountBean.setVcode(getVcode());
+                accountBean.setLoginType("phone");
+                ymBtLogin.setClickable(false);
+                UserPresenter.startLogin(this,accountBean);
+
+            }
+        }else if(view.getId()==ymLoginWeixin.getId()){
+            accountBean.setLoginType("wx");
+             if (ymImCkXieyi.getVisibility()==View.VISIBLE){
+                 ymLoginWeixin.setClickable(false);
+                 UserPresenter.startLogin(this,accountBean);
+            }else{
+                 ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_xieyi")));
+             }
+
+        }else if(view.getId()==ymLoginQq.getId()){
+            accountBean.setLoginType("qq");
+             if (ymImCkXieyi.getVisibility()==View.VISIBLE){
+                 ymLoginQq.setClickable(false);
+                 UserPresenter.startLogin(this,accountBean);
+            }else{
+                 ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_xieyi")));
+             }
+        }else if(view.getId()==ymLoginGt.getId()){
+            accountBean.setLoginType("guest");
+             if (ymImCkXieyi.getVisibility()==View.VISIBLE){
+                 ymLoginGt.setClickable(false);
+                UserPresenter.startLogin(this,accountBean);
+            }else{
+                 ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_xieyi")));
+             }
         }
+
     }
 
-//    验证手机号
+
+
+    //    验证手机号
     private String getPhone() {
         if (TextUtils.isEmpty(ymEtPhone.getText().toString().trim())) {
-            ToastUtils.showToast(baseActivity, "请输入您的电话号码");
+            ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_input_phone")));
             ymEtPhone.requestFocus();
             return "";
         } else if (ymEtPhone.getText().toString().trim().length() != 11) {
-            ToastUtils.showToast(baseActivity, "您的电话号码位数不正确");
+            ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_phone_error1")));
             ymEtPhone.requestFocus();
             return "";
         } else {
@@ -154,7 +204,7 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
             if (phone_number.matches(num))
                 return phone_number;
             else {
-                ToastUtils.showToast(baseActivity, "请输入正确的手机号码");
+                ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_phone_error2")));
                 return "";
             }
         }
@@ -162,22 +212,43 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
 
     private String getVcode(){
         if (TextUtils.isEmpty(ymEtPhonecode.getText().toString().trim())) {
-            ToastUtils.showToast(baseActivity, "请输入您的验证码");
+            ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_input_vcode")));
             ymEtPhonecode.requestFocus();
             return "";
         } else if (ymEtPhonecode.getText().toString().trim().length() != 6) {
-            ToastUtils.showToast(baseActivity, "您的验证码位数不正确");
+            ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_vcode_error1")));
             ymEtPhonecode.requestFocus();
             return "";
         } else {
-            String phone_number = ymEtPhonecode.getText().toString().trim();
+            String phoneCode = ymEtPhonecode.getText().toString().trim();
             String num = "\\d{6}";
-            if (phone_number.matches(num))
-                return phone_number;
+            if (phoneCode.matches(num))
+                return phoneCode;
             else {
-                ToastUtils.showToast(baseActivity, "请输入正确的验证");
+                ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_vcode_error2")));
                 return "";
             }
         }
+    }
+    private boolean isShowCk(){
+        if(ymImCkXieyi.getVisibility()==View.INVISIBLE){
+            ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_xieyi")));
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+//        UserPresenter.cancelLogin(this);
+        return true;
+    }
+
+    @Override
+    public void cancelLogin() {
+        ymBtLogin.setClickable(true);
+        ymLoginWeixin.setClickable(true);
+        ymLoginQq.setClickable(true);
+        ymLoginGt.setClickable(true);
     }
 }

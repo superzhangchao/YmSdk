@@ -25,37 +25,39 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/ym_edit_height"
-            android:layout_marginLeft="50dp"
             android:layout_marginTop="30dp"
+            android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:background="@mipmap/ym_edbg">
-
-            <EditText
-                android:id="@+id/login_phone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="50dp"
-                android:background="@null"
-                android:hint="@string/ym_account_hint"
-                android:inputType="phone"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
-                android:textColor="@color/ym_edit_color"
-                android:textColorHint="@color/ym_edit_hintcolor"
-                android:textSize="@dimen/ym_edit_font" />
-
 
             <TextView
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:textColor="@color/ym_edit_name"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:textSize="@dimen/ym_edit_font"
                 android:lines="1"
+                android:text="手机号:"/>
+
+
+            <EditText android:id="@+id/ym_et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="50dp"
                 android:paddingStart="6dp"
-                android:text="手机号:"
-                android:textColor="@color/ym_edit_name"
-                android:textSize="@dimen/ym_edit_font" />
+                android:paddingEnd="6dp"
+                android:layout_centerVertical="true"
+                android:hint="@string/ym_account_hint"
+                android:textColorHint="@color/ym_edit_hintcolor"
+                android:textSize="@dimen/ym_edit_font"
+                android:maxLength="11"
+                android:imeOptions="actionDone"
+                android:textColor="@color/ym_edit_color"
+                android:background="@null"
+                android:digits="1234567890"
+                android:inputType="phone"/>
 
 
         </RelativeLayout>
@@ -63,53 +65,50 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/ym_edit_height"
-            android:layout_marginLeft="50dp"
             android:layout_marginTop="20dp"
+            android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:background="@mipmap/ym_edbg">
-
-            <EditText
-                android:id="@+id/login_phonecode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@id/phonecode"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="50dp"
-                android:layout_marginEnd="70dp"
-                android:layout_toStartOf="@id/phonecode"
-                android:background="@null"
-                android:hint="@string/ym_ethint_phonecode"
-                android:inputType="textVisiblePassword"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
-                android:textColor="@color/ym_edit_color"
-                android:textColorHint="@color/ym_edit_hintcolor"
-                android:textSize="@dimen/ym_edit_font" />
-
 
             <TextView
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:textColor="@color/ym_edit_name"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:lines="1"
-                android:paddingStart="6dp"
-                android:paddingEnd="2dp"
-                android:text="验证码:"
-                android:textColor="@color/ym_edit_name"
-                android:textSize="@dimen/ym_edit_font" />
+                android:textSize="@dimen/ym_edit_font"
+                android:text="验证码:"/>
 
-            <TextView
-                android:id="@+id/phonecode"
+
+            <EditText android:id="@+id/ym_et_phonecode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="6dp"
+                android:layout_centerVertical="true"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:hint="@string/ym_ethint_phonecode"
+                android:textColorHint="@color/ym_edit_hintcolor"
+                android:textSize="@dimen/ym_edit_font"
+                android:maxLength="6"
+                android:textColor="@color/ym_edit_color"
+                android:background="@null"
+                android:layout_toStartOf="@id/ym_tv_phonecode"
+                android:inputType="number"/>
+
+            <com.ym.game.sdk.ui.widget.TimerTextView android:id="@+id/ym_tv_phonecode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="6dp"
+                android:visibility="visible"
                 android:textColor="@color/ym_phonecode"
-                android:text="@string/ym_tv_getphonecode"
                 android:textSize="@dimen/ym_edit_font"
-                android:visibility="visible" />
+                android:text="@string/ym_tv_getphonecode"/>
         </RelativeLayout>
 
 
@@ -136,7 +135,7 @@
                 android:layout_width="120dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="10dp"
-                android:background="@mipmap/ym_button_short"
+                android:background="@mipmap/ym_button_short2"
                 android:text="@string/ym_bt_bind"
                 android:textColor="@color/ym_bt_login" />
         </LinearLayout>
@@ -144,12 +143,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:textColor="@color/ym_color_bindtip"
             android:textSize="@dimen/ym_xieyi_font"
-            android:visibility="gone"
+            android:visibility="visible"
             android:text="@string/ym_tv_bindtip"/>
 
     </LinearLayout>

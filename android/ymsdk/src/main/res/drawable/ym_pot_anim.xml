@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@mipmap/ym_pot01"
+        android:duration="400" />
+    <item
+        android:drawable="@mipmap/ym_pot02"
+        android:duration="400" />
+    <item
+        android:drawable="@mipmap/ym_pot03"
+        android:duration="400" />
+</animation-list>

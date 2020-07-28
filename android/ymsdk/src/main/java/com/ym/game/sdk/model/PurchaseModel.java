@@ -19,10 +19,14 @@ import com.ym.game.net.api.YmApi;
 import com.ym.game.net.bean.AliPayResult;
 import com.ym.game.net.bean.ResultOrderBean;
 import com.ym.game.net.bean.TokenBean;
+import com.ym.game.sdk.R;
 import com.ym.game.sdk.YmConstants;
 import com.ym.game.sdk.YmSdkApi;
+import com.ym.game.sdk.base.config.ErrorCode;
+import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.bean.PurchaseBean;
 import com.ym.game.sdk.callback.PayCallBack;
+import com.ym.game.sdk.presenter.UserPresenter;
 import com.ym.game.utils.ResourseIdUtils;
 import com.ym.game.utils.ToastUtils;
 import com.ym.game.utils.YmSignUtils;
@@ -61,9 +65,28 @@ public class PurchaseModel implements IPurchaseModel{
     private String currentTs;
     private Context mContext;
     private IWXAPI msgApi;
-    private BroadcastReceiver wxPayBroadcastReceiver;
-    private String platformOrderId;
 
+    private String platformOrderId;
+    private BroadcastReceiver wxPayBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            int paycode = intent.getIntExtra("PAYCODE", -1);
+            switch (paycode) {
+                case YmConstants.WXPAY_RESULT_SUCC_CODE:
+                    mPurchaseStatusListener.onSuccess(platformOrderId);
+                    break;
+                case YmConstants.WXPAY_RESULT_CANCEL_CODE:
+                    mPurchaseStatusListener.onCancel();
+                    break;
+                case YmConstants.WXPAY_RESULT_FAIL_CODE:
+                    mPurchaseStatusListener.onFail(ErrorCode.PAY_FAIL,mContext.getString(ResourseIdUtils.getStringId("ym_text_paywx_fail")));
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
     public static PurchaseModel getInstance(){
         if (instance == null){
             instance = new PurchaseModel();
@@ -82,6 +105,7 @@ public class PurchaseModel implements IPurchaseModel{
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
+            Map<String, Object> errorData;
             switch (msg.what) {
                 case SENDTIME:
                     JSONObject timeInfo = (JSONObject) msg.obj;
@@ -89,15 +113,13 @@ public class PurchaseModel implements IPurchaseModel{
                     getToken();
                     break;
                 case GETTOKENSUCCESS:
-                    //TODO:
                     String accessToken = (String) msg.obj;
                     mPurchaseDate.setAccessToken(accessToken);
                     checkorder(mPurchaseDate);
                     break;
                 case CHECKORDERSUCCESS:
                     ResultOrderBean.DataBean dataBean = (ResultOrderBean.DataBean) msg.obj;
-                    //TODO:赋值平台订单
-                    platformOrderId = "11544662";
+                    platformOrderId = dataBean.getPf_order_no();
 
                     String type = dataBean.getType();
                     if (TextUtils.equals(PAYTYPEALI,type)){
@@ -108,23 +130,24 @@ public class PurchaseModel implements IPurchaseModel{
                     break;
                 case SENDTIMEERROR:
                     //服务器验证失败
-                    //TODO:请求ts失败
+                    mPurchaseStatusListener.onFail(ErrorCode.NET_DATA_NULL,mContext.getString(ResourseIdUtils.getStringId("ym_text_netdata_null")));
                     break;
                 case SENDTIMENETERROR:
-                    //TODO:请求ts网络失败
+                    mPurchaseStatusListener.onFail(ErrorCode.NET_ERROR,mContext.getString(ResourseIdUtils.getStringId("ym_text_neterror")));
                     break;
                 case GETTOKENFAIL:
-                    //TODO:请求token失败
+                    errorData = (Map<String, Object>) msg.obj;
+                    mPurchaseStatusListener.onFail((int) errorData.get("code"), (String) errorData.get("message"));
                     break;
                 case GETTOKENNETFAIL:
-                    //TODO:
-                    //TODO:网络请求token失败
+                    mPurchaseStatusListener.onFail(ErrorCode.NET_ERROR,mContext.getString(ResourseIdUtils.getStringId("ym_text_neterror")));
                     break;
                 case CHECKORDERFAIL:
-                    //TODO:检查订单校验失败
+                    errorData = (Map<String, Object>) msg.obj;
+                    mPurchaseStatusListener.onFail((int) errorData.get("code"), (String) errorData.get("message"));
                     break;
                 case CHECKORDERNETFAIL:
-                    //TODO:检查订单网络失败
+                    mPurchaseStatusListener.onFail(ErrorCode.NET_ERROR,mContext.getString(ResourseIdUtils.getStringId("ym_text_neterror")));
                     break;
                 default:
                     break;
@@ -148,9 +171,9 @@ public class PurchaseModel implements IPurchaseModel{
                     mPurchaseStatusListener.onSuccess(platformOrderId);
                 } else if (TextUtils.equals(resultStatus, "6001")) {
                     //不需要处理
-                    mPurchaseStatusListener.onFail(6001,"alipay oncancel");
+                    mPurchaseStatusListener.onCancel();
                 } else {
-                    mPurchaseStatusListener.onFail(9001,"alipay onfail");
+                    mPurchaseStatusListener.onFail(ErrorCode.PAY_FAIL,mContext.getString(ResourseIdUtils.getStringId("ym_text_payali_fail")));
                 }
             }
         }
@@ -158,26 +181,7 @@ public class PurchaseModel implements IPurchaseModel{
 
     @Override
     public void initPay(Activity activity) {
-        wxPayBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
 
-                int paycode = intent.getIntExtra("PAYCODE", -1);
-                switch (paycode) {
-                    case YmConstants.WXPAY_RESULT_SUCC_CODE:
-                        mPurchaseStatusListener.onSuccess(platformOrderId);
-                        break;
-                    case YmConstants.WXPAY_RESULT_CANCEL_CODE:
-                        mPurchaseStatusListener.onFail(6001,"wxpay oncancel");
-                        break;
-                    case YmConstants.WXPAY_RESULT_FAIL_CODE:
-                        mPurchaseStatusListener.onFail(9001,"wxpay onfail");
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
     }
 
     @Override
@@ -209,8 +213,6 @@ public class PurchaseModel implements IPurchaseModel{
                 PayTask alipay = new PayTask((Activity) mContext);
                 String version = alipay.getVersion();
                 Map<String, String> result = alipay.payV2(orderInfo, true);
-//                result.put("platformOrderId",resultOrderBean)
-
                 Message msg = new Message();
                 msg.what = SDK_ALIPAY_FLAG;
                 msg.obj = result;
@@ -223,18 +225,18 @@ public class PurchaseModel implements IPurchaseModel{
     }
 
     private void startWXPay(ResultOrderBean.DataBean dataBean){
-        msgApi = WXAPIFactory.createWXAPI(mContext, YmConstants.WX_APP_ID, true);
-        msgApi.registerApp(YmConstants.WX_APP_ID);
         IntentFilter filter = new IntentFilter(YmConstants.WXPAYACTION);
         mContext.registerReceiver(wxPayBroadcastReceiver, filter);
+        msgApi = WXAPIFactory.createWXAPI(mContext, YmConstants.WX_APP_ID, false);
+        msgApi.registerApp(YmConstants.WX_APP_ID);
         PayReq request = new PayReq();
-        request.appId = dataBean.getWxpay().getAppId();
+        request.appId = dataBean.getWxpay().getWxAppId();
         request.partnerId = dataBean.getWxpay().getPartnerId();
         request.prepayId = dataBean.getWxpay().getPrepayId();
         request.packageValue = dataBean.getWxpay().getPackageValue();
         request.nonceStr = dataBean.getWxpay().getNonceStr();
         request.timeStamp = dataBean.getWxpay().getTimeStamp();
-        request.sign = dataBean.getWxpay().getSign();
+        request.sign = dataBean.getWxpay().getWxSign();
         int wxSdkVersion = msgApi.getWXAppSupportAPI();
         if (wxSdkVersion >= Build.OFFLINE_PAY_SDK_INT) {
             msgApi.sendReq(request);
@@ -303,6 +305,10 @@ public class PurchaseModel implements IPurchaseModel{
                             message.what = GETTOKENSUCCESS;
 
                         }else {
+                            Map<String,Object> errorData = new HashMap<>();
+                            errorData.put("code",errorCode);
+                            errorData.put("message",body.getMessage());
+                            message.obj = errorData;
                             message.what = GETTOKENFAIL;
                         }
                         handler.sendMessage(message);
@@ -322,25 +328,30 @@ public class PurchaseModel implements IPurchaseModel{
     }
 
     private void checkorder(PurchaseBean mPurchaseDate) {
+
         final Map<String, String> param = new HashMap<>();
         //app_id=**&from=client'
+        param.put(YmConstants.VERSIONKEY, YmConstants.VERSION);
         param.put(YmConstants.APPIDKEY, YmConstants.APPID);
+        param.put(YmConstants.CPID, YmConstants.CPIDKEY);
         param.put(YmConstants.TS, currentTs);
+        param.put(YmConstants.USERID, mPurchaseDate.getUserId());
         param.put(YmConstants.ACCESSTOKEN, mPurchaseDate.getAccessToken());
-        param.put(YmConstants.CPID, currentTs);
         param.put(YmConstants.PAYTYPE, mPurchaseDate.getPayType());
-        param.put(YmConstants.PRODUCTDESC, mPurchaseDate.getProductDesc());
-        param.put(YmConstants.PRODUCTID, mPurchaseDate.getProductId());
-        param.put(YmConstants.PRODUCTNAME, mPurchaseDate.getProductName());
-        param.put(YmConstants.PRODUCTPRICE, mPurchaseDate.getProductPrice());
-        param.put(YmConstants.ORDERID, mPurchaseDate.getOrderId());
         param.put(YmConstants.SERVERID, mPurchaseDate.getServerId());
         param.put(YmConstants.ROLEID, mPurchaseDate.getRoleId());
         param.put(YmConstants.ROLENAME, mPurchaseDate.getRoleName());
         param.put(YmConstants.ROLELEVEL, mPurchaseDate.getRoleLevel());
-        param.put(YmConstants.USERID, mPurchaseDate.getUserId());
+
+        param.put(YmConstants.PRODUCTID, mPurchaseDate.getProductId());
+        param.put(YmConstants.PRODUCTNAME, mPurchaseDate.getProductName());
+        param.put(YmConstants.PRODUCTDESC, mPurchaseDate.getProductDesc());
+        param.put(YmConstants.PRODUCTPRICE, mPurchaseDate.getProductPrice());
+        param.put(YmConstants.ORDERID, mPurchaseDate.getOrderId());
+
+
         param.put(YmConstants.GAMESIGN, mPurchaseDate.getGameSign());
-        param.put(YmConstants.VERSIONKEY, YmConstants.VERSION);
+
         param.put(YmConstants.EXT, mPurchaseDate.getExt());
 
         final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
@@ -360,6 +371,12 @@ public class PurchaseModel implements IPurchaseModel{
                             message.obj = body.getData();
                             message.what = CHECKORDERSUCCESS;
 
+                        }else {
+                            Map<String,Object> errorData = new HashMap<>();
+                            errorData.put("code",errorCode);
+                            errorData.put("message",body.getMessage());
+                            message.obj = errorData;
+                            message.what = CHECKORDERFAIL;
                         }
                         handler.sendMessage(message);
                     }
@@ -367,7 +384,7 @@ public class PurchaseModel implements IPurchaseModel{
                     @Override
                     public void onFailure(Call<ResultOrderBean> call, Throwable t) {
                         Message message = new Message();
-                        message.what = CHECKORDERFAIL;
+                        message.what = CHECKORDERNETFAIL;
                         handler.sendMessage(message);
                     }
                 });
@@ -377,6 +394,7 @@ public class PurchaseModel implements IPurchaseModel{
 
     public interface PurchaseStatusListener{
         void onSuccess(String platformOrderId);
+        void onCancel();
         void onFail(int errorCode,String msg);
     }
 }

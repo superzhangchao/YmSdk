@@ -54,17 +54,23 @@ public class ChoosePayTypeFragment extends BaseFragment implements View.OnClickL
     @Override
     public void onClick(View view) {
         if (view.getId()==ymImBack.getId()){
-            onBackPressed();
+            back();
         }else if (view.getId()==ymRlAli.getId()){
             PayTypeEvent payTypeEvent = new PayTypeEvent();
             payTypeEvent.setPayType(PAYTYPEALI);
             EventBus.getDefault().post(payTypeEvent);
-            onBackPressed();
+            back();
         }else if (view.getId()==ymRlWeixin.getId()){
             PayTypeEvent payTypeEvent = new PayTypeEvent();
             payTypeEvent.setPayType(PAYTYPEWX);
             EventBus.getDefault().post(payTypeEvent);
-            onBackPressed();
+            back();
         }
+    }
+
+    @Override
+    public boolean onBackPressed() {
+
+        return super.onBackPressed();
     }
 }

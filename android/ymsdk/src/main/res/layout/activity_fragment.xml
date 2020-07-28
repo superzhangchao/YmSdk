@@ -8,27 +8,31 @@
         android:layout_height="match_parent"
         android:background="@android:color/transparent"/>
 
-    <LinearLayout android:id="@+id/loaing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_centerInParent="true"
-        android:visibility="gone">
 
-        <ProgressBar android:id="@+id/loading_progressbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@android:style/Widget.ProgressBar.Large"/>
 
-        <TextView android:id="@+id/loading_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Loading..."
-            android:textColor="@color/text_white"
-            android:textSize="@dimen/title_font"/>
 
-    </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/ym_rl_lypg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@android:color/transparent">
+
+<!--        <com.ym.game.sdk.ui.widget.ProgressLayout-->
+<!--            android:id="@+id/ym_lypg"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:visibility="gone"/>-->
+
+        <ImageView
+            android:id="@+id/bg_im_bird"
+            android:layout_width="44dp"
+            android:layout_height="35dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/ym_bird01"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

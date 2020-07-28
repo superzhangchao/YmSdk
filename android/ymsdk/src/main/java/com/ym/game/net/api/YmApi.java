@@ -3,7 +3,7 @@ package com.ym.game.net.api;
 import com.ym.game.net.bean.ResultOrderBean;
 import com.ym.game.net.bean.ResultVcodeBean;
 import com.ym.game.net.bean.TokenBean;
-import com.ym.game.net.bean.AccoutBean;
+import com.ym.game.net.bean.ResultAccoutBean;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -54,24 +54,36 @@ public class YmApi {
     public Call<ResultVcodeBean> getVcode(Map<String, String> vcodeReq){
         return service.getVcode(vcodeReq);
     }
+    public Call<ResultVcodeBean> checkBind(Map<String, String> vcodeReq){
+        return service.checkBind(vcodeReq);
+    }
 
-    public Call<AccoutBean>  getWeixinAccoutInfo(Map<String, String> accountReq){
+    public Call<ResultAccoutBean>  getPhoneAccoutInfo(Map<String, String> accountReq){
+        return service.getPhoneAccoutInfo(accountReq);
+    }
+    public Call<ResultAccoutBean>  getWeixinAccoutInfo(Map<String, String> accountReq){
         return service.getWeixinAccoutInfo(accountReq);
     }
-
-    public Call<AccoutBean>  getQQAccoutInfo(Map<String, String> accountReq){
+    public Call<ResultAccoutBean>  getQQAccoutInfo(Map<String, String> accountReq){
         return service.getQQAccoutInfo(accountReq);
     }
-    public Call<AccoutBean>  getGuestAccoutInfo(Map<String, String> accountReq){
+    public Call<ResultAccoutBean>  getGuestAccoutInfo(Map<String, String> accountReq){
         return service.getGuestAccoutInfo(accountReq);
     }
 
-    public Call<AccoutBean> quickLogin(Map<String, String> accountReq){
+    public Call<ResultAccoutBean> quickLogin(Map<String, String> accountReq){
         return service.quickLogin(accountReq);
     }
 
     public Call<ResultOrderBean> checkorder(Map<String, String> orderReq){
         return service.checkorder(orderReq);
+    }
+    public Call<ResultAccoutBean> bindAccoutInfo(Map<String,String> accountReq){
+        return service.bindAccoutInfo(accountReq);
+    }
+
+    public Call<ResultAccoutBean> realName(Map<String, String> accountReq){
+        return service.realName(accountReq);
     }
 
 }

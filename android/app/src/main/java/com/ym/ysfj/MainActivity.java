@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.ym.game.net.bean.ResultAccoutBean;
 import com.ym.game.sdk.YmSdkApi;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.bean.PurchaseBean;
@@ -155,18 +156,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else if(btLogin.getId()==v.getId()){
             YmSdkApi.getInstance().login(this, new LoginCallBack() {
                 @Override
-                public void onCancle() {
+                public void onCancel() {
                     Log.i(TAG, "onCancle: ");
                     tv.setText("onCancle");
                 }
 
                 @Override
                 public void onSuccess(Object o) {
-                    AccountBean accountBean = (AccountBean) o;
+                    ResultAccoutBean resultAccoutBean = (ResultAccoutBean) o;
 
-                    Log.i(TAG, "onSuccess: "+accountBean.toString());
-                    tv.setText(accountBean.toString());
-                    ToastUtils.showToast(MainActivity.this,accountBean.toString());
+                    Log.i(TAG, "onSuccess: "+resultAccoutBean.getData().toString());
+                    tv.setText(resultAccoutBean.getData().toString());
+                    ToastUtils.showToast(MainActivity.this,resultAccoutBean.getData().toString());
                 }
 
                 @Override
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else if (btSendinfo.getId()==v.getId()){
 //            YmSdkApi.getInstance().resetFastLogin(false);
         }else if(btLogout.getId() ==v.getId()){
-//            YmSdkApi.getInstance().logout(this);
+            YmSdkApi.getInstance().logout(this);
         }else if(btPay.getId()==v.getId()){
 
             YmSdkApi.getInstance().pay(this,getPurchaseBean(), new PayCallBack() {
@@ -203,19 +204,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public PurchaseBean getPurchaseBean(){
 
-        String gameSign = getGameSign("itemId_60","新手装备大礼包","6.00","123456",
+
+        String orderId =  System.currentTimeMillis() +"";
+        String gameSign = getGameSign("itemId_60","新手装备大礼包","1",orderId,
                 "s1","147258","张三","1","gt-1258");
         PurchaseBean purchaseBean = new PurchaseBean.PurchaseBeanBuilder()
                 .setProductDesc("新手装备大礼包")
                 .setProductId("itemId_60")
                 .setProductName("新手装备大礼包")
-                .setProductPrice("6.00")
-                .setOrderId("123456")
+                .setProductPrice("1")
+                .setOrderId(orderId)
                 .setServerId("s1")
                 .setRoleId("147258")
                 .setRoleName("张三")
                 .setRoleLevel("1")
-                .setUserId("gt-1258")
                 .setExt("sdfsdfsf")
                 .setGameSign(gameSign)
                 .build();
@@ -229,8 +231,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         parasign.put("product_name",productName);
         parasign.put("product_price",productPrice);
         parasign.put("game_order_no",orderId);
-        parasign.put("server_id",serverId);
-        parasign.put("role_id",roleId);
         return YmSignUtils.getYmSign(parasign,"CE40D7B08558ED0BBD1C653276C91E44");
 
     }

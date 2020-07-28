@@ -1,5 +1,7 @@
 package com.ym.game.net.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ResultOrderBean {
 
 
@@ -109,20 +111,33 @@ public class ResultOrderBean {
              * sign : 7FFECB600D7157C5AA49810D2D8F28BC2811827B
              */
 
-            private String appId;
-            private String partnerId;
-            private String prepayId;
-            private String packageValue;
-            private String nonceStr;
-            private String timeStamp;
-            private String sign;
+            @SerializedName("app_id")
+            private String wxAppId;
 
-            public String getAppId() {
-                return appId;
+            @SerializedName("partner_id")
+            private String partnerId;
+
+            @SerializedName("prepay_id")
+            private String prepayId;
+
+            @SerializedName("package")
+            private String packageValue;
+
+            @SerializedName("nonce_str")
+            private String nonceStr;
+
+            @SerializedName("time_stamp")
+            private String timeStamp;
+
+            @SerializedName("sign")
+            private String wxSign;
+
+            public String getWxAppId() {
+                return wxAppId;
             }
 
-            public void setAppId(String appId) {
-                this.appId = appId;
+            public void setWxAppId(String wxAppId) {
+                this.wxAppId = wxAppId;
             }
 
             public String getPartnerId() {
@@ -165,12 +180,12 @@ public class ResultOrderBean {
                 this.timeStamp = timeStamp;
             }
 
-            public String getSign() {
-                return sign;
+            public String getWxSign() {
+                return wxSign;
             }
 
-            public void setSign(String sign) {
-                this.sign = sign;
+            public void setWxSign(String wxSign) {
+                this.wxSign = wxSign;
             }
         }
     }

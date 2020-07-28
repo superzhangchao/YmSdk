@@ -76,6 +76,10 @@ public class PurchaseBean implements Serializable {
         return mUserId;
     }
 
+    public void setUserId(String userId) {
+        this.mUserId = userId;
+    }
+
     public String getGameSign() {
         return mGameSign;
     }
@@ -93,7 +97,6 @@ public class PurchaseBean implements Serializable {
           mRoleId = builder.mRoleId;
           mRoleName = builder.mRoleName;//可以为空不签名
           mRoleLevel = builder.mRoleLevel;//可以为空不签名
-          mUserId = builder.mUserId;//平台的唯一标识
           mGameSign = builder.mGameSign;
           mExt = builder.mExt;
     }
@@ -108,7 +111,6 @@ public class PurchaseBean implements Serializable {
         private String mRoleId;
         private String mRoleName;
         private String mRoleLevel;
-        private String mUserId;
         private String mGameSign;
         private String mExt;
 
@@ -152,10 +154,7 @@ public class PurchaseBean implements Serializable {
             mRoleLevel = roleLevel;
             return this;
         }
-        public PurchaseBeanBuilder setUserId(String userId){
-            mUserId = userId;
-            return this;
-        }
+
         public PurchaseBeanBuilder setGameSign(String gameSign){
             mGameSign = gameSign;
             return this;

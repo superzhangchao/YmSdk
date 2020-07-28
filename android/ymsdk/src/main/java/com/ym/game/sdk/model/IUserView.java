@@ -3,10 +3,13 @@ package com.ym.game.sdk.model;
 
 import android.content.Context;
 
+import com.ym.game.sdk.bean.AccountBean;
+
 public interface IUserView {
     Context getContext();
-//    void showLoading(String msg);
-//    void dismissLoading();
+    void showLoading();
+    AccountBean getAccountData();
+    void dismissLoading();
 //    String getPhone();
 //    String getPassword();
 //    String getVcode();
@@ -14,7 +17,9 @@ public interface IUserView {
 ////    String clearPhone();
 ////    String clearPassword();
 ////    String clearVcode();
-//    void closeActivity();
+    void closeActivity();
+
+    void cancelLogin();
 //    void showToast(String msg);
 //    void loginSucess(boolean isRegister);
 //    void setHistoryUser(Set<String> userList);

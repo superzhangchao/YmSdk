@@ -25,15 +25,23 @@ public class ErrorCode {
     public static final int NET_DATA_NULL = 1204; ////网络请求成功,但是数据为空
     public static final int NET_DATA_ERROR = 1205; ////网络请求成功,但是数据类型错误。
     public static final int NET_DATA_EXCEPTION = 1206; //网络请求成功,但是数据解析异常。
+    public static final int NET_DATA_STATUSFAIL = 1207; //网络请求成功,状态非0。
+
+
 
 
     //--------------------- 针对渠道的错误码 -------------------------
-    public static final int CHANNEL_LOGIN_FAIL = 1501; //登录失败
-    public static final int CHANNEL_LOGIN_CANCEL = 1502; //登录取消
+    public static final int LOGIN_FAIL = 1501; //登录失败
+    public static final int LOGIN_CANCEL = 1502; //登录取消
 
-    public static final int CHANNEL_SWITCH_ACCOUNT_FAIL = 1503; //切换账号失败
-    public static final int CHANNEL_SWITCH_ACCOUNT_CANCEL = 1504; //切换账号取消
+    public static final int SWITCH_ACCOUNT_FAIL = 1503; //切换账号失败
+    public static final int SWITCH_ACCOUNT_CANCEL = 1504; //切换账号取消
 
-    public static final int CHANNEL_LOGOUT_FAIL = 1505; //注销失败
-    public static final int CHANNEL_LOGOUT_CANCEL = 1506; //注销取消
- }
+    public static final int LOGOUT_FAIL = 1505; //注销失败
+    public static final int LOGOUT_CANCEL = 1506; //注销取消
+
+    //------------------pay-----------------------
+    public static final int PAY_FAIL = 1601; //支付失败
+    public static final int PAY_CANCEL = 1602; //支付取消
+
+}

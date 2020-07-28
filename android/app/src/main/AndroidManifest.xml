@@ -40,6 +40,12 @@
                 <data android:scheme="@string/weixinappid" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
+
     </application>
 
 </manifest>

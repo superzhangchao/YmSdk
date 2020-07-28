@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
-public class BaseFragment extends Fragment {
+public class BaseFragment extends Fragment implements FragmentBackHandler {
     protected BaseActivity baseActivity;
 
     public static <T> T getFragmentByName(BaseActivity context, Class<T> clazz){
@@ -51,7 +51,7 @@ public class BaseFragment extends Fragment {
     /**
      * 返回
      */
-    protected void onBackPressed(){
+    protected void back(){
         baseActivity.onBackPressed();
     }
 
@@ -59,5 +59,9 @@ public class BaseFragment extends Fragment {
         baseActivity.finish();
     }
 
+    @Override
+    public boolean onBackPressed() {
+        return BackHandlerHelper.handleBackPress(this);
+    }
 
 }

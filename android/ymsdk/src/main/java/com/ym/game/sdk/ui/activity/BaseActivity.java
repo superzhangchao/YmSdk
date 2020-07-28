@@ -1,12 +1,14 @@
 package com.ym.game.sdk.ui.activity;
 
-import android.app.ProgressDialog;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+
+
+import com.ym.game.sdk.ui.fragment.BackHandlerHelper;
 
 import com.ym.game.utils.ResourseIdUtils;
 
@@ -20,71 +22,71 @@ public class BaseActivity extends AppCompatActivity {
 
 
     private FragmentManager fragmentManager;
-    private View loadingView;
+    private ImageView loadingView;
     private TextView loadingMsgView;
-    private ProgressDialog dialog;
+
+    private View ymRlLypg;
+    private AnimationDrawable animationDrawable;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(ResourseIdUtils.getLayoutId("activity_fragment"));
+        ymRlLypg = findViewById(ResourseIdUtils.getId("ym_rl_lypg"));
+        loadingView = (ImageView)findViewById(ResourseIdUtils.getId("bg_im_bird"));
+        loadingView.setImageResource(ResourseIdUtils.getDrawableId("ym_bird_anim"));
+
+        animationDrawable = (AnimationDrawable) loadingView.getDrawable();
+        animationDrawable.start();
         fragmentManager = getSupportFragmentManager();
 
-        loadingView = findViewById(ResourseIdUtils.getId("loaing"));
-        loadingMsgView = (TextView) findViewById(ResourseIdUtils.getId("loading_msg"));
 
     }
 
     protected void initFragment(Fragment fragment){
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(ResourseIdUtils.getId("content"),fragment);
-//        transaction.addToBackStack(null);
         transaction.commitAllowingStateLoss();
 
 
 
     }
 
-    @Override
-    public void onBackPressed() {
-        if (fragmentManager.getBackStackEntryCount() == 0){
-            finish();
-        }else{
-            fragmentManager.popBackStack();
-        }
-    }
 
-    public void showLoading(final String msg) {
-        if(dialog == null){
-            dialog = new ProgressDialog(this);
-            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        }
 
-        dialog.setTitle(msg);
-        if (!dialog.isShowing()){
-            dialog.show();
-        }
+    public void showLoading() {
+
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                loadingView.setVisibility(View.VISIBLE);
-                loadingMsgView.setText(msg);
+                ymRlLypg.setVisibility(View.VISIBLE);
+
+
             }
         });
+
+
 
     }
 
     public void dismissLoading() {
-        if (dialog != null && dialog.isShowing()){
-            dialog.dismiss();
-        }
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                loadingView.setVisibility(View.GONE);
+                ymRlLypg.setVisibility(View.GONE);
+
             }
         });
 
     }
+
+    @Override
+    public void onBackPressed() {
+        if (!BackHandlerHelper.handleBackPress(this)) {
+            super.onBackPressed();
+        }
+    }
+
 }
