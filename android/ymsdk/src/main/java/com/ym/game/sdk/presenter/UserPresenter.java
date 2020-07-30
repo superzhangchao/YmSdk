@@ -78,6 +78,7 @@ public class UserPresenter {
     public static void cancelLogin(IUserView purchaseView){
         purchaseView.closeActivity();
         CallbackMananger.getLoginCallBack().onCancel();
+
     }
 
 
@@ -176,6 +177,8 @@ public class UserPresenter {
             public void onCancel() {
                 userView.dismissLoading();
                 userView.cancelLogin();
+                ToastUtils.showToast(loginActivity,loginActivity.getString(ResourseIdUtils.getStringId("ym_text_logincancel")));
+
             }
 
             @Override
@@ -217,6 +220,9 @@ public class UserPresenter {
     public static void cancelBind(IUserView userView, ResultAccoutBean resultAccoutBean) {
         userView.closeActivity();
         CallbackMananger.getLoginCallBack().onSuccess(resultAccoutBean);
+        if (needRealName(resultAccoutBean)){
+            showRealNameActiviy(loginActivity,resultAccoutBean);
+        }
     }
     private static void bindAccount(final IUserView userView, final AccountBean accountBean){
         UserModel.getInstance().bindAccount((Activity) userView.getContext(), accountBean,new LoginStatusListener() {
@@ -389,4 +395,10 @@ public class UserPresenter {
         return UserModel.getInstance().getXieyiStatus(userView.getContext());
     }
 
+    public static void checkWxLogin() {
+        boolean wxLoginStatus = UserModel.getInstance().getWxLoginStatus();
+        if (wxLoginStatus){
+            UserModel.getInstance().resetWxlogin();
+        }
+    }
 }

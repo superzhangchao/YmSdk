@@ -65,12 +65,13 @@ public class PurchaseModel implements IPurchaseModel{
     private String currentTs;
     private Context mContext;
     private IWXAPI msgApi;
+    private boolean mIsPaywx = false;
 
     private String platformOrderId;
     private BroadcastReceiver wxPayBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            setWxPayStatus(false);
             int paycode = intent.getIntExtra("PAYCODE", -1);
             switch (paycode) {
                 case YmConstants.WXPAY_RESULT_SUCC_CODE:
@@ -87,6 +88,7 @@ public class PurchaseModel implements IPurchaseModel{
             }
         }
     };
+
     public static PurchaseModel getInstance(){
         if (instance == null){
             instance = new PurchaseModel();
@@ -203,6 +205,19 @@ public class PurchaseModel implements IPurchaseModel{
         }
     }
 
+    @Override
+    public boolean getWxPayStatus() {
+
+        return mIsPaywx;
+    }
+    private void setWxPayStatus(boolean isPaywx) {
+        mIsPaywx = isPaywx;
+    }
+    @Override
+    public void resetWxPay() {
+        mPurchaseStatusListener.onCancel();
+    }
+
     private void startAliPay(final ResultOrderBean.DataBean dataBean) {
 
         final String orderInfo = dataBean.getAlipay().getInfo();   // 订单信息
@@ -239,6 +254,7 @@ public class PurchaseModel implements IPurchaseModel{
         request.sign = dataBean.getWxpay().getWxSign();
         int wxSdkVersion = msgApi.getWXAppSupportAPI();
         if (wxSdkVersion >= Build.OFFLINE_PAY_SDK_INT) {
+            setWxPayStatus(true);
             msgApi.sendReq(request);
         } else {
             ToastUtils.showToast(mContext, mContext.getString(ResourseIdUtils.getStringId("ym_no_install_wechat")));

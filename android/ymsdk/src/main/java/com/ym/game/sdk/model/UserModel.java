@@ -109,10 +109,13 @@ public class UserModel implements IUserModel {
     private AccountBean mAccountBean;
     private AccountBean loginAccountInfo;
     private IWXAPI api;
+    private boolean mIsLoginwx = false;
+
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             int paycode = intent.getIntExtra("ERRORCODE", -1);
+            setWxLoginStatus(false);
             switch (paycode) {
                 case YmConstants.LOGIN_SUCC_CODE:
                     String usercode = intent.getStringExtra("USERCODE");
@@ -517,6 +520,7 @@ public class UserModel implements IUserModel {
             mActivity.registerReceiver(broadcastReceiver, filter);
             api = WXAPIFactory.createWXAPI(mActivity, YmConstants.WX_APP_ID, false);
             if (api.isWXAppInstalled()) {
+                setWxLoginStatus(true);
                 wxLogin();
             } else {
                 ToastUtils.showToast(mActivity, mActivity.getString(ResourseIdUtils.getStringId("ym_no_install_wechat")));
@@ -526,8 +530,16 @@ public class UserModel implements IUserModel {
         }
     }
 
+    private void setWxLoginStatus(boolean isLoginwx) {
+        mIsLoginwx = isLoginwx;
+    }
+    public boolean getWxLoginStatus(){
+        return mIsLoginwx;
+    }
 
-
+    public void resetWxlogin(){
+        mLoginStatusListener.onCancel();
+    }
 
     private void phoneVerify() {
         final Map<String, String> param = new HashMap<>();
@@ -865,6 +877,7 @@ public class UserModel implements IUserModel {
             }
         } catch (IllegalArgumentException e) {
         }
+
         final Map<String, String> param = new HashMap<>();
         //app_id=**&from=client'
         param.put(YmConstants.APPIDKEY, YmConstants.APPID);

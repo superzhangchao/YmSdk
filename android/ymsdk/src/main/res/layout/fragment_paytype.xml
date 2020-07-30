@@ -64,7 +64,7 @@
                 android:layout_centerVertical="true"
                 android:src="@mipmap/ym_alipay"/>
             <TextView
-                android:layout_width="50dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="6dp"
                 android:layout_toEndOf="@id/ym_im_alipay"
@@ -93,7 +93,7 @@
                 android:layout_centerVertical="true"
                 android:src="@mipmap/ym_wxpay"/>
             <TextView
-                android:layout_width="50dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="6dp"
                 android:layout_toEndOf="@id/ym_im_wxpay"

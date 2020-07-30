@@ -54,7 +54,7 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         accountBean = getAccountData();
-        ymImBack.setVisibility(View.VISIBLE);
+        ymImBack.setVisibility(View.INVISIBLE);
         ymImClose.setVisibility(View.INVISIBLE);
         ymTvPhonecode.setText(ResourseIdUtils.getStringId("ym_tv_getphonecode"));
         ymTvPhonecode.setTimesandText(getString(ResourseIdUtils.getStringId("ym_tv_getphonecode")),"已发送（","s)",6);

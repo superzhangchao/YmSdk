@@ -63,4 +63,9 @@ public class YmUserActivity extends BaseActivity {
         UserPresenter.onRequestPermissionsResult(YmUserActivity.this,requestCode, permissions, grantResults);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UserPresenter.checkWxLogin();
+    }
 }

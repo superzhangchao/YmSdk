@@ -101,5 +101,18 @@ public class YmWXEntryActivity extends Activity implements IWXAPIEventHandler {
         finish();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

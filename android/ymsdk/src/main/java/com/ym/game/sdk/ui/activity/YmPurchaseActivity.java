@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ym.game.sdk.bean.PurchaseBean;
+import com.ym.game.sdk.presenter.PurchasePresenter;
+import com.ym.game.sdk.presenter.UserPresenter;
 import com.ym.game.sdk.ui.fragment.AccountLoginFragment;
 import com.ym.game.sdk.ui.fragment.PurchaseFragment;
 
@@ -32,6 +34,12 @@ public class YmPurchaseActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PurchasePresenter.checkWxPay();
     }
 }
 

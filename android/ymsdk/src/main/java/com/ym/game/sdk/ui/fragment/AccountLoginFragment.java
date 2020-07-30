@@ -57,8 +57,6 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(ResourseIdUtils.getLayoutId("fragment_account_login"), null, true);
-        ll_content = view.findViewById(ResourseIdUtils.getId("ll_content"));
-//        rl_title = view.findViewById(ResourseIdUtils.getId("rl_title"));
 
         ymImBack = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_im_back"));
         ymImClose = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_im_close"));
@@ -102,31 +100,6 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         ymTvPhonecode.setText(ResourseIdUtils.getStringId("ym_tv_getphonecode"));
         ymTvPhonecode.setTimesandText(getString(ResourseIdUtils.getStringId("ym_tv_getphonecode")),"已发送（","s)",60);
         fengjiexianRight.setImageBitmap(ImageUtils.rotateIm(baseActivity,ResourseIdUtils.getMipmapId("ym_fenjiexian")));
-
-        ll_content.post(new Runnable(){
-
-            @Override
-            public void run() {
-                int height = ll_content.getMeasuredHeight();
-                int width = ll_content.getMeasuredWidth();
-                int hdp = DpPxUtils.px2dip(getContext(), height);
-                int wdp = DpPxUtils.px2dip(getContext(),width);
-                Log.i(TAG, "run: ll_content height:"+height+" width:"+width);
-                Log.i(TAG, "run: ll_content hdp:"+hdp+" wdp:"+wdp);
-            }
-
-
-        });
-//
-//        rl_title.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                int height = rl_title.getMeasuredHeight();
-//                int width = rl_title.getMeasuredWidth();
-//                Log.i(TAG, "run: rl_title height:"+height+" width:"+width);
-//            }
-//        });
-
 
     }
 

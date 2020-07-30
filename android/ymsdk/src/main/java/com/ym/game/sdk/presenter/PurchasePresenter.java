@@ -22,11 +22,14 @@ import java.io.Serializable;
 public class PurchasePresenter {
 
 
+    private static Activity purchaseActivity;
+
     /**
      * 展示支付渠道
      * @param activity
      */
     public static void showPurchasePage(Activity activity, PurchaseBean purchaseBean){
+        purchaseActivity = activity;
         if (UserPresenter.isLogin()){
             Intent intent = new Intent(activity, YmPurchaseActivity.class);
             intent.putExtra("purchaseBean", purchaseBean);
@@ -64,13 +67,15 @@ public class PurchasePresenter {
             @Override
             public void onCancel() {
                 purchaseView.dismissLoading();
-                purchaseView.cancelPay();
+                purchaseView.closeActivity();
+                ToastUtils.showToast(purchaseActivity,purchaseActivity.getString(ResourseIdUtils.getStringId("ym_text_paycancel")));
             }
 
             @Override
             public void onFail(int errorCode, String msg) {
                 purchaseView.dismissLoading();
                 purchaseView.closeActivity();
+                ToastUtils.showToast(purchaseActivity,msg);
                 CallbackMananger.getPayCallBack().onFailure(errorCode,msg);
             }
 
@@ -80,5 +85,12 @@ public class PurchasePresenter {
 
     public static void destroy(Activity activity) {
         PurchaseModel.getInstance().destroy(activity);
+    }
+
+    public static void checkWxPay() {
+        boolean wxPayStatus = PurchaseModel.getInstance().getWxPayStatus();
+        if (wxPayStatus){
+            PurchaseModel.getInstance().resetWxPay();
+        }
     }
 }

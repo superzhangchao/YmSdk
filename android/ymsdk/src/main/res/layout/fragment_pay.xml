@@ -101,7 +101,7 @@
 
             <TextView
                 android:id="@+id/ym_tv_pay"
-                android:layout_width="50dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/ym_im_pay"
