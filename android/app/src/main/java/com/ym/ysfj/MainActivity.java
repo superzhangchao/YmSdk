@@ -1,6 +1,7 @@
 package com.ym.ysfj;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -147,7 +149,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onBackPressed() {
         super.onBackPressed();
     }
-
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(hasFocus){
+            setFullScreen();
+        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -206,13 +214,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         String orderId =  System.currentTimeMillis() +"";
-        String gameSign = getGameSign("itemId_60","新手装备大礼包","1",orderId,
+        int productPrice = (int) (Double.parseDouble("0.01")*100);
+        String gameSign = getGameSign("itemId_60","新手装备大礼包",productPrice+"",orderId,
                 "s1","147258","张三","1","gt-1258");
         PurchaseBean purchaseBean = new PurchaseBean.PurchaseBeanBuilder()
                 .setProductDesc("新手装备大礼包")
                 .setProductId("itemId_60")
                 .setProductName("新手装备大礼包")
-                .setProductPrice("1")
+                .setProductPrice(productPrice+"")
                 .setOrderId(orderId)
                 .setServerId("s1")
                 .setRoleId("147258")
@@ -232,6 +241,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         parasign.put("product_price",productPrice);
         parasign.put("game_order_no",orderId);
         return YmSignUtils.getYmSign(parasign,"CE40D7B08558ED0BBD1C653276C91E44");
+
+    }
+
+    private void setFullScreen() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (android.os.Build.VERSION.SDK_INT > 18) {
+
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+            getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(
+                    new View.OnSystemUiVisibilityChangeListener() {
+
+                        @SuppressLint("NewApi") @Override
+                        public void onSystemUiVisibilityChange(int visibility) {
+
+                            getWindow()
+                                    .getDecorView()
+                                    .setSystemUiVisibility(
+                                            View.SYSTEM_UI_FLAG_FULLSCREEN
+                                                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                                                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                        }
+
+                    });
+        }
 
     }
 
