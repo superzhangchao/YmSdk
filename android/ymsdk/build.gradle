@@ -13,7 +13,19 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
 
 }
 
@@ -38,6 +50,7 @@ dependencies {
 
     api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
     api(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
+
 
 
 }

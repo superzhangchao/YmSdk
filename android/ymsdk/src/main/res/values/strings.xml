@@ -58,6 +58,7 @@
     <string name="ym_text_nologin">未登录</string>
     <string name="ym_text_paycancel">取消支付</string>
     <string name="ym_text_logincancel">取消登录</string>
+    <string name="ym_text_order_error">订单参数异常</string>
 
 
 

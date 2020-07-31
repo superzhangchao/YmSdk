@@ -125,3 +125,5 @@
 -keep class com.extra.utils.JNIUtils { static <methods>; }
 
 #游戏自定义框架 end
+
+-keep class com.ym.game.sdk.ui.activity.YmWXEntryActivity{*;}

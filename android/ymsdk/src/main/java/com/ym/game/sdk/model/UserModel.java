@@ -177,6 +177,7 @@ public class UserModel implements IUserModel {
                     loginAccountInfo.setUid(resultAccoutBean.getData().getUid());
                     loginAccountInfo.setLoginToken(resultAccoutBean.getData().getLoginToken());
                     loginAccountInfo.setNickName(resultAccoutBean.getData().getNickName());
+                    loginAccountInfo.setAuthStatus(resultAccoutBean.getData().getAuthStatus());
                     saveAccountInfo(mActivity, resultAccoutBean.getData().getUid(), resultAccoutBean.getData().getLoginToken());
                     mLoginStatusListener.onSuccess(resultAccoutBean);
                     break;
@@ -196,6 +197,7 @@ public class UserModel implements IUserModel {
                     loginAccountInfo.setUid(autoResultAccoutBean.getData().getUid());
                     loginAccountInfo.setLoginToken(autoResultAccoutBean.getData().getLoginToken());
                     loginAccountInfo.setNickName(autoResultAccoutBean.getData().getNickName());
+                    loginAccountInfo.setAuthStatus(autoResultAccoutBean.getData().getAuthStatus());
                     mAutoLoginStatusListener.onSuccess(autoResultAccoutBean);
                     break;
                 case BINDSUCCESS:
@@ -207,6 +209,7 @@ public class UserModel implements IUserModel {
                     break;
                 case REALNAMESUCCESS:
                     ResultAccoutBean realNameResultAccoutBean = (ResultAccoutBean) msg.obj;
+                    loginAccountInfo.setAuthStatus(realNameResultAccoutBean.getData().getAuthStatus());
                     mRealNameStatusListener.onSuccess(realNameResultAccoutBean);
                     break;
                 case REALNAMEFAIL:
@@ -304,6 +307,11 @@ public class UserModel implements IUserModel {
         SharedPreferences userInfo = context.getSharedPreferences(YmConstants.SVAE_XIEYI_INFO, MODE_PRIVATE);
         return userInfo.getBoolean("xieyiStatus",false);
 
+    }
+
+    @Override
+    public int getRealNameStatus() {
+        return loginAccountInfo.getAuthStatus();
     }
 
     public void resetAccountInfo(Activity activity) {

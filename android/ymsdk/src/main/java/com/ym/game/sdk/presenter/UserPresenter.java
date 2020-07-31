@@ -387,6 +387,13 @@ public class UserPresenter {
         return UserModel.getInstance().isLogin();
     }
 
+    public static int getRealNameStatus(){
+        if(isLogin()){
+            return UserModel.getInstance().getRealNameStatus();
+        }
+        return -1;
+    }
+
     public static void saveXieyiStatud(IUserView userView, boolean status) {
         UserModel.getInstance().saveXieyiStatud(userView.getContext(),status);
     }

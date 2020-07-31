@@ -57,7 +57,7 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
         ymImBack.setVisibility(View.INVISIBLE);
         ymImClose.setVisibility(View.INVISIBLE);
         ymTvPhonecode.setText(ResourseIdUtils.getStringId("ym_tv_getphonecode"));
-        ymTvPhonecode.setTimesandText(getString(ResourseIdUtils.getStringId("ym_tv_getphonecode")),"已发送（","s)",6);
+        ymTvPhonecode.setTimesandText(getString(ResourseIdUtils.getStringId("ym_tv_getphonecode")),"已发送（","s)",60);
 
     }
 

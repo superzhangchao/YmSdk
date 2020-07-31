@@ -7,6 +7,7 @@ import android.content.Intent;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.ym.game.net.api.YmApi;
+import com.ym.game.sdk.base.config.ErrorCode;
 import com.ym.game.sdk.bean.PurchaseBean;
 import com.ym.game.sdk.callback.CallbackMananger;
 import com.ym.game.sdk.callback.LoginCallBack;
@@ -15,6 +16,8 @@ import com.ym.game.sdk.config.Config;
 
 import com.ym.game.sdk.presenter.PurchasePresenter;
 import com.ym.game.sdk.presenter.UserPresenter;
+import com.ym.game.utils.ResourseIdUtils;
+import com.ym.game.utils.ToastUtils;
 
 import androidx.annotation.Nullable;
 
@@ -83,11 +86,17 @@ public class YmSdkApi {
 
     public void pay(Activity activity, PurchaseBean purchaseBean, PayCallBack payCallBack){
         if (purchaseBean==null){
-            payCallBack.onFailure(9001,"订单参数为空");
+            payCallBack.onFailure(ErrorCode.PAY_FAIL,activity.getString(ResourseIdUtils.getStringId("ym_text_order_error")));
+            ToastUtils.showToast(activity,activity.getString(ResourseIdUtils.getStringId("ym_text_order_error")));
+
             return;
         }
         CallbackMananger.setPayCallBack(payCallBack);
         PurchasePresenter.showPurchasePage(activity, purchaseBean);
+    }
+
+    public int getRealNameStatus(){
+        return UserPresenter.getRealNameStatus();
     }
 
     public void onResume(Activity activity) {

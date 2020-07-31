@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String key ="vJV8kCxV";
     private String encryptDES;
     private TextView tv;
+    private Button btGetrealnameinfo;
+    private Button btAuthStatus;
 
 
     @Override
@@ -59,11 +61,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btLogin = (Button) findViewById(R.id.bt_login);
         btLogout = (Button) findViewById(R.id.bt_logout);
         btPay = (Button) findViewById(R.id.bt_pay);
+        btAuthStatus = (Button) findViewById(R.id.bt_status);
         btSendinfo = (Button) findViewById(R.id.bt_sendinfo);
         tv = (TextView) findViewById(R.id.tv);
         btInit.setOnClickListener(this);
         btLogin.setOnClickListener(this);
         btLogout.setOnClickListener(this);
+        btAuthStatus.setOnClickListener(this);
 //        btLogout.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -207,6 +211,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
             });
+        }else if(btAuthStatus.getId()==v.getId()){
+            int realNameStatus = YmSdkApi.getInstance().getRealNameStatus();
+            ToastUtils.showToast(this,"AuthStatus:"+realNameStatus);
         }
     }
 

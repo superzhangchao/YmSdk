@@ -56,4 +56,6 @@ public interface IUserModel {
     void saveXieyiStatud(Context context,boolean status);
 
     boolean getXieyiStatus(Context context);
+
+    int getRealNameStatus();
 }

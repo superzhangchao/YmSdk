@@ -35,6 +35,12 @@
         android:layout_height="50dp"
         android:text="数据上报"/>
 
+    <Button
+        android:id="@+id/bt_status"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="获取实名状态"/>
+
     <TextView
         android:id="@+id/tv"
         android:layout_width="wrap_content"
