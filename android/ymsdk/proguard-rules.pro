@@ -103,8 +103,8 @@
 -keep class com.ym.game.sdk.bean.**{*;}
 #自定义bean不能被混淆
 
--keep class com.ym.game.sdk.callback.**{public *}
--keep class com.ym.game.sdk.**{public *}
--keep class com.ym.game.utils.**{public *}
+-keep class com.ym.game.sdk.callback.**{ public *;}
+-keep class com.ym.game.sdk.**{public *;}
+-keep class com.ym.game.utils.**{public *;}
 -keep class com.ym.game.sdk.ui.activity.YmWXEntryActivity{*;}
 

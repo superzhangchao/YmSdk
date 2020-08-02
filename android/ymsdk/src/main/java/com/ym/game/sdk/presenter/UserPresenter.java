@@ -96,8 +96,8 @@ public class UserPresenter {
             @Override
             public void onFail(int status,String message) {
                 userView.dismissLoading();
+                userView.cancelLogin();
                 ToastUtils.showToast(loginActivity,message);
-                CallbackMananger.getLoginCallBack().onFailure(status,message);
             }
         });
     }
@@ -149,10 +149,11 @@ public class UserPresenter {
 
             @Override
             public void onFail(int status,String message) {
+                UserModel.getInstance().resetAccountInfo(activity);
                 activity.dismissLoading();
                 activity.finish();
                 ToastUtils.showToast(loginActivity,message);
-                CallbackMananger.getLoginCallBack().onFailure(status,message);
+                showLoginActiviy(loginActivity);
             }
         });
     }
@@ -251,30 +252,17 @@ public class UserPresenter {
         });
     }
 
-    public static void sendVcode(final IUserView userView, final String phone, final ChangeVcodeViewListener changeSendVcodeViewListener) {
+    public static void sendVcode(final IUserView userView, final int type, final String phone, final ChangeVcodeViewListener changeSendVcodeViewListener) {
 
         UserModel.getInstance().getVerifyData(userView.getContext(),new GetVerifyDataListener() {
             @Override
             public void onSuccess(String ts,String accessToken) {
-                checkBind(userView,phone,ts,accessToken,changeSendVcodeViewListener);
-            }
-
-            @Override
-            public void onFail(int status,String message) {
-                //获取ts和token失败
-                ToastUtils.showToast(userView.getContext(),message);
-            }
-        });
-
-
-    }
-
-    public static void sendVcode(final IUserView userView, final String phone) {
-
-        UserModel.getInstance().getVerifyData(userView.getContext(),new GetVerifyDataListener() {
-            @Override
-            public void onSuccess(String ts,String accessToken) {
-                startSendVcode(userView,phone,ts,accessToken);
+                if (TypeConfig.LOGIN == type){
+                    changeSendVcodeViewListener.onChangeVcodeView();
+                    startSendVcode(userView,phone,ts,accessToken);
+                }else if (TypeConfig.BIND == type){
+                    checkBind(userView,phone,ts,accessToken,changeSendVcodeViewListener);
+                }
             }
 
             @Override

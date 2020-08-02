@@ -51,6 +51,7 @@ dependencies {
     api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
     api(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
 
+    api 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
 
 
 }

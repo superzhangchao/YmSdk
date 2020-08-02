@@ -10,7 +10,7 @@
     <string name="ym_account_hint">请输入手机号</string>
     <string name="ym_ethint_phonecode">请输入验证码</string>
     <string name="ym_tv_getphonecode">获取验证码</string>
-    <string name="ym_xieyi1">我已阅读并同意炽游</string>
+    <string name="ym_xieyi1">我已阅读并同意云缈</string>
     <string name="ym_xieyi2">用户协议</string>
     <string name="ym_bt_login">登录</string>
     <string name="ym_tv_otherlogin">其他登录方式</string>

@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.ym.game.net.bean.ResultAccoutBean;
+import com.ym.game.sdk.base.config.TypeConfig;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.callback.listener.ChangeVcodeViewListener;
 import com.ym.game.sdk.presenter.UserPresenter;
@@ -68,7 +69,7 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
         }else if(view.getId()==ymTvPhonecode.getId()){
             if (!TextUtils.isEmpty(getPhone())&&!ymTvPhonecode.isRun()){
 
-                UserPresenter.sendVcode(this,getPhone(),new ChangeVcodeViewListener(){
+                UserPresenter.sendVcode(this, TypeConfig.BIND, getPhone(), new ChangeVcodeViewListener(){
 
                     @Override
                     public void onChangeVcodeView() {
@@ -146,6 +147,8 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
         AccountBean accountData = (AccountBean) getArguments().getSerializable("accountBean");
         return accountData;
     }
+
+
 
 
     @Override

@@ -260,12 +260,10 @@ public class UserModel implements IUserModel {
                     mSendVcodeListener.onFail(ErrorCode.NET_ERROR, mContext.getString(ResourseIdUtils.getStringId("ym_text_neterror")));
                     break;
                 case GETACCOUNTFAIL:
-                    //TODO:获取手机账号信息失败
                     errorData = (Map<String, Object>) msg.obj;
                     mLoginStatusListener.onFail((int) errorData.get("code"), (String) errorData.get("message"));
                     break;
                 case GETACCOUNTNETFAIL:
-                    //TODO:获取手机账号网络失败
                     mLoginStatusListener.onFail(ErrorCode.NET_ERROR, mActivity.getString(ResourseIdUtils.getStringId("ym_text_neterror")));
                     break;
                 default:
@@ -736,6 +734,7 @@ public class UserModel implements IUserModel {
                         body.getData().setUid(mAccountBean.getUid());
                         body.getData().setLoginToken(mAccountBean.getLoginToken());
                         body.getData().setNickName(mAccountBean.getNickName());
+                        body.getData().setAuthStatus(mAccountBean.getAuthStatus());
                         Message message = new Message();
                         if (errorCode == YmConstants.SUCCESSCODE){
                             message.what = BINDSUCCESS;
@@ -765,7 +764,15 @@ public class UserModel implements IUserModel {
     @Override
     public void logout(Activity activity) {
         loginAccountInfo = null;
+        clearQQInfo(activity);
         resetAccountInfo(activity);
+    }
+
+    private void clearQQInfo(Activity activity) {
+        mTencent = Tencent.createInstance(mActivity.getString(ResourseIdUtils.getStringId("qq_appid")),
+                mActivity.getApplicationContext(),
+                mActivity.getString(ResourseIdUtils.getStringId("qq_authorities")));
+        mTencent.logout(activity);
     }
 
     public boolean isLogin(){
@@ -861,6 +868,10 @@ public class UserModel implements IUserModel {
                             message.what = GETACCOUNTSUCCESS;
                             message.obj = body;
                         } else {
+                            Map<String,Object> errorData = new HashMap<>();
+                            errorData.put("code",body.getCode());
+                            errorData.put("message",body.getMessage());
+                            message.obj = errorData;
                             message.what = GETACCOUNTFAIL;
                         }
                         handler.sendMessage(message);
@@ -908,6 +919,10 @@ public class UserModel implements IUserModel {
                                 message.what = GETACCOUNTSUCCESS;
                                 message.obj = body;
                         } else {
+                            Map<String,Object> errorData = new HashMap<>();
+                            errorData.put("code",body.getCode());
+                            errorData.put("message",body.getMessage());
+                            message.obj = errorData;
                             message.what = GETACCOUNTFAIL;
                         }
                         handler.sendMessage(message);
@@ -947,6 +962,10 @@ public class UserModel implements IUserModel {
                                 message.what = GETACCOUNTSUCCESS;
                                 message.obj = body;
                         } else {
+                            Map<String,Object> errorData = new HashMap<>();
+                            errorData.put("code",body.getCode());
+                            errorData.put("message",body.getMessage());
+                            message.obj = errorData;
                             message.what = GETACCOUNTFAIL;
                         }
                         handler.sendMessage(message);

@@ -52,8 +52,8 @@ android {
 
 repositories {
     flatDir {
-//        dirs 'libs','../ymsdk/libs'
-        dirs './libs'
+        dirs 'libs','../ymsdk/libs'
+//        dirs './libs'
     }
 }
 dependencies {
@@ -72,14 +72,14 @@ dependencies {
     implementation 'com.tencent.bugly:nativecrashreport:latest.release'
 
 
-    implementation 'com.orhanobut:logger:2.2.0'
-    implementation 'org.greenrobot:eventbus:3.2.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+//    implementation 'com.orhanobut:logger:2.2.0'
+//    implementation 'org.greenrobot:eventbus:3.2.0'
+//    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+//    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+//
+//    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
+//    implementation(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
+    implementation project(':ymsdk')
 
-    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
-    implementation(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
-//    implementation project(':ymsdk')
-
-    implementation(name: 'ymsdk-release', ext: 'aar')
+//    implementation(name: 'ymsdk-release', ext: 'aar')
 }

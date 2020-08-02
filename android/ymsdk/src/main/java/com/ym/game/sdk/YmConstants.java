@@ -6,8 +6,8 @@ public class YmConstants {
     public static final String WXPAYACTION = "com.wx.pay";
 
     public static final String CPIDKEY = "ysec1e19c4869d06";
-//    public static final String BASEURL = "http://api.ysfj.loologames.com/";
-    public static final String BASEURL = "http://192.168.0.225/";
+    public static final String BASEURL = "http://api.ysfj.loologames.com/";
+//    public static final String BASEURL = "http://192.168.0.225/";
     public static final String APPID = "ys78d535987a6a20";
     public static final String FROM = "client";
     public static final String CLIENTSECRET = "B2ECBB362A2B7C53675F6EB1B2AFA9B2";

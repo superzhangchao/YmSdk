@@ -19,7 +19,9 @@ import android.widget.TextView;
 
 
 import com.ym.game.sdk.YmConstants;
+import com.ym.game.sdk.base.config.TypeConfig;
 import com.ym.game.sdk.bean.AccountBean;
+import com.ym.game.sdk.callback.listener.ChangeVcodeViewListener;
 import com.ym.game.sdk.presenter.UserPresenter;
 import com.ym.game.sdk.ui.widget.TimerTextView;
 import com.ym.game.utils.DpPxUtils;
@@ -110,8 +112,12 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
 //            UserPresenter.cancelLogin(this);
         }else if(view.getId()==ymTvPhonecode.getId()){
             if (!TextUtils.isEmpty(getPhone())&&!ymTvPhonecode.isRun()){
-                ymTvPhonecode.start();
-                UserPresenter.sendVcode(this,getPhone());
+                UserPresenter.sendVcode(this, TypeConfig.LOGIN, getPhone(), new ChangeVcodeViewListener() {
+                    @Override
+                    public void onChangeVcodeView() {
+                        ymTvPhonecode.start();
+                    }
+                });
             }
         }else if (view.getId()==this.ymTvXieyiText.getId()){
             ShowXieyiFragment showXieyiFragment = getFragmentByName(baseActivity,ShowXieyiFragment.class);
@@ -224,4 +230,6 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         ymLoginQq.setClickable(true);
         ymLoginGt.setClickable(true);
     }
+
+
 }

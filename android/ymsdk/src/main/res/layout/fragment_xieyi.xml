@@ -14,14 +14,20 @@
 
         <include layout="@layout/ym_view_title" />
 
-        <WebView
-            android:id="@+id/ym_wb_xieyi"
-            android:layout_width="340dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="6dp"
-            android:paddingBottom="6dp"
-            android:layout_marginBottom="6dp"/>
+        <LinearLayout
+            android:layout_width="360dp"
+            android:layout_height="match_parent" >
+
+            <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+                android:id="@+id/ym_im_large"
+                android:layout_width="340dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="6dp"
+                android:paddingBottom="6dp"
+                android:layout_marginBottom="6dp"/>
+
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
