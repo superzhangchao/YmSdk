@@ -4,14 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.Toast;
 
-/**
- * Created by bzai on 2018/5/24.
- * <p>
- * Desc:
- *
- *  Toast 公共类
- */
-
 public class ToastUtils {
 
     private static Toast toast;

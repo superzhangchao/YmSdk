@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.ym.game.net.bean.ResultAccoutBean;
-import com.ym.game.sdk.R;
+
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.callback.CallbackMananger;
 import com.ym.game.sdk.callback.listener.ChangeVcodeViewListener;

@@ -28,7 +28,7 @@ import com.ym.game.net.api.YmApi;
 import com.ym.game.net.bean.ResultAccoutBean;
 import com.ym.game.net.bean.ResultVcodeBean;
 import com.ym.game.net.bean.TokenBean;
-import com.ym.game.sdk.R;
+
 import com.ym.game.sdk.YmConstants;
 import com.ym.game.sdk.YmSdkApi;
 import com.ym.game.sdk.base.config.ErrorCode;
@@ -730,10 +730,8 @@ public class UserModel implements IUserModel {
                     public void onResponse(Call<ResultAccoutBean> call, Response<ResultAccoutBean> response) {
                         ResultAccoutBean body = response.body();
                         int errorCode = body.getCode();
-                        body.setData(new ResultAccoutBean.DataBean());
                         body.getData().setUid(mAccountBean.getUid());
                         body.getData().setLoginToken(mAccountBean.getLoginToken());
-                        body.getData().setNickName(mAccountBean.getNickName());
                         body.getData().setAuthStatus(mAccountBean.getAuthStatus());
                         Message message = new Message();
                         if (errorCode == YmConstants.SUCCESSCODE){
@@ -769,9 +767,9 @@ public class UserModel implements IUserModel {
     }
 
     private void clearQQInfo(Activity activity) {
-        mTencent = Tencent.createInstance(mActivity.getString(ResourseIdUtils.getStringId("qq_appid")),
-                mActivity.getApplicationContext(),
-                mActivity.getString(ResourseIdUtils.getStringId("qq_authorities")));
+        mTencent = Tencent.createInstance(activity.getString(ResourseIdUtils.getStringId("qq_appid")),
+                activity.getApplicationContext(),
+                activity.getString(ResourseIdUtils.getStringId("qq_authorities")));
         mTencent.logout(activity);
     }
 

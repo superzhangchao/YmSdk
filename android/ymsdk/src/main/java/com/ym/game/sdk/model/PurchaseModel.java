@@ -19,7 +19,6 @@ import com.ym.game.net.api.YmApi;
 import com.ym.game.net.bean.AliPayResult;
 import com.ym.game.net.bean.ResultOrderBean;
 import com.ym.game.net.bean.TokenBean;
-import com.ym.game.sdk.R;
 import com.ym.game.sdk.YmConstants;
 import com.ym.game.sdk.YmSdkApi;
 import com.ym.game.sdk.base.config.ErrorCode;

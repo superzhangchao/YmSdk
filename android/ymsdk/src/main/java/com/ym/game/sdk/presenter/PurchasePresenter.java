@@ -2,9 +2,9 @@ package com.ym.game.sdk.presenter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.widget.Toast;
 
-import com.ym.game.sdk.R;
+
+
 import com.ym.game.sdk.base.config.ErrorCode;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.bean.PurchaseBean;
@@ -18,6 +18,7 @@ import com.ym.game.utils.ResourseIdUtils;
 import com.ym.game.utils.ToastUtils;
 
 import java.io.Serializable;
+
 
 public class PurchasePresenter {
 

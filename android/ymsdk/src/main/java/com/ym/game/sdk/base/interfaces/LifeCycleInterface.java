@@ -8,12 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
-/**
- * Created by bzai on 2020/03/19.
- * 生命周期接口
- */
-
 public interface LifeCycleInterface {
 
     void onCreate(Context context, Bundle savedInstanceState);

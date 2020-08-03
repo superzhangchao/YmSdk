@@ -2,15 +2,13 @@ package com.ym.game.sdk.config;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.telephony.TelephonyManager;
 
-/**
- * Created by echowang on 16/4/23.
- */
+
+
 public class Config {
     private static boolean isInit;
     private static String gameId;
-    public final static String HOST = "http://api.game.ymfun.cn";
+    public final static String Baseurl = "http://api.ysfj.loologames.com";
 
 
     public static String getGameId() {

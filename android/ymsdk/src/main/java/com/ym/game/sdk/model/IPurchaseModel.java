@@ -7,6 +7,7 @@ import android.content.Context;
 import com.ym.game.sdk.bean.PurchaseBean;
 import com.ym.game.sdk.callback.PayCallBack;
 
+
 public interface IPurchaseModel {
 
     void initPay(Activity activity);

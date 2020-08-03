@@ -10,11 +10,8 @@ public interface IPurchaseView {
     void showLoading();
     void dismissLoading();
     PurchaseBean getPurchaseData();
-//    Purchase getPurchase();
     void closeActivity();
 
     void cancelPay();
-//    void showToast(String msg);
-//    int getCoins();
-//    void setCoins(int coins);
+
 }
