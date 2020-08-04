@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+
+
+    <dimen name="text_size_f20">24sp</dimen>
+    <dimen name="text_size_f19">23sp</dimen>
+    <dimen name="text_size_f18">22sp</dimen>
+    <dimen name="text_size_f17">21sp</dimen>
+    <dimen name="text_size_f16">20sp</dimen>
+    <dimen name="text_size_f15">19sp</dimen>
+    <dimen name="text_size_f14">18sp</dimen>
+    <dimen name="text_size_f13">17sp</dimen>
+    <dimen name="text_size_f12">16sp</dimen>
+    <dimen name="text_size_f11">15sp</dimen>
+    <dimen name="text_size_f10">14sp</dimen>
+    <dimen name="text_size_f9">13sp</dimen>
+    <dimen name="text_size_f8">12sp</dimen>
+
+
+
+
+    <dimen name="ym_content_width">540dp</dimen>
+    <dimen name="ym_content_heigth">413dp</dimen>
+    <dimen name="ym_viewtitle_heigth">62dp</dimen>
+
+    <dimen name="ym_edit_horizontal_margin">75dp</dimen>
+    <dimen name="ym_edit_horizontal_margin1">1dp</dimen>
+    <dimen name="ym_margin60">90dp</dimen>
+    <dimen name="ym_margin30">45dp</dimen>
+    <dimen name="ym_margin20">30dp</dimen>
+    <dimen name="ym_margin18">27dp</dimen>
+    <dimen name="ym_margin15">22dp</dimen>
+    <dimen name="ym_margin10">15dp</dimen>
+    <dimen name="ym_margin5">8dp</dimen>
+    <dimen name="ym_text_width">75dp</dimen>
+    <dimen name="ym_padding">9dp</dimen>
+
+
+
+
+    <dimen name="ym_edit_height">39dp</dimen>
+    <dimen name="ym_xieyi_height">21dp</dimen>
+    <dimen name="ym_xieyi_width">26dp</dimen>
+    <dimen name="ym_login_height">48dp</dimen>
+    <dimen name="ym_otherlogin_height">45dp</dimen>
+    <dimen name="ym_line_height">27dp</dimen>
+    <dimen name="ym_line_width">99dp</dimen>
+    <dimen name="ym_bind_height">48dp</dimen>
+    <dimen name="ym_bind_width">180dp</dimen>
+    <dimen name="ym_textrealname_width">90dp</dimen>
+    <dimen name="ym_realname_height">48dp</dimen>
+    <dimen name="ym_xieyicontext_width">510dp</dimen>
+
+    <dimen name="ym_productdes_width">150dp</dimen>
+    <dimen name="ym_sign_width">15dp</dimen>
+    <dimen name="ym_sign_height">18dp</dimen>
+    <dimen name="ym_price_height">30dp</dimen>
+    <dimen name="ym_payicon_width16">24dp</dimen>
+    <dimen name="ym_payicon_width12">24dp</dimen>
+    <dimen name="ym_payicon_height">24dp</dimen>
+    <dimen name="ym_pay_height">48dp</dimen>
+
+
+
+</resources>

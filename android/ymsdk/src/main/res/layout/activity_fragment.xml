@@ -19,12 +19,7 @@
         android:visibility="gone"
         android:background="@android:color/transparent">
 
-<!--        <com.ym.game.sdk.ui.widget.ProgressLayout-->
-<!--            android:id="@+id/ym_lypg"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_centerInParent="true"-->
-<!--            android:visibility="gone"/>-->
+
 
         <ImageView
             android:id="@+id/bg_im_bird"

@@ -282,14 +282,14 @@ public class UserModel implements IUserModel {
         SharedPreferences loginTye = context.getSharedPreferences(YmConstants.SVAE_LOGIN_INFO, MODE_PRIVATE);
 
         SharedPreferences.Editor editor = loginTye.edit();
-        try {
-            uid = YmFileUtils.encryptDES(uid, YmConstants.APPID);
-            editor.putString("uid", uid);
-            editor.putString("token", token);
-            editor.apply();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            uid = YmFileUtils.encryptDES(uid, YmConstants.APPID);
+        editor.putString("uid", uid);
+        editor.putString("token", token);
+        editor.apply();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -322,12 +322,13 @@ public class UserModel implements IUserModel {
     public String getUid(Context context) {
         SharedPreferences fastLogin = context.getSharedPreferences(YmConstants.SVAE_LOGIN_INFO, MODE_PRIVATE);
         String uid = fastLogin.getString("uid", "");
-        try {
-            return YmFileUtils.decryptDES(uid,YmConstants.APPID);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
+//        try {
+//            return YmFileUtils.decryptDES(uid,YmConstants.APPID);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "";
+//        }
+        return uid;
     }
     @Override
     public String getToken(Context context) {
@@ -730,6 +731,8 @@ public class UserModel implements IUserModel {
                     public void onResponse(Call<ResultAccoutBean> call, Response<ResultAccoutBean> response) {
                         ResultAccoutBean body = response.body();
                         int errorCode = body.getCode();
+//                        ResultAccoutBean bindAccoutBean = new ResultAccoutBean();
+//                        bindAccoutBean.setData();
                         body.getData().setUid(mAccountBean.getUid());
                         body.getData().setLoginToken(mAccountBean.getLoginToken());
                         body.getData().setAuthStatus(mAccountBean.getAuthStatus());

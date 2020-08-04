@@ -16,8 +16,8 @@
         <!--登录分割线-->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="18dp"
-            android:layout_marginTop="10dp">
+            android:layout_height="@dimen/ym_line_height"
+            android:layout_marginTop="@dimen/ym_margin10">
 
             <TextView
                 android:id="@+id/ym_shiming_title"
@@ -26,23 +26,23 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textColor="@color/ym_edit_name"
-                android:textSize="@dimen/ym_title_font"
+                android:textSize="@dimen/text_size_f12"
                 android:text="@string/ym_tv_paytype"/>
 
             <ImageView
-                android:layout_width="66dp"
+                android:layout_width="@dimen/ym_line_width"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@id/ym_shiming_title"
-                android:layout_marginEnd="1dp"
+                android:layout_marginEnd="@dimen/ym_edit_horizontal_margin1"
                 android:src="@mipmap/ym_fenjiexian"/>
 
             <ImageView
                 android:id="@+id/fengjiexian_right"
-                android:layout_width="66dp"
+                android:layout_width="@dimen/ym_line_width"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="1dp"
+                android:layout_marginStart="@dimen/ym_edit_horizontal_margin1"
                 android:layout_toEndOf="@id/ym_shiming_title"
                 android:src="@mipmap/ym_fenjiexian"/>
 
@@ -52,25 +52,25 @@
             android:id="@+id/ym_rl_alipay"
             android:layout_width="match_parent"
             android:layout_height="@dimen/ym_edit_height"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
+            android:layout_marginTop="@dimen/ym_margin10"
+            android:layout_marginLeft="@dimen/ym_edit_horizontal_margin"
+            android:layout_marginRight="@dimen/ym_edit_horizontal_margin"
             android:background="@mipmap/ym_edbg">
             <ImageView
                 android:id="@+id/ym_im_alipay"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="6dp"
+                android:layout_width="@dimen/ym_payicon_width16"
+                android:layout_height="@dimen/ym_payicon_height"
+                android:layout_marginStart="@dimen/ym_padding"
                 android:layout_centerVertical="true"
                 android:src="@mipmap/ym_alipay"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="6dp"
+                android:paddingStart="@dimen/ym_padding"
                 android:layout_toEndOf="@id/ym_im_alipay"
                 android:textColor="@color/ym_edit_name"
                 android:layout_centerVertical="true"
-                android:textSize="@dimen/ym_edit_font"
+                android:textSize="@dimen/text_size_f10"
                 android:lines="1"
                 android:text="@string/ym_tv_alipay"/>
 
@@ -81,25 +81,25 @@
             android:id="@+id/ym_rl_wxpay"
             android:layout_width="match_parent"
             android:layout_height="@dimen/ym_edit_height"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
+            android:layout_marginTop="@dimen/ym_margin10"
+            android:layout_marginLeft="@dimen/ym_edit_horizontal_margin"
+            android:layout_marginRight="@dimen/ym_edit_horizontal_margin"
             android:background="@mipmap/ym_edbg">
             <ImageView
                 android:id="@+id/ym_im_wxpay"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="6dp"
+                android:layout_width="@dimen/ym_payicon_width16"
+                android:layout_height="@dimen/ym_payicon_height"
+                android:layout_marginStart="@dimen/ym_padding"
                 android:layout_centerVertical="true"
                 android:src="@mipmap/ym_wxpay"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="6dp"
+                android:paddingStart="@dimen/ym_padding"
                 android:layout_toEndOf="@id/ym_im_wxpay"
                 android:textColor="@color/ym_edit_name"
                 android:layout_centerVertical="true"
-                android:textSize="@dimen/ym_edit_font"
+                android:textSize="@dimen/text_size_f10"
                 android:lines="1"
                 android:text="@string/ym_tv_wxpay"/>
 

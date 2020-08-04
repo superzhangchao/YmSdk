@@ -54,7 +54,8 @@ public class YmFileUtils {
                     ym_uuid = readFile(ymdataPath);
                     if (!TextUtils.isEmpty(ym_uuid)) {
                         try {
-                            return decryptDES(ym_uuid,key);
+//                            return decryptDES(ym_uuid,key);
+                            return ym_uuid;
                         } catch (Exception e) {
                             e.printStackTrace();
                             ym_uuid ="";
@@ -63,7 +64,7 @@ public class YmFileUtils {
                     }
 
                     String uuid = UUID.randomUUID().toString();
-                    uuid = encryptDES(uuid,key);
+//                    uuid = encryptDES(uuid,key);
                     if (writeFileData(ctx, ymdataPath, uuid)) {
                         ym_uuid = uuid;
                     }

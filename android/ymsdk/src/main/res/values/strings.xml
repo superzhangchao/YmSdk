@@ -21,11 +21,13 @@
     <string name="ym_bt_bind">提交绑定</string>
     <string name="ym_tv_bindtip">为了您的账号安全，请绑定手机号。</string>
     <string name="ym_tv_shiming">实名认证</string>
+    <string name="ym_bt_realname">提交认证</string>
     <string name="ym_ethint_real_name">请输入真实姓名</string>
     <string name="ym_ethint_idcard_code">请输入身份证码</string>
     <string name="ym_tv_shimingtip">根据《网络游戏管理暂行办法》，手机游戏用户需要使用有效身份证件进行实名注册。</string>
     <string name="ym_tip_xieyi">请阅读用户协议并同意</string>
     <string name="ym_tv_productname">钻石充值大礼包</string>
+    <string name="ym_tv_pricesign">¥</string>
     <string name="ym_tv_price">648.00</string>
     <string name="ym_tv_paytype">选择支付方式</string>
     <string name="ym_tv_alipay">支付宝</string>

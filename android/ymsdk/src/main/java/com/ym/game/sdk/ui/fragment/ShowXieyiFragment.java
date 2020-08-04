@@ -43,17 +43,10 @@ public class ShowXieyiFragment extends BaseFragment implements View.OnClickListe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ymImLarge.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CUSTOM);
-        ymImLarge.setMinScale(0.5F);
-        int i = -ymImLarge.getMeasuredHeight() / 2;
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap ymXieyiIcon = BitmapFactory.decodeResource(getResources(), ResourseIdUtils.getMipmapId("ym_xieyi"), options);
-
-        //图片显示位置
-        int h = options.outHeight/2;
-        int w = options.outWidth/2;
-        ymImLarge.setImage(ImageSource.bitmap(ymXieyiIcon));
-
-        ymImLarge.setScaleAndCenter(0.5F,new PointF(-w,-h));
+        ymImLarge.setMinScale(1.0f);
+        ymImLarge.setImage(ImageSource.resource(ResourseIdUtils.getMipmapId("ym_xieyi")));
+        ymImLarge.setZoomEnabled(false);
+        ymImLarge.setScaleAndCenter(1.0f,new PointF(0,0));
     }
 
     @Override
