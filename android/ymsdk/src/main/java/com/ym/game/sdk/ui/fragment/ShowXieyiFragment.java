@@ -4,20 +4,22 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
-import android.graphics.drawable.Drawable;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+
+
+
 import android.widget.ImageView;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
+
 import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+
 import com.ym.game.sdk.R;
 import com.ym.game.utils.ResourseIdUtils;
 
@@ -31,6 +33,11 @@ public class ShowXieyiFragment extends BaseFragment implements View.OnClickListe
     private ImageView ymImBack;
     private ImageView ymImClose;
     private SubsamplingScaleImageView ymImLarge;
+    private String xieyiImage;
+
+    public void setXieyiImage(String xieyiImage){
+        this.xieyiImage = xieyiImage;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,21 +53,18 @@ public class ShowXieyiFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ymImLarge.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CUSTOM);
+        ymImLarge.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_START);
 
-
-        InputStream is = getResources().openRawResource(ResourseIdUtils.getMipmapId("ym_xieyi"));
         BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inPurgeable = true;
-        opts.inInputShareable = true;
-        opts.inPreferredConfig = Bitmap.Config.RGB_565;
-        BitmapFactory.decodeStream(is, null, opts);
+        opts.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(getResources(), ResourseIdUtils.getMipmapId(xieyiImage), opts);
         int width = opts.outWidth;
+
         float scale = getResources().getDimension(ResourseIdUtils.getDimenId("ym_xieyicontext_width"))/width;
         ymImLarge.setMinScale(scale);
-        ymImLarge.setImage(ImageSource.resource(ResourseIdUtils.getMipmapId("ym_xieyi")));
+        ymImLarge.setImage(ImageSource.resource(ResourseIdUtils.getMipmapId(xieyiImage)));
         ymImLarge.setZoomEnabled(false);
-        ymImLarge.setScaleAndCenter(scale,new PointF(0,0));
+
     }
 
     @Override

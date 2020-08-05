@@ -49,6 +49,7 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
     private ImageView ymImUnCkXieyi;
     private ImageView ymImCkXieyi;
     private TextView ymTvXieyiText;
+    private TextView ymTvYinsiText;
     private ImageView fengjiexianRight;
     private Button ymBtLogin;
     private ImageView ymLoginWeixin;
@@ -68,6 +69,7 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         ymImUnCkXieyi = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_im_unck_xieyi"));
         ymImCkXieyi = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_im_ck_xieyi"));
         ymTvXieyiText = (TextView) view.findViewById(ResourseIdUtils.getId("ym_tv_xieyitext"));
+        ymTvYinsiText = (TextView) view.findViewById(ResourseIdUtils.getId("ym_tv_yinsitext"));
         ymBtLogin = (Button) view.findViewById(ResourseIdUtils.getId("ym_bt_login"));
         fengjiexianRight = (ImageView) view.findViewById(ResourseIdUtils.getId("fengjiexian_right"));
         ymLoginWeixin = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_login_weixin"));
@@ -80,6 +82,7 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         ymImUnCkXieyi.setOnClickListener(this);
         ymImCkXieyi.setOnClickListener(this);
         ymTvXieyiText.setOnClickListener(this);
+        ymTvYinsiText.setOnClickListener(this);
         ymBtLogin.setOnClickListener(this);
         ymLoginWeixin.setOnClickListener(this);
         ymLoginQq.setOnClickListener(this);
@@ -119,8 +122,14 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
                     }
                 });
             }
-        }else if (view.getId()==this.ymTvXieyiText.getId()){
-            ShowXieyiFragment showXieyiFragment = getFragmentByName(baseActivity,ShowXieyiFragment.class);
+        }else if (view.getId()==this.ymTvXieyiText.getId()) {
+            ShowXieyiFragment showXieyiFragment = getFragmentByName(baseActivity, ShowXieyiFragment.class);
+            showXieyiFragment.setXieyiImage("ym_xieyi");
+            redirectFragment(showXieyiFragment);
+
+        }else if(view.getId()==this.ymTvYinsiText.getId()){
+            ShowXieyiFragment showXieyiFragment = getFragmentByName(baseActivity, ShowXieyiFragment.class);
+            showXieyiFragment.setXieyiImage("ym_yinsi");
             redirectFragment(showXieyiFragment);
         }else if(view.getId()==ymImCkXieyi.getId()){
             ymImCkXieyi.setVisibility(View.INVISIBLE);
