@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,10 @@ import android.widget.ImageView;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.ym.game.sdk.R;
 import com.ym.game.utils.ResourseIdUtils;
+
+import java.io.InputStream;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,10 +47,20 @@ public class ShowXieyiFragment extends BaseFragment implements View.OnClickListe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ymImLarge.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CUSTOM);
-        ymImLarge.setMinScale(1.0f);
+
+
+        InputStream is = getResources().openRawResource(ResourseIdUtils.getMipmapId("ym_xieyi"));
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inPurgeable = true;
+        opts.inInputShareable = true;
+        opts.inPreferredConfig = Bitmap.Config.RGB_565;
+        BitmapFactory.decodeStream(is, null, opts);
+        int width = opts.outWidth;
+        float scale = getResources().getDimension(ResourseIdUtils.getDimenId("ym_xieyicontext_width"))/width;
+        ymImLarge.setMinScale(scale);
         ymImLarge.setImage(ImageSource.resource(ResourseIdUtils.getMipmapId("ym_xieyi")));
         ymImLarge.setZoomEnabled(false);
-        ymImLarge.setScaleAndCenter(1.0f,new PointF(0,0));
+        ymImLarge.setScaleAndCenter(scale,new PointF(0,0));
     }
 
     @Override
