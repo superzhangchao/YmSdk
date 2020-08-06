@@ -62,7 +62,8 @@ public class ShowXieyiFragment extends BaseFragment implements View.OnClickListe
 
         float scale = getResources().getDimension(ResourseIdUtils.getDimenId("ym_xieyicontext_width"))/width;
         ymImLarge.setMinScale(scale);
-        ymImLarge.setImage(ImageSource.resource(ResourseIdUtils.getMipmapId(xieyiImage)));
+
+        ymImLarge.setImage(ImageSource.asset(xieyiImage+".png"));
         ymImLarge.setZoomEnabled(false);
 
     }

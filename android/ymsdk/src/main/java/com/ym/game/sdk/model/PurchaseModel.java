@@ -256,6 +256,7 @@ public class PurchaseModel implements IPurchaseModel{
             setWxPayStatus(true);
             msgApi.sendReq(request);
         } else {
+            mPurchaseStatusListener.onCancel();
             ToastUtils.showToast(mContext, mContext.getString(ResourseIdUtils.getStringId("ym_no_install_wechat")));
 
         }

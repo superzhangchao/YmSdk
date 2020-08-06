@@ -70,6 +70,7 @@ public class PurchasePresenter {
                 purchaseView.dismissLoading();
                 purchaseView.closeActivity();
                 ToastUtils.showToast(purchaseActivity,purchaseActivity.getString(ResourseIdUtils.getStringId("ym_text_paycancel")));
+                CallbackMananger.getPayCallBack().onCancel();
             }
 
             @Override

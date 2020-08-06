@@ -26,7 +26,7 @@
     <string name="ym_bt_realname">提交认证</string>
     <string name="ym_ethint_real_name">请输入真实姓名</string>
     <string name="ym_ethint_idcard_code">请输入身份证码</string>
-    <string name="ym_tv_shimingtip">根据《网络游戏管理暂行办法》，手机游戏用户需要使用有效身份证件进行实名注册。</string>
+    <string name="ym_tv_shimingtip">根据国家的《网络游戏管理暂行办法》规定，网络游戏用户需要使用有效身份信息进行实名注册，为享受健康游戏生活，请玩家尽快实名注册。我们承诺将严格保护您的个人信息，不会对外泄露。</string>
     <string name="ym_tip_xieyi">请阅读用户协议并同意</string>
     <string name="ym_tv_productname">钻石充值大礼包</string>
     <string name="ym_tv_pricesign">¥</string>

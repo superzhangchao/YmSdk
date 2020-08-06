@@ -530,6 +530,7 @@ public class UserModel implements IUserModel {
                 setWxLoginStatus(true);
                 wxLogin();
             } else {
+                mLoginStatusListener.onCancel();
                 ToastUtils.showToast(mActivity, mActivity.getString(ResourseIdUtils.getStringId("ym_no_install_wechat")));
             }
         }else if (TextUtils.equals("guest",currentLoginType)){
