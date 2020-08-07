@@ -215,6 +215,7 @@ public class PurchaseModel implements IPurchaseModel{
     @Override
     public void resetWxPay() {
         mPurchaseStatusListener.onCancel();
+        setWxPayStatus(false);
     }
 
     private void startAliPay(final ResultOrderBean.DataBean dataBean) {

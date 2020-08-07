@@ -8,7 +8,9 @@ import android.content.pm.PackageManager;
 public class Config {
     private static boolean isInit;
     private static String gameId;
-    public final static String Baseurl = "http://api.ysfj.loologames.com";
+    public final static String BASEURL = "http://api.ysfj.loologames.com";
+    public final static String TESTBASEURL = "http://192.168.0.225/";
+    public final static String DEVBASEURL = "http://192.168.0.225/";
 
 
     public static String getGameId() {

@@ -1,9 +1,12 @@
 package com.ym.game.net.api;
 
+import android.text.TextUtils;
+
 import com.ym.game.net.bean.ResultOrderBean;
 import com.ym.game.net.bean.ResultVcodeBean;
 import com.ym.game.net.bean.TokenBean;
 import com.ym.game.net.bean.ResultAccoutBean;
+import com.ym.game.sdk.YmConstants;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -24,6 +27,9 @@ public class YmApi {
                 .readTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .build();
+        if (TextUtils.isEmpty(baseUrl)){
+            baseUrl = YmConstants.BASEURL;
+        }
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())

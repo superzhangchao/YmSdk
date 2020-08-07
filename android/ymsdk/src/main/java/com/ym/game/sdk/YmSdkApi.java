@@ -63,13 +63,14 @@ public class YmSdkApi {
     public YmSdkApi initPlatform(Activity activity, String gameId) {
         this.context = activity;
         Config.setGameId(gameId);
-        YmApi.setBaseUrl(YmConstants.BASEURL);
+
         return this;
     }
 
 
     public void setDebugMode(boolean isDebug) {
         if (isDebug) {
+            YmApi.setBaseUrl(Config.TESTBASEURL);
             Logger.addLogAdapter(new AndroidLogAdapter());
         }
     }

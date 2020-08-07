@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">ymsdk</string>
     <string name="weixinappid">wxd02fbae564a0c256</string>
     <string name="qq_appid">101877131</string>
     <string name="qq_appscheme">tencent101877131</string>

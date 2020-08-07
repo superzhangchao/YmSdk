@@ -198,17 +198,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             YmSdkApi.getInstance().pay(this,getPurchaseBean(), new PayCallBack() {
                 @Override
                 public void onSuccess(Object o) {
-
+                    Log.i(TAG, "onSuccess: ");
                 }
 
                 @Override
                 public void onFailure(int code, String msg) {
-
+                    Log.i(TAG, "onFailure: ");
                 }
 
                 @Override
                 public void onCancel() {
-
+                    Log.i(TAG, "onCancel: ");
                 }
             });
         }else if(btAuthStatus.getId()==v.getId()){
