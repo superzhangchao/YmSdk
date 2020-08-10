@@ -18,7 +18,7 @@ public interface YmApiService {
     Call<TokenBean>  getTokenInfo(@Query("app_id")String appId,
                                          @Query("from")String from,@Query("ts")String ts,@Query("sign")String sign);
     @GET("time")
-    Call<String> getTime();
+    Call<String> getTime(@Query("localts")String localTs);
 
     @GET("sms")
     Call<ResultVcodeBean> getVcode(@QueryMap Map<String, String> vcodeReq);

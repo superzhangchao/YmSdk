@@ -269,7 +269,8 @@ public class PurchaseModel implements IPurchaseModel{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Call<String> token = YmApi.getInstance().getTime();
+                String localTs = System.currentTimeMillis()+"";
+                Call<String> token = YmApi.getInstance().getTime(localTs);
                 token.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {

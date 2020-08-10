@@ -53,8 +53,8 @@ public class YmApi {
     public Call<TokenBean> getTokenInfo(String appId,String from,String ts,String sign){
         return  service.getTokenInfo(appId,from,ts,sign);
     }
-    public Call<String> getTime(){
-        return service.getTime();
+    public Call<String> getTime(String localTs){
+        return service.getTime(localTs);
     }
 
     public Call<ResultVcodeBean> getVcode(Map<String, String> vcodeReq){
