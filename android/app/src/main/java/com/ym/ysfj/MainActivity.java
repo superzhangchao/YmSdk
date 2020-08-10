@@ -68,21 +68,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btLogin.setOnClickListener(this);
         btLogout.setOnClickListener(this);
         btAuthStatus.setOnClickListener(this);
-//        btLogout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                text = "fb-85321122112";
-//                try {
-//                    encryptDES = encryptDES(text, key);
-//                    Log.i(TAG, "onClick:encryptDES "+encryptDES);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
         btPay.setOnClickListener(this);
         btSendinfo.setOnClickListener(this);
-        YmSdkApi.getInstance().initPlatform(this,"5012");
+
     }
 
 
@@ -164,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId()==btInit.getId()){
-            YmSdkApi.getInstance().setDebugMode(true);
+            YmSdkApi.getInstance().initPlatform(this,"5012");
         }else if(btLogin.getId()==v.getId()){
             YmSdkApi.getInstance().login(this, new LoginCallBack() {
                 @Override
