@@ -12,7 +12,8 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.ym.game.utils.ResourseIdUtils;
+
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
 
 import androidx.annotation.Nullable;
 

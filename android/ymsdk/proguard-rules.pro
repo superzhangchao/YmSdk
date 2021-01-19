@@ -106,5 +106,5 @@
 -keep class com.ym.game.sdk.callback.**{ public *;}
 -keep class com.ym.game.sdk.**{public *;}
 -keep class com.ym.game.utils.**{public *;}
--keep class com.ym.game.sdk.ui.activity.YmWXEntryActivity{*;}
+-keep class com.ym.game.plugin.wechat.YmWXEntryActivity{*;}
 

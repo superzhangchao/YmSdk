@@ -20,9 +20,10 @@ import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.bean.PurchaseBean;
 import com.ym.game.sdk.callback.LoginCallBack;
 import com.ym.game.sdk.callback.PayCallBack;
-import com.ym.game.utils.ToastUtils;
-import com.ym.game.utils.YmSignUtils;
-import com.ym.ysfj.R;
+import com.ym.game.sdk.common.utils.ToastUtils;
+import com.ym.game.sdk.common.utils.YmSignUtils;
+
+
 
 
 import java.util.HashMap;

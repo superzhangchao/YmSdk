@@ -1,13 +1,9 @@
 package com.ym.game.sdk.ui.fragment;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.text.TextUtils;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,22 +14,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.ym.game.sdk.YmConstants;
-import com.ym.game.sdk.base.config.TypeConfig;
+import com.ym.game.sdk.common.base.config.TypeConfig;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.callback.listener.ChangeVcodeViewListener;
+import com.ym.game.sdk.common.base.parse.plugin.Plugin;
+import com.ym.game.sdk.common.base.parse.plugin.PluginManager;
+import com.ym.game.sdk.common.utils.ImageUtils;
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
+import com.ym.game.sdk.common.utils.ToastUtils;
 import com.ym.game.sdk.presenter.UserPresenter;
 import com.ym.game.sdk.ui.widget.TimerTextView;
-import com.ym.game.utils.DpPxUtils;
-import com.ym.game.utils.ImageUtils;
-import com.ym.game.utils.ResourseIdUtils;
-import com.ym.game.utils.ToastUtils;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import static android.content.Context.MODE_PRIVATE;
-import static com.ym.game.sdk.ui.fragment.BaseFragment.getFragmentByName;
 
 public class AccountLoginFragment extends UserBaseFragment implements View.OnClickListener {
 
@@ -101,6 +95,9 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         boolean xieyiStatus = UserPresenter.getXieyiStatus(this);
         if (xieyiStatus){
             ymImCkXieyi.setVisibility(View.VISIBLE);
+        }
+        if (PluginManager.getInstance().getPlugin("plugin_qq")==null){
+            ymLoginQq.setVisibility(View.GONE);
         }
         ymTvPhonecode.setText(ResourseIdUtils.getStringId("ym_tv_getphonecode"));
         ymTvPhonecode.setTimesandText(getString(ResourseIdUtils.getStringId("ym_tv_getphonecode")),"已发送（","s)",60);

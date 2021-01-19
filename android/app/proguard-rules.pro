@@ -126,4 +126,4 @@
 
 #游戏自定义框架 end
 
--keep class com.ym.game.sdk.ui.activity.YmWXEntryActivity{*;}
+-keep class com.ym.game.plugin.wechat.YmWXEntryActivity{*;}

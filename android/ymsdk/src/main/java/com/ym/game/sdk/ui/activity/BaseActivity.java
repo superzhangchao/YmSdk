@@ -11,10 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
 import com.ym.game.sdk.ui.fragment.BackHandlerHelper;
 
-import com.ym.game.utils.ResourseIdUtils;
+
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

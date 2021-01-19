@@ -71,9 +71,6 @@ public class YmConstants {
     public static final int PAY_CANCEL_CODE = 212;
     public static final int PAY_FAIL_CODE = 213;
 
-    public static final int WXPAY_RESULT_SUCC_CODE = 214;
-    public static final int WXPAY_RESULT_CANCEL_CODE = 215;
-    public static final int WXPAY_RESULT_FAIL_CODE = 216;
 
 
 }

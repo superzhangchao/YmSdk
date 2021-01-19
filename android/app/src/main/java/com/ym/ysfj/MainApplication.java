@@ -2,14 +2,9 @@ package com.ym.ysfj;
 
 import android.app.Application;
 
-import com.tencent.bugly.crashreport.CrashReport;
-import com.ym.game.sdk.config.ApplicationCache;
-import com.ym.game.utils.YmFileUtils;
+import com.ym.game.sdk.common.base.cache.ApplicationCache;
 
 
-/**
- * Created by eleven on 16/8/15.
- */
 public class MainApplication extends Application {
 
     private static MainApplication sInstance;

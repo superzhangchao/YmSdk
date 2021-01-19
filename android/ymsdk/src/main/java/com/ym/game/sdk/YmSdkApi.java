@@ -3,21 +3,25 @@ package com.ym.game.sdk;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Process;
 
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
+
 import com.ym.game.net.api.YmApi;
-import com.ym.game.sdk.base.config.ErrorCode;
+import com.ym.game.sdk.common.base.config.ErrorCode;
 import com.ym.game.sdk.bean.PurchaseBean;
 import com.ym.game.sdk.callback.CallbackMananger;
 import com.ym.game.sdk.callback.LoginCallBack;
 import com.ym.game.sdk.callback.PayCallBack;
+import com.ym.game.sdk.common.base.parse.plugin.PluginManager;
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
+import com.ym.game.sdk.common.utils.ToastUtils;
 import com.ym.game.sdk.config.Config;
 
 import com.ym.game.sdk.presenter.PurchasePresenter;
 import com.ym.game.sdk.presenter.UserPresenter;
-import com.ym.game.utils.ResourseIdUtils;
-import com.ym.game.utils.ToastUtils;
+
 
 import androidx.annotation.Nullable;
 
@@ -60,18 +64,37 @@ public class YmSdkApi {
      *
      * @param gameId
      */
-    public YmSdkApi initPlatform(Activity activity, String gameId) {
+    private static Handler sApiHandler;
+    private static boolean initState = false;
+
+    public void initPlatform(final Activity activity, String gameId) {
         this.context = activity;
         Config.setGameId(gameId);
 
-        return this;
+        if (sApiHandler == null) {
+            HandlerThread ht = new HandlerThread("project_sdk_thread",
+                    Process.THREAD_PRIORITY_BACKGROUND);
+            ht.start();
+            sApiHandler = new Handler(ht.getLooper());
+        }
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                //4、加载功能插件
+                PluginManager.init(activity).loadAllPlugins();
+
+
+
+            }
+        };
+        sApiHandler.post(r);
     }
 
 
     public void setDebugMode(boolean isDebug) {
         if (isDebug) {
             YmApi.setBaseUrl(Config.TESTBASEURL);
-            Logger.addLogAdapter(new AndroidLogAdapter());
+//            Logger.addLogAdapter(new AndroidLogAdapter());
         }
     }
 

@@ -4,9 +4,9 @@ package com.ym.game.sdk.ui.fragment;
 import android.content.Context;
 
 
-
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
 import com.ym.game.sdk.ui.activity.BaseActivity;
-import com.ym.game.utils.ResourseIdUtils;
+
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

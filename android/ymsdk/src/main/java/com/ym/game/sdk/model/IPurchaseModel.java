@@ -15,8 +15,6 @@ public interface IPurchaseModel {
 
     void destroy(Activity activity);
 
-    boolean getWxPayStatus();
 
-    void resetWxPay();
 
 }

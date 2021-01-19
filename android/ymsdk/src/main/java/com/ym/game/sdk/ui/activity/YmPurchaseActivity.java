@@ -5,14 +5,12 @@ import android.os.Bundle;
 
 import com.ym.game.sdk.bean.PurchaseBean;
 import com.ym.game.sdk.presenter.PurchasePresenter;
-import com.ym.game.sdk.presenter.UserPresenter;
-import com.ym.game.sdk.ui.fragment.AccountLoginFragment;
 import com.ym.game.sdk.ui.fragment.PurchaseFragment;
 
 import androidx.annotation.Nullable;
 
-import static com.ym.game.sdk.base.config.TypeConfig.LOGIN;
-import static com.ym.game.sdk.base.config.TypeConfig.PAY;
+import static com.ym.game.sdk.common.base.config.TypeConfig.LOGIN;
+import static com.ym.game.sdk.common.base.config.TypeConfig.PAY;
 
 public class YmPurchaseActivity extends BaseActivity {
 
@@ -39,7 +37,7 @@ public class YmPurchaseActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        PurchasePresenter.checkWxPay();
+        PurchasePresenter.onResume(this);
     }
 }
 

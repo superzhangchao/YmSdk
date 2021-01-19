@@ -1,0 +1,16 @@
+{
+    "plugin": [
+        {
+            "plugin_name": "plugin_alipay",
+            "class_name": "com.ym.game.plugin.alipay.AlipayPlugin",
+            "description": "支付宝功能插件",
+            "version": "15.7.6"
+        },
+        {
+            "plugin_name": "plugin_wechat",
+            "class_name": "com.ym.game.plugin.wechat.WechatPlugin",
+            "description": "微信功能插件",
+            "version": "5.3.1"
+        }
+    ]
+}

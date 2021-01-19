@@ -1,15 +1,16 @@
 package com.ym.game.sdk.ui.widget;
 
 import android.content.Context;
-import android.graphics.Color;
+
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 
-import com.ym.game.sdk.R;
-import com.ym.game.utils.ResourseIdUtils;
 
-import androidx.annotation.Nullable;
+
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
+
+
+
 
 public class TimerTextView extends androidx.appcompat.widget.AppCompatTextView implements Runnable {
 

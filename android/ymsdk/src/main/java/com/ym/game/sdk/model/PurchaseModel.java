@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -20,15 +22,18 @@ import com.ym.game.net.bean.AliPayResult;
 import com.ym.game.net.bean.ResultOrderBean;
 import com.ym.game.net.bean.TokenBean;
 import com.ym.game.sdk.YmConstants;
-import com.ym.game.sdk.YmSdkApi;
-import com.ym.game.sdk.base.config.ErrorCode;
-import com.ym.game.sdk.bean.AccountBean;
+import com.ym.game.sdk.common.base.config.ErrorCode;
 import com.ym.game.sdk.bean.PurchaseBean;
-import com.ym.game.sdk.callback.PayCallBack;
-import com.ym.game.sdk.presenter.UserPresenter;
-import com.ym.game.utils.ResourseIdUtils;
-import com.ym.game.utils.ToastUtils;
-import com.ym.game.utils.YmSignUtils;
+import com.ym.game.sdk.common.base.interfaces.CallBackListener;
+import com.ym.game.sdk.common.base.interfaces.LifeCycleInterface;
+import com.ym.game.sdk.common.base.parse.plugin.PluginManager;
+import com.ym.game.sdk.common.utils.LogUtils;
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
+import com.ym.game.sdk.common.utils.ToastUtils;
+import com.ym.game.sdk.common.utils.YmSignUtils;
+import com.ym.game.sdk.invoke.plugin.AlipayPluginApi;
+import com.ym.game.sdk.invoke.plugin.WechatPluginApi;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,11 +42,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PurchaseModel implements IPurchaseModel{
+public class PurchaseModel implements IPurchaseModel , LifeCycleInterface {
 
     @SuppressLint("StaticFieldLeak")
     private static PurchaseModel instance;
@@ -58,35 +64,15 @@ public class PurchaseModel implements IPurchaseModel{
     private static final int CHECKORDERNETFAIL = 9;
 
 
-    private static final int SDK_ALIPAY_FLAG = 1;
+
     private static final String PAYTYPEALI = "alipay";
     private static final String PAYTYPEWEIXIN = "wxpay";
     private String currentTs;
     private Context mContext;
-    private IWXAPI msgApi;
-    private boolean mIsPaywx = false;
+
 
     private String platformOrderId;
-    private BroadcastReceiver wxPayBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            setWxPayStatus(false);
-            int paycode = intent.getIntExtra("PAYCODE", -1);
-            switch (paycode) {
-                case YmConstants.WXPAY_RESULT_SUCC_CODE:
-                    mPurchaseStatusListener.onSuccess(platformOrderId);
-                    break;
-                case YmConstants.WXPAY_RESULT_CANCEL_CODE:
-                    mPurchaseStatusListener.onCancel();
-                    break;
-                case YmConstants.WXPAY_RESULT_FAIL_CODE:
-                    mPurchaseStatusListener.onFail(ErrorCode.PAY_FAIL,mContext.getString(ResourseIdUtils.getStringId("ym_text_paywx_fail")));
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
+
 
     public static PurchaseModel getInstance(){
         if (instance == null){
@@ -156,29 +142,6 @@ public class PurchaseModel implements IPurchaseModel{
         }
     };
 
-    @SuppressLint("HandlerLeak")
-    private Handler mAliHandler = new Handler() {
-        @SuppressWarnings("unused")
-        public void handleMessage(Message msg) {
-            if (msg.what == SDK_ALIPAY_FLAG) {
-                @SuppressWarnings("unchecked")
-                AliPayResult payResult = new AliPayResult((Map<String, String>) msg.obj);
-                /**
-                 * 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
-                 */
-                String resultInfo = payResult.getResult();// 同步返回需要验证的信息
-                String resultStatus = payResult.getResultStatus();
-                if (TextUtils.equals(resultStatus, "9000")) {
-                    mPurchaseStatusListener.onSuccess(platformOrderId);
-                } else if (TextUtils.equals(resultStatus, "6001")) {
-                    //不需要处理
-                    mPurchaseStatusListener.onCancel();
-                } else {
-                    mPurchaseStatusListener.onFail(ErrorCode.PAY_FAIL,mContext.getString(ResourseIdUtils.getStringId("ym_text_payali_fail")));
-                }
-            }
-        }
-    };
 
     @Override
     public void initPay(Activity activity) {
@@ -195,72 +158,63 @@ public class PurchaseModel implements IPurchaseModel{
 
     @Override
     public void destroy(Activity activity) {
-        try {
-            if (null != wxPayBroadcastReceiver) {
-                activity.unregisterReceiver(wxPayBroadcastReceiver);
-            }
-        } catch (IllegalArgumentException e) {
-//            Log.e("ysqy",  e.toString());
-        }
+
     }
 
-    @Override
-    public boolean getWxPayStatus() {
 
-        return mIsPaywx;
-    }
-    private void setWxPayStatus(boolean isPaywx) {
-        mIsPaywx = isPaywx;
-    }
-    @Override
-    public void resetWxPay() {
-        mPurchaseStatusListener.onCancel();
-        setWxPayStatus(false);
-    }
 
     private void startAliPay(final ResultOrderBean.DataBean dataBean) {
 
         final String orderInfo = dataBean.getAlipay().getInfo();   // 订单信息
-        Runnable payRunnable = new Runnable() {
+        Map<String,Object> payInfo =new HashMap<>();
+        payInfo.put("payment_info",orderInfo);
+        AlipayPluginApi.getInstance().pay(mContext, payInfo, new CallBackListener() {
+            @Override
+            public void onSuccess(Object o) {
+                LogUtils.debug_d("ymsdkzc onSuccess");
+                mPurchaseStatusListener.onSuccess(platformOrderId);
+            }
 
             @Override
-            public void run() {
-                PayTask alipay = new PayTask((Activity) mContext);
-                String version = alipay.getVersion();
-                Map<String, String> result = alipay.payV2(orderInfo, true);
-                Message msg = new Message();
-                msg.what = SDK_ALIPAY_FLAG;
-                msg.obj = result;
-                mAliHandler.sendMessage(msg);
+            public void onFailure(int code, String msg) {
+                LogUtils.debug_d("ymsdkzc onFailure");
+                if (code ==ErrorCode.FAILURE){
+                    mPurchaseStatusListener.onFail(ErrorCode.PAY_FAIL,mContext.getString(ResourseIdUtils.getStringId("ym_text_payali_fail")));
+
+                }else if (code ==ErrorCode.CANCEL){
+                    mPurchaseStatusListener.onCancel();
+                }
             }
-        };
-        // 必须异步调用
-        Thread payThread = new Thread(payRunnable);
-        payThread.start();
+        });
     }
 
     private void startWXPay(ResultOrderBean.DataBean dataBean){
-        IntentFilter filter = new IntentFilter(YmConstants.WXPAYACTION);
-        mContext.registerReceiver(wxPayBroadcastReceiver, filter);
-        msgApi = WXAPIFactory.createWXAPI(mContext, YmConstants.WX_APP_ID, false);
-        msgApi.registerApp(YmConstants.WX_APP_ID);
-        PayReq request = new PayReq();
-        request.appId = dataBean.getWxpay().getWxAppId();
-        request.partnerId = dataBean.getWxpay().getPartnerId();
-        request.prepayId = dataBean.getWxpay().getPrepayId();
-        request.packageValue = dataBean.getWxpay().getPackageValue();
-        request.nonceStr = dataBean.getWxpay().getNonceStr();
-        request.timeStamp = dataBean.getWxpay().getTimeStamp();
-        request.sign = dataBean.getWxpay().getWxSign();
-        int wxSdkVersion = msgApi.getWXAppSupportAPI();
-        if (wxSdkVersion >= Build.OFFLINE_PAY_SDK_INT) {
-            setWxPayStatus(true);
-            msgApi.sendReq(request);
-        } else {
-            mPurchaseStatusListener.onCancel();
-            ToastUtils.showToast(mContext, mContext.getString(ResourseIdUtils.getStringId("ym_no_install_wechat")));
+        Map<String,Object> payInfo =new HashMap<>();
+        payInfo.put("appId",dataBean.getWxpay().getWxAppId());
+        payInfo.put("partnerId",dataBean.getWxpay().getPartnerId());
+        payInfo.put("prepayId",dataBean.getWxpay().getPrepayId());
+        payInfo.put("packageValue",dataBean.getWxpay().getPackageValue());
+        payInfo.put("nonceStr",dataBean.getWxpay().getNonceStr());
+        payInfo.put("timeStamp",dataBean.getWxpay().getTimeStamp());
+        payInfo.put("sign",dataBean.getWxpay().getWxSign());
 
-        }
+        WechatPluginApi.getInstance().pay(mContext, payInfo, new CallBackListener() {
+            @Override
+            public void onSuccess(Object o) {
+                mPurchaseStatusListener.onSuccess(platformOrderId);
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                if (code ==ErrorCode.FAILURE){
+                    mPurchaseStatusListener.onFail(ErrorCode.PAY_FAIL,mContext.getString(ResourseIdUtils.getStringId("ym_text_paywx_fail")));
+
+                }else if (code ==ErrorCode.CANCEL){
+                    mPurchaseStatusListener.onCancel();
+                }
+            }
+        });
+
     }
 
 
@@ -409,6 +363,62 @@ public class PurchaseModel implements IPurchaseModel{
             }
         }).start();
     }
+
+    @Override
+    public void onCreate(Context context, Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void onResume(Context context) {
+        PluginManager.getInstance().onResume(context);
+    }
+
+    @Override
+    public void onStart(Context context) {
+
+    }
+
+    @Override
+    public void onPause(Context context) {
+
+    }
+
+    @Override
+    public void onStop(Context context) {
+
+    }
+
+    @Override
+    public void onRestart(Context context) {
+
+    }
+
+    @Override
+    public void onDestroy(Context context) {
+
+    }
+
+    @Override
+    public void onNewIntent(Context context, Intent intent) {
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Context context, Configuration newConfig) {
+
+    }
+
+    @Override
+    public void onActivityResult(Context context, int requestCode, int resultCode, @Nullable Intent data) {
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(Context context, int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+    }
+
 
     public interface PurchaseStatusListener{
         void onSuccess(String platformOrderId);

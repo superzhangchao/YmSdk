@@ -11,13 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ym.game.sdk.bean.PurchaseBean;
+import com.ym.game.sdk.common.utils.ImageUtils;
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
 import com.ym.game.sdk.event.BaseEvent;
 import com.ym.game.sdk.event.PayTypeEvent;
 import com.ym.game.sdk.model.IPurchaseModel;
 import com.ym.game.sdk.model.IPurchaseView;
 import com.ym.game.sdk.presenter.PurchasePresenter;
-import com.ym.game.utils.ImageUtils;
-import com.ym.game.utils.ResourseIdUtils;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Logger;

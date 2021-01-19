@@ -6,9 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.ym.game.sdk.common.utils.ImageUtils;
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
 import com.ym.game.sdk.event.PayTypeEvent;
-import com.ym.game.utils.ImageUtils;
-import com.ym.game.utils.ResourseIdUtils;
+
 
 import org.greenrobot.eventbus.EventBus;
 

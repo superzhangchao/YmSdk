@@ -46,7 +46,7 @@
     <string name="ym_tip_realname4">姓名无效，请重新输入</string>
     <string name="ym_tip_realname5">证件无效，请重新输入</string>
     <string name="ym_tip_realname6">请输入真实的证件号码</string>
-    <string name="ym_text_neterror">网络连接错误</string>
+    <string name="ym_text_neterror">网络连接不稳定，请检查网络环境</string>
     <string name="ym_text_netdata_null">获取网络数据失败</string>
     <string name="ym_loginqq_fail">QQ登录失败</string>
     <string name="ym_logingt_fail">游客登录失败</string>

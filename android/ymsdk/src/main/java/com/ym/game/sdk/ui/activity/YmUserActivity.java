@@ -1,22 +1,17 @@
 package com.ym.game.sdk.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.ym.game.sdk.bean.AccountBean;
-import com.ym.game.sdk.bean.PurchaseBean;
-import com.ym.game.sdk.model.IUserModel;
-import com.ym.game.sdk.model.UserModel;
 import com.ym.game.sdk.presenter.UserPresenter;
 import com.ym.game.sdk.ui.fragment.AccountBindFragment;
 import com.ym.game.sdk.ui.fragment.AccountLoginFragment;
-import com.ym.game.sdk.ui.fragment.PurchaseFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.ym.game.sdk.base.config.TypeConfig;
+import com.ym.game.sdk.common.base.config.TypeConfig;
 import com.ym.game.sdk.ui.fragment.RealNameFragment;
 
 public class YmUserActivity extends BaseActivity {

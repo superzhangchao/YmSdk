@@ -10,11 +10,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.ym.game.sdk.bean.AccountBean;
+import com.ym.game.sdk.common.utils.IdentityUtils;
+import com.ym.game.sdk.common.utils.ImageUtils;
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
+import com.ym.game.sdk.common.utils.ToastUtils;
 import com.ym.game.sdk.presenter.UserPresenter;
-import com.ym.game.utils.IdentityUtils;
-import com.ym.game.utils.ImageUtils;
-import com.ym.game.utils.ResourseIdUtils;
-import com.ym.game.utils.ToastUtils;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

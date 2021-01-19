@@ -10,13 +10,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.ym.game.net.bean.ResultAccoutBean;
-import com.ym.game.sdk.base.config.TypeConfig;
+import com.ym.game.sdk.common.base.config.TypeConfig;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.callback.listener.ChangeVcodeViewListener;
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
+import com.ym.game.sdk.common.utils.ToastUtils;
 import com.ym.game.sdk.presenter.UserPresenter;
 import com.ym.game.sdk.ui.widget.TimerTextView;
-import com.ym.game.utils.ResourseIdUtils;
-import com.ym.game.utils.ToastUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

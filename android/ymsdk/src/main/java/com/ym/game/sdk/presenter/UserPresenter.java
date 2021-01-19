@@ -17,14 +17,15 @@ import com.ym.game.sdk.callback.listener.GetVerifyDataListener;
 import com.ym.game.sdk.callback.listener.LoginStatusListener;
 import com.ym.game.sdk.callback.listener.RealNameStatusListener;
 import com.ym.game.sdk.callback.listener.SendVcodeListener;
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
+import com.ym.game.sdk.common.utils.ToastUtils;
 import com.ym.game.sdk.model.IUserModel;
 import com.ym.game.sdk.model.IUserView;
 import com.ym.game.sdk.model.UserModel;
 import com.ym.game.sdk.ui.activity.BaseActivity;
 import com.ym.game.sdk.ui.activity.YmUserActivity;
-import com.ym.game.sdk.base.config.TypeConfig;
-import com.ym.game.utils.ResourseIdUtils;
-import com.ym.game.utils.ToastUtils;
+import com.ym.game.sdk.common.base.config.TypeConfig;
+
 
 
 public class UserPresenter {

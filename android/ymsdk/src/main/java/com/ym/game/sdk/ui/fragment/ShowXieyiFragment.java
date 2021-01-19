@@ -21,7 +21,8 @@ import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
 import com.ym.game.sdk.R;
-import com.ym.game.utils.ResourseIdUtils;
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
+
 
 import java.io.InputStream;
 

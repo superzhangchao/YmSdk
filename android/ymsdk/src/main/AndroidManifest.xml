@@ -25,7 +25,7 @@
             android:theme="@style/YmTheme"/>
 
 
-        <activity android:name=".ui.activity.YmWXEntryActivity" />
+        <activity android:name="com.ym.game.plugin.wechat.YmWXEntryActivity" />
 
         <activity
             android:name="com.tencent.tauth.AuthActivity"

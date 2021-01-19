@@ -1,23 +1,22 @@
 package com.ym.game.sdk.presenter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 
 
-import com.ym.game.sdk.base.config.ErrorCode;
+import com.ym.game.sdk.common.base.config.ErrorCode;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.bean.PurchaseBean;
 
 import com.ym.game.sdk.callback.CallbackMananger;
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
+import com.ym.game.sdk.common.utils.ToastUtils;
 import com.ym.game.sdk.model.IPurchaseView;
 import com.ym.game.sdk.model.PurchaseModel;
 import com.ym.game.sdk.ui.activity.YmPurchaseActivity;
-import com.ym.game.sdk.ui.fragment.PurchaseFragment;
-import com.ym.game.utils.ResourseIdUtils;
-import com.ym.game.utils.ToastUtils;
 
-import java.io.Serializable;
 
 
 public class PurchasePresenter {
@@ -89,10 +88,13 @@ public class PurchasePresenter {
         PurchaseModel.getInstance().destroy(activity);
     }
 
-    public static void checkWxPay() {
-        boolean wxPayStatus = PurchaseModel.getInstance().getWxPayStatus();
-        if (wxPayStatus){
-            PurchaseModel.getInstance().resetWxPay();
-        }
+//    public static void checkWxPay() {
+//        boolean wxPayStatus = PurchaseModel.getInstance().getWxPayStatus();
+//        if (wxPayStatus){
+//            PurchaseModel.getInstance().resetWxPay();
+//        }
+//    }
+    public static void onResume(Context context) {
+        PurchaseModel.getInstance().onResume(context);
     }
 }

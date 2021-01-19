@@ -16,32 +16,32 @@ import android.os.Message;
 import android.provider.Settings;
 import android.text.TextUtils;
 
-import com.tencent.connect.UserInfo;
-import com.tencent.connect.common.Constants;
+
+
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.tencent.tauth.IUiListener;
-import com.tencent.tauth.Tencent;
-import com.tencent.tauth.UiError;
 import com.ym.game.net.api.YmApi;
 import com.ym.game.net.bean.ResultAccoutBean;
 import com.ym.game.net.bean.ResultVcodeBean;
 import com.ym.game.net.bean.TokenBean;
 
 import com.ym.game.sdk.YmConstants;
-import com.ym.game.sdk.YmSdkApi;
-import com.ym.game.sdk.base.config.ErrorCode;
+import com.ym.game.sdk.common.base.config.ErrorCode;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.callback.listener.CheckBindListener;
 import com.ym.game.sdk.callback.listener.GetVerifyDataListener;
 import com.ym.game.sdk.callback.listener.LoginStatusListener;
 import com.ym.game.sdk.callback.listener.RealNameStatusListener;
 import com.ym.game.sdk.callback.listener.SendVcodeListener;
-import com.ym.game.utils.ResourseIdUtils;
-import com.ym.game.utils.ToastUtils;
-import com.ym.game.utils.YmFileUtils;
-import com.ym.game.utils.YmSignUtils;
+import com.ym.game.sdk.common.base.interfaces.CallBackListener;
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
+import com.ym.game.sdk.common.utils.ToastUtils;
+import com.ym.game.sdk.common.utils.YmFileUtils;
+import com.ym.game.sdk.common.utils.YmSignUtils;
+import com.ym.game.sdk.invoke.plugin.QQPluginApi;
+import com.ym.game.sdk.invoke.plugin.WechatPluginApi;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -103,9 +103,9 @@ public class UserModel implements IUserModel {
     private Context mContext;
     private String uuid;
     private Activity mActivity;
-    private Tencent mTencent;
-    private IUiListener loginListener;
-    private UserInfo mInfo;
+
+
+
     private AccountBean mAccountBean;
     private AccountBean loginAccountInfo;
     private IWXAPI api;
@@ -188,7 +188,7 @@ public class UserModel implements IUserModel {
                         nickname = "QQ用户";
                     }
                     mAccountBean.setNickName(nickname);
-                    mAccountBean.setOpenId(mTencent.getQQToken().getOpenId());
+                    mAccountBean.setOpenId(response.optString("openId"));
                     getQQInfo();
                     break;
                 case AUTOLOGINSUCCESS:
@@ -534,6 +534,9 @@ public class UserModel implements IUserModel {
                 mLoginStatusListener.onCancel();
                 ToastUtils.showToast(mActivity, mActivity.getString(ResourseIdUtils.getStringId("ym_no_install_wechat")));
             }
+
+//            WechatPluginApi.getInstance().
+
         }else if (TextUtils.equals("guest",currentLoginType)){
             gtLogin();
         }
@@ -597,39 +600,30 @@ public class UserModel implements IUserModel {
 //
 
 
+
     private void qqLogin() {
-        mTencent = Tencent.createInstance(mActivity.getString(ResourseIdUtils.getStringId("qq_appid")),
-                mActivity.getApplicationContext(),
-                mActivity.getString(ResourseIdUtils.getStringId("qq_authorities")));
-        if (!mTencent.isSessionValid()) {
-            startQQLogin();
-        } else {
-            if (ready(mActivity)) {
-                mTencent.checkLogin(new IUiListener() {
-                    @Override
-                    public void onComplete(Object response) {
-                        JSONObject jsonResp = (JSONObject) response;
-                        if (jsonResp.optInt("ret", -1) == 0) {
-                            JSONObject jsonObject = mTencent.loadSession(mActivity.getString(ResourseIdUtils.getStringId("qq_appid")));
-                            mTencent.initSessionCache(jsonObject);
-                            updateUserInfo();
-                        } else {
-                            startQQLogin();
-                        }
-                    }
-
-                    @Override
-                    public void onError(UiError e) {
-                        startQQLogin();
-                    }
-
-                    @Override
-                    public void onCancel() {
-                    }
-                });
+        CallBackListener qqLoginCallback = new CallBackListener<String>() {
+            @Override
+            public void onSuccess(String o) {
+                Message msg = new Message();
+                JSONObject response = new JSONObject();
+                try {
+                    response.put("nickName","QQ用户");
+                    response.put("openId",o);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                msg.obj = response;
+                msg.what = UPDATEQQUSERINFO;
+                handler.sendMessage(msg);
             }
 
-        }
+            @Override
+            public void onFailure(int code, String msg) {
+                mLoginStatusListener.onFail(ErrorCode.LOGIN_FAIL,mActivity.getString(ResourseIdUtils.getStringId("ym_loginqq_fail")));
+            }
+        };
+        QQPluginApi.getInstance().login(mActivity,null,qqLoginCallback);
     }
 
     private void wxLogin() {
@@ -767,16 +761,16 @@ public class UserModel implements IUserModel {
     @Override
     public void logout(Activity activity) {
         loginAccountInfo = null;
-        clearQQInfo(activity);
+//        clearQQInfo(activity);
         resetAccountInfo(activity);
     }
 
-    private void clearQQInfo(Activity activity) {
-        mTencent = Tencent.createInstance(activity.getString(ResourseIdUtils.getStringId("qq_appid")),
-                activity.getApplicationContext(),
-                activity.getString(ResourseIdUtils.getStringId("qq_authorities")));
-        mTencent.logout(activity);
-    }
+//    private void clearQQInfo(Activity activity) {
+//        mTencent = Tencent.createInstance(activity.getString(ResourseIdUtils.getStringId("qq_appid")),
+//                activity.getApplicationContext(),
+//                activity.getString(ResourseIdUtils.getStringId("qq_authorities")));
+//        mTencent.logout(activity);
+//    }
 
     public boolean isLogin(){
         if (loginAccountInfo == null){
@@ -987,88 +981,13 @@ public class UserModel implements IUserModel {
     }
 
 
-    private boolean ready(Context context) {
-        if (mTencent == null) {
-            return false;
-        }
-        boolean ready = mTencent.isSessionValid()
-                && mTencent.getQQToken().getOpenId() != null;
-        return ready;
-    }
 
-    private void startQQLogin() {
-        loginListener = new IUiListener() {
-            @Override
-            public void onComplete(Object o) {
-                JSONObject response = (JSONObject) o;
-                initOpenidAndToken(response);
-                updateUserInfo();
 
-            }
-
-            @Override
-            public void onError(UiError uiError) {
-                mLoginStatusListener.onFail(ErrorCode.LOGIN_FAIL,mActivity.getString(ResourseIdUtils.getStringId("ym_loginqq_fail")));
-            }
-
-            @Override
-            public void onCancel() {
-                mLoginStatusListener.onCancel();
-            }
-        };
-        mTencent.login(mActivity, "all", loginListener);
-    }
-
-    public void initOpenidAndToken(JSONObject jsonObject) {
-        try {
-            String token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN);
-            String expires = jsonObject.getString(Constants.PARAM_EXPIRES_IN);
-            String openId = jsonObject.getString(Constants.PARAM_OPEN_ID);
-            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires)
-                    && !TextUtils.isEmpty(openId)) {
-                mTencent.setAccessToken(token, expires);
-                mTencent.setOpenId(openId);
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    private void updateUserInfo() {
-        if (mTencent != null && mTencent.isSessionValid()) {
-            IUiListener listener = new IUiListener() {
-
-                @Override
-                public void onError(UiError e) {
-                    mTencent.logout(mActivity);
-                    mLoginStatusListener.onFail(ErrorCode.LOGIN_FAIL,mActivity.getString(ResourseIdUtils.getStringId("ym_loginqq_fail")));
-                }
-
-                @Override
-                public void onComplete(final Object response) {
-                    Message msg = new Message();
-                    msg.obj = response;
-                    msg.what = UPDATEQQUSERINFO;
-                    handler.sendMessage(msg);
-
-                }
-
-                @Override
-                public void onCancel() {
-                    mTencent.logout(mActivity);
-
-                }
-            };
-            mInfo = new UserInfo(mActivity, mTencent.getQQToken());
-            mInfo.getUserInfo(listener);
-
-        }
-    }
 
 
     @Override
     public void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
-        Tencent.onActivityResultData(requestCode, resultCode, data, loginListener);
-
+        QQPluginApi.getInstance().onActivityResult(context,requestCode,resultCode,data);
     }
 
     @Override
