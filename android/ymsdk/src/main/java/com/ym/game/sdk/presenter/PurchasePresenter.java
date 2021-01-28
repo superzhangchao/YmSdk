@@ -1,12 +1,11 @@
 package com.ym.game.sdk.presenter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
 
 
-import com.ym.game.sdk.common.base.config.ErrorCode;
+import com.ym.game.sdk.base.config.ErrorCode;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.bean.PurchaseBean;
 
@@ -16,7 +15,6 @@ import com.ym.game.sdk.common.utils.ToastUtils;
 import com.ym.game.sdk.model.IPurchaseView;
 import com.ym.game.sdk.model.PurchaseModel;
 import com.ym.game.sdk.ui.activity.YmPurchaseActivity;
-
 
 
 public class PurchasePresenter {
@@ -58,17 +56,20 @@ public class PurchasePresenter {
         PurchaseModel.getInstance().startPay(purchaseView.getContext(), purchaseDate, new PurchaseModel.PurchaseStatusListener() {
 
             @Override
-            public void onSuccess(String platformOrderId) {
+            public void onSuccess(String platformOrderId,String payType) {
                 purchaseView.dismissLoading();
                 purchaseView.closeActivity();
-                CallbackMananger.getPayCallBack().onSuccess(platformOrderId);
+                PurchaseBean purchaseBean = new PurchaseBean();
+                purchaseBean.setPlatformOrderId(platformOrderId);
+                purchaseBean.setPayType(payType);
+                CallbackMananger.getPayCallBack().onSuccess(purchaseBean);
             }
 
             @Override
             public void onCancel() {
                 purchaseView.dismissLoading();
                 purchaseView.closeActivity();
-                ToastUtils.showToast(purchaseActivity,purchaseActivity.getString(ResourseIdUtils.getStringId("ym_text_paycancel")));
+//                ToastUtils.showToast(purchaseActivity,purchaseActivity.getString(ResourseIdUtils.getStringId("ym_text_paycancel")));
                 CallbackMananger.getPayCallBack().onCancel();
             }
 
@@ -88,13 +89,4 @@ public class PurchasePresenter {
         PurchaseModel.getInstance().destroy(activity);
     }
 
-//    public static void checkWxPay() {
-//        boolean wxPayStatus = PurchaseModel.getInstance().getWxPayStatus();
-//        if (wxPayStatus){
-//            PurchaseModel.getInstance().resetWxPay();
-//        }
-//    }
-    public static void onResume(Context context) {
-        PurchaseModel.getInstance().onResume(context);
-    }
 }

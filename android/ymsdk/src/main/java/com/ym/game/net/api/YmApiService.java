@@ -24,7 +24,16 @@ public interface YmApiService {
     Call<ResultVcodeBean> getVcode(@QueryMap Map<String, String> vcodeReq);
 
     @GET("user/check/phone")
-    Call<ResultVcodeBean> checkBind(@QueryMap Map<String, String> vcodeReq);
+    Call<ResultVcodeBean> checkRegister(@QueryMap Map<String, String> vcodeReq);
+
+    @GET("user/register/phone")
+    Call<ResultAccoutBean> register(@QueryMap Map<String, String> accountReq);
+
+    @GET("user/reset/phone")
+    Call<ResultAccoutBean> resetPassword(@QueryMap Map<String, String> accountReq);
+
+    @GET("user/login/password")
+    Call<ResultAccoutBean> getPasswordAccoutInfo(@QueryMap Map<String, String> accountReq);
 
     @GET("user/login/phone")
     Call<ResultAccoutBean> getPhoneAccoutInfo(@QueryMap Map<String, String> accountReq);

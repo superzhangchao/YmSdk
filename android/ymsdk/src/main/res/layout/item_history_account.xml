@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 自动弹出的下拉列表的item -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_content"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/ym_item_heigth"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/ym_tv_phone"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ym_item_tv_heigth"
+            android:layout_marginStart="@dimen/ym_margin30"
+            android:layout_marginTop="@dimen/ym_margin4"
+            android:layout_toStartOf="@id/ym_im_history_close"
+            android:textColor="@color/ym_tv_phone_color"
+            android:textSize="@dimen/text_size_f12"
+            android:text="18317957945"/>
+
+        <TextView
+            android:id="@+id/ym_tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ym_item_tv_heigth"
+            android:layout_marginStart="@dimen/ym_margin30"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/ym_margin4"
+            android:textColor="@color/ym_tv_time_color"
+            android:textSize="@dimen/text_size_f11"
+            android:text="最后登录： 2020-10-1 12:20:00"/>
+        <ImageView
+            android:id="@+id/ym_im_history_close"
+            android:layout_width="@dimen/ym_item_im_size"
+            android:layout_height="@dimen/ym_item_im_size"
+            android:src="@mipmap/ym_history_close"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/ym_margin3"
+            android:paddingTop="@dimen/ym_margin2"
+            android:clickable="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -47,16 +47,8 @@ public class AlipayPay {
 
         paycallback = callBackListener;
 
-        String alipayOrderInfo = String.valueOf(payMap.get("payment_info"));
 
-        //日志打印下,不传如支付订单里
-        try {
-            LogUtils.d(TAG,"alipayOrderInfo" + URLDecoder.decode(alipayOrderInfo, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        final String orderInfo = alipayOrderInfo;
+        final String orderInfo = (String) payMap.get("orderInfo");
         Runnable payRunnable = new Runnable() {
 
             @Override

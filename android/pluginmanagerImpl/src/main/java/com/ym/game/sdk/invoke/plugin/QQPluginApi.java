@@ -42,6 +42,12 @@ public class QQPluginApi extends PluginReflectApi {
         }
     }
 
+    public void logout(Context context){
+        if (qqPlugin!=null){
+            invoke(qqPlugin,"qqLogout",new Class[]{Context.class},new Object[]{context});
+        }
+    }
+
     public void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
         if (qqPlugin != null){
             invoke(qqPlugin,"onActivityResult",new Class[]{Context.class,int.class,int.class,Intent.class},

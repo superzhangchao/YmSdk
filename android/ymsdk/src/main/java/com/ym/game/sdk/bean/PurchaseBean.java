@@ -17,13 +17,13 @@ public class PurchaseBean implements Serializable {
     private String mUserId;//平台的唯一标识
     private String mGameSign;
     private String mExt;
+    private String mPlatformOrderId;
 //    private String notifyUrl;//不签名
 
 
     public String getPayType() {
         return payType;
     }
-
     public void setPayType(String payType) {
         this.payType = payType;
     }
@@ -31,7 +31,6 @@ public class PurchaseBean implements Serializable {
     public String getAccessToken() {
         return accessToken;
     }
-
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
@@ -39,43 +38,69 @@ public class PurchaseBean implements Serializable {
     public String getProductDesc() {
         return mProductDesc;
     }
+    public void setProductDesc(String productDesc) {
+        this.mProductDesc = productDesc;
+    }
 
     public String getProductId() {
         return mProductId;
+    }
+    public void setProductId(String productId) {
+        this.mProductId = productId;
     }
 
     public String getProductName() {
         return mProductName;
     }
+    public void setProductName(String productName) {
+        this.mProductName = productName;
+    }
 
     public String getProductPrice() {
         return mProductPrice;
+    }
+    public void setProductPrice(String productPrice) {
+        this.mProductPrice = productPrice;
     }
 
     public String getOrderId() {
         return mOrderId;
     }
+    public void setOrderId(String orderId) {
+        this.mOrderId = orderId;
+    }
 
     public String getServerId() {
         return mServerId;
+    }
+    public void setServerId(String serverId) {
+        this.mServerId = serverId;
     }
 
     public String getRoleId() {
         return mRoleId;
     }
+    public void setRoleId(String roleId) {
+        this.mRoleId = roleId;
+    }
 
     public String getRoleName() {
         return mRoleName;
+    }
+    public void setRoleName(String roleName) {
+        this.mRoleName = roleName;
     }
 
     public String getRoleLevel() {
         return mRoleLevel;
     }
+    public void setRoleLevel(String roleLevel) {
+        this.mRoleLevel = roleLevel;
+    }
 
     public String getUserId() {
         return mUserId;
     }
-
     public void setUserId(String userId) {
         this.mUserId = userId;
     }
@@ -83,8 +108,27 @@ public class PurchaseBean implements Serializable {
     public String getGameSign() {
         return mGameSign;
     }
+    public void setGameSign(String gameSign) {
+        this.mGameSign = gameSign;
+    }
+
+
     public String getExt() {
         return mExt;
+    }
+    public void setExt(String ext) {
+        this.mExt = ext;
+    }
+
+    public String getPlatformOrderId() {
+        return mPlatformOrderId;
+    }
+
+    public void setPlatformOrderId(String platformOrderId) {
+        this.mPlatformOrderId = platformOrderId;
+    }
+
+    public PurchaseBean(){
     }
 
     private  PurchaseBean(PurchaseBeanBuilder builder){

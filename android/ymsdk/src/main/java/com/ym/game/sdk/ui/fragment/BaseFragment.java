@@ -7,7 +7,6 @@ import android.content.Context;
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
 import com.ym.game.sdk.ui.activity.BaseActivity;
 
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentFactory;

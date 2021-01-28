@@ -40,7 +40,7 @@ public class WechatPay {
         return INSTANCE;
     }
 
-    private CallBackListener paycallback;
+    private CallBackListener mPaycallback;
     private boolean payStatus = false;
     private BroadcastReceiver wxPayBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -48,14 +48,14 @@ public class WechatPay {
             payStatus = false;
             int paycode = intent.getIntExtra("PAYCODE", -1);
             switch (paycode) {
-                case ErrorCode.SUCCESS:
-                    paycallback.onSuccess(null);
+                case WechatConstants.WXPAY_RESULT_SUCC_CODE:
+                    mPaycallback.onSuccess(null);
                     break;
-                case ErrorCode.CANCEL:
-                    paycallback.onFailure(ErrorCode.CANCEL,"pay cancel");
+                case WechatConstants.WXPAY_RESULT_CANCEL_CODE:
+                    mPaycallback.onFailure(ErrorCode.CANCEL,"pay cancel");
                     break;
-                case ErrorCode.FAILURE:
-                    paycallback.onFailure(ErrorCode.FAILURE,"pay failure");
+                case WechatConstants.WXPAY_RESULT_FAIL_CODE:
+                    mPaycallback.onFailure(ErrorCode.FAILURE,"pay failure");
                     break;
                 default:
                     break;
@@ -71,8 +71,8 @@ public class WechatPay {
     };
 
     public void pay(Context context, Map<String, Object> payMap, CallBackListener callBackListener) {
-        paycallback =callBackListener;
-        payStatus = true;
+        mPaycallback =callBackListener;
+
         IntentFilter filter = new IntentFilter(WechatConstants.WXPAYACTION);
         context.registerReceiver(wxPayBroadcastReceiver, filter);
         msgApi = WXAPIFactory.createWXAPI(context, WechatConstants.WX_APP_ID, false);
@@ -87,10 +87,10 @@ public class WechatPay {
         request.sign = (String) payMap.get("sign");
         int wxSdkVersion = msgApi.getWXAppSupportAPI();
         if (wxSdkVersion >= Build.OFFLINE_PAY_SDK_INT) {
-//            setWxPayStatus(true);
+            payStatus = true;
             msgApi.sendReq(request);
         } else {
-            paycallback.onFailure(ErrorCode.CANCEL,"pay cancel");
+            mPaycallback.onFailure(ErrorCode.CANCEL,"pay cancel");
             ToastUtils.showToast(context, context.getString(ResourseIdUtils.getStringId("ym_no_install_wechat")));
 
         }
@@ -103,7 +103,7 @@ public class WechatPay {
     public void onResume(Context context) {
         LogUtils.debug_d(TAG,"onResume");
         if (payStatus){
-            paycallback.onFailure(ErrorCode.CANCEL,"pay cancel");
+            mPaycallback.onFailure(ErrorCode.CANCEL,"pay cancel");
             payStatus = false;
         }
     }

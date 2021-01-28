@@ -1,11 +1,11 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="weixinappid">wxd02fbae564a0c256</string>
     <string name="qq_appid">101877131</string>
     <string name="qq_appscheme">tencent101877131</string>
     <string name="qq_authorities">com.ym.game.sdk.fileprovider</string>
+    <string name="reyunappkey">d71fbb33506a024a6a00c1599537bd1a</string>
 
 
-    <string name="ym_no_install_wechat">检测到您未安装微信客户端，请先安装微信客户端</string>
     <string name="ym_account_hint">请输入手机号</string>
     <string name="ym_ethint_phonecode">请输入验证码</string>
     <string name="ym_tv_getphonecode">获取验证码</string>
@@ -13,19 +13,35 @@
     <string name="ym_xieyi2">用户协议</string>
     <string name="ym_xieyi3">和</string>
     <string name="ym_yinsi">隐私协议</string>
+    <string name="ym_pwd_login" tools:ignore="ExtraTranslation">手机密码登录</string>
     <string name="ym_bt_login">登录</string>
+    <string name="ym_bt_loginohter">其他账号登录</string>
     <string name="ym_tv_otherlogin">其他登录方式</string>
     <string name="ym_ethint_pwd">请输入密码</string>
     <string name="ym_ethint_newpwd">请输入新密码</string>
-    <string name="ym_bt_setpwd">重置密码</string>
-    <string name="ym_bt_unbind">下次再说</string>
-    <string name="ym_bt_bind">提交绑定</string>
-    <string name="ym_tv_bindtip">为了您的账号安全，请绑定手机号。</string>
+    <string name="ym_bt_resetpwd">重置</string>
+    <string name="ym_tv_bindtitle">账号升级</string>
+    <string name="ym_bt_cancel">下次再说</string>
+    <string name="ym_bt_register">注册</string>
+    <string name="ym_bt_bind">确认升级</string>
+    <string name="ym_tv_bindtip">游客账号存在丢失风险！！！为了您的账号安全，强烈建议您升级为正式账号。</string>
+    <string name="ym_tv_set_tip">提示：如果您已经手机验证码登录过，无需注册返回上一层重置密码即可。</string>
+    <string name="ym_tv_pwdlogintitle">密码登录</string>
+    <string name="ym_tv_setpwdtitle">密码重置</string>
+    <string name="ym_tv_registertitle">账号注册</string>
+    <string name="ym_tv_register">账号注册</string>
+    <string name="ym_tv_setpwd">重置密码</string>
+    <string name="ym_tv_detele">删除</string>
+    <string name="ym_tv_cancel">取消</string>
+    <string name="ym_tv_bindsuccess">帐号升级成功，下次请使用正式账号登录</string>
     <string name="ym_tv_shiming">实名认证</string>
     <string name="ym_bt_realname">提交认证</string>
     <string name="ym_ethint_real_name">请输入真实姓名</string>
     <string name="ym_ethint_idcard_code">请输入身份证码</string>
     <string name="ym_tv_shimingtip">根据国家的《网络游戏管理暂行办法》规定，网络游戏用户需要使用有效身份信息进行实名注册，为享受健康游戏生活，请玩家尽快实名注册。我们承诺将严格保护您的个人信息，不会对外泄露。</string>
+    <string name="ym_tv_guestshimingtip1">您目前处于游客体验模式，根据国家防止未成年人沉迷网络游戏的规则，每15天只有1个小时的游戏体验时长，无法付费消费，建议您完成相关认证！</string>
+    <string name="ym_tv_guestshimingtip2">您目前处于游客体验模式已累计超过1小时，根据国家防止未成年人沉迷网络游戏的规则，每15天只有1个小时的游戏体验时长，无法付费消费，建议您完成相关认证！</string>
+
     <string name="ym_tip_xieyi">请阅读用户协议并同意</string>
     <string name="ym_tv_productname">钻石充值大礼包</string>
     <string name="ym_tv_pricesign">¥</string>
@@ -40,6 +56,9 @@
     <string name="ym_tip_input_vcode">请输入您的验证码</string>
     <string name="ym_tip_vcode_error1">您的验证码位数不正确</string>
     <string name="ym_tip_vcode_error2">请输入正确的验证</string>
+    <string name="ym_tip_input_pwd">请输入您的密码</string>
+    <string name="ym_tip_pwderror">请输入正确的手机号与密码</string>
+    <string name="ym_tip_pwd_error">请输入不少于6位最大20位的密码</string>
     <string name="ym_tip_realname1">姓名和身份证信息不能为空</string>
     <string name="ym_tip_realname2">姓名不能为空</string>
     <string name="ym_tip_realname3">身份证信息不能为空</string>
@@ -47,6 +66,7 @@
     <string name="ym_tip_realname5">证件无效，请重新输入</string>
     <string name="ym_tip_realname6">请输入真实的证件号码</string>
     <string name="ym_text_neterror">网络连接不稳定，请检查网络环境</string>
+    <string name="ym_text_disconnet">服务器连接失败，请稍后重试</string>
     <string name="ym_text_netdata_null">获取网络数据失败</string>
     <string name="ym_loginqq_fail">QQ登录失败</string>
     <string name="ym_logingt_fail">游客登录失败</string>
@@ -62,6 +82,13 @@
     <string name="ym_text_paycancel">取消支付</string>
     <string name="ym_text_logincancel">取消登录</string>
     <string name="ym_text_order_error">订单参数异常</string>
+    <string name="ym_text_no_paytype">不支持支付</string>
+
+    <string name="ym_text_unregister">该账号未注册，请先注册</string>
+    <string name="ym_text_register">账号已注册，请不要重复注册</string>
+    <string name="ym_text_setsuccess">密码设置成功</string>
+
+
 
 
 

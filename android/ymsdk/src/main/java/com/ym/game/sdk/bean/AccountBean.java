@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class AccountBean implements Serializable {
     public String loginType;
+    public boolean hasPassword;
     private int authStatus;
 
     public String timeStamp;
@@ -12,6 +13,12 @@ public class AccountBean implements Serializable {
     //手机验证码参数
     public String number;
     public String vCode;
+
+    //登录密码
+    public String password;
+
+    //最后登录时间
+    public long lastLoginTime;
 
     //微信参数
     public String wxCode;
@@ -54,6 +61,14 @@ public class AccountBean implements Serializable {
         this.loginType = loginType;
     }
 
+    public boolean isHasPassword() {
+        return hasPassword;
+    }
+
+    public void setHasPassword(boolean hasPassword) {
+        this.hasPassword = hasPassword;
+    }
+
     public int getAuthStatus() {
         return authStatus;
     }
@@ -92,6 +107,22 @@ public class AccountBean implements Serializable {
 
     public void setVcode(String vCode) {
         this.vCode = vCode;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public long getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(long lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
     }
 
     public String getWxCode() {

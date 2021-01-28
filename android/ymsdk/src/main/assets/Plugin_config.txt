@@ -11,6 +11,12 @@
             "class_name": "com.ym.game.plugin.wechat.WechatPlugin",
             "description": "微信功能插件",
             "version": "5.3.1"
+        },
+        {
+            "plugin_name": "plugin_qq",
+            "class_name": "com.ym.game.plugin.qq.QQPlugin",
+            "description": "QQ功能插件",
+            "version": "2.3.4"
         }
     ]
 }

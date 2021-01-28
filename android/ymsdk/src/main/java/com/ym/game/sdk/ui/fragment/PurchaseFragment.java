@@ -1,8 +1,6 @@
 package com.ym.game.sdk.ui.fragment;
 
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ym.game.sdk.bean.PurchaseBean;
-import com.ym.game.sdk.common.utils.ImageUtils;
+import com.ym.game.sdk.common.base.parse.plugin.PluginManager;
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
 import com.ym.game.sdk.event.BaseEvent;
 import com.ym.game.sdk.event.PayTypeEvent;
-import com.ym.game.sdk.model.IPurchaseModel;
 import com.ym.game.sdk.model.IPurchaseView;
 import com.ym.game.sdk.presenter.PurchasePresenter;
-
+import com.ym.game.utils.ImageUtils;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Logger;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -58,12 +54,13 @@ public class PurchaseFragment extends BaseFragment implements View.OnClickListen
         ymPrice = (TextView) view.findViewById(ResourseIdUtils.getId("ym_price"));
         ymRlPay = view.findViewById(ResourseIdUtils.getId("ym_rl_pay"));
         ymImPay = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_im_pay"));
+        ymImPaymore = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_im_paymore"));
         ymTvPay = (TextView) view.findViewById(ResourseIdUtils.getId("ym_tv_pay"));
 
         ymBtPayok = (Button) view.findViewById(ResourseIdUtils.getId("ym_bt_payok"));
 
         ymImBack.setOnClickListener(this);
-        ymRlPay.setOnClickListener(this);
+
         ymBtPayok.setOnClickListener(this);
         EventBus.getDefault().register(this);
         PurchasePresenter.initPay(baseActivity);
@@ -81,13 +78,21 @@ public class PurchaseFragment extends BaseFragment implements View.OnClickListen
         Double price = Double.parseDouble(productPrice)/100;
         DecimalFormat df = new DecimalFormat("0.00");//格式化
         String formatPrice = df.format(price);
-        payType = PAYTYPEALI;
-
+        ymImPaymore.setVisibility(View.INVISIBLE);
+        if (PluginManager.getInstance().getPlugin("plugin_alipay")!=null&&PluginManager.getInstance().getPlugin("plugin_wechat")!=null){
+            payType = PAYTYPEALI;
+            ymRlPay.setOnClickListener(this);
+            ymImPaymore.setVisibility(View.VISIBLE);
+        }else if (PluginManager.getInstance().getPlugin("plugin_alipay")!=null){
+            payType = PAYTYPEALI;
+        }else if (PluginManager.getInstance().getPlugin("plugin_wechat")!=null){
+            payType = PAYTYPEWEIXIN;
+        }
         ymImBack.setVisibility(View.VISIBLE);
         ymImClose.setVisibility(View.INVISIBLE);
         ymImBack.setImageResource(ResourseIdUtils.getMipmapId("ym_close"));
 
-        fengjiexianRight.setImageBitmap(ImageUtils.rotateIm(baseActivity,ResourseIdUtils.getMipmapId("ym_fenjiexian")));
+        fengjiexianRight.setImageBitmap(ImageUtils.rotateIm(baseActivity, ResourseIdUtils.getMipmapId("ym_fenjiexian")));
         ymProductName.setText(productName);
         ymPrice.setText(formatPrice);
         ymImPay.setImageResource(ResourseIdUtils.getMipmapId("ym_"+ payType));
@@ -115,7 +120,6 @@ public class PurchaseFragment extends BaseFragment implements View.OnClickListen
             payType = ((PayTypeEvent) event).getPayType();
             ymImPay.setImageResource(ResourseIdUtils.getMipmapId("ym_"+ payType));
             ymTvPay.setText(ResourseIdUtils.getStringId("ym_tv_"+ payType));
-            Log.i(TAG, "onBaseEvent: "+payType);
         }
     }
 

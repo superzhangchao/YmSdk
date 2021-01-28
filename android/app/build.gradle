@@ -47,13 +47,28 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+//    bundle {
+//        density {
+//            // Different APKs are generated for devices with different screen densities; true by default.
+//            enableSplit true
+//        }
+//        abi {
+//            // Different APKs are generated for devices with different CPU architectures; true by default.
+//            enableSplit true
+//        }
+//        language {
+//            // This is disabled so that the App Bundle does NOT split the APK for each language.
+//            // We're gonna use the same APK for all languages.
+//            enableSplit true
+//        }
+//    }
+
 
 }
 
 repositories {
     flatDir {
-        dirs 'libs','../ymsdk/libs'
-//        dirs './libs'
+        dirs 'libs'
     }
 }
 dependencies {
@@ -72,14 +87,18 @@ dependencies {
     implementation 'com.tencent.bugly:nativecrashreport:latest.release'
 
 
-//    implementation 'com.orhanobut:logger:2.2.0'
-//    implementation 'org.greenrobot:eventbus:3.2.0'
-//    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-//    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-//
-//    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
-//    implementation(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
+    //开发依赖
     implementation project(':ymsdk')
 
-//    implementation(name: 'ymsdk-release', ext: 'aar')
+    //正式依赖
+//    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+//    api 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
+//    implementation(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
+//    implementation(name: 'oaid_sdk_1.0.22', ext: 'aar')
+//    implementation(name: 'pluginmanagerImpl-release-20210126', ext: 'aar')
+//    implementation(name: 'ymsdk-release-20210126', ext: 'aar')
+//    implementation(name: 'ymsdk_plugin_alipay-release-20210126', ext: 'aar')
+//    implementation(name: 'ymsdk_plugin_qq-release-20210126', ext: 'aar')
+//    implementation(name: 'ymsdk_plugin_wechat-release-20210126', ext: 'aar')
+//    implementation(name: 'ymsdk_utlis-release-20210126', ext: 'aar')
 }

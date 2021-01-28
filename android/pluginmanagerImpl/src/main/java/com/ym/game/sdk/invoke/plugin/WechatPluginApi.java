@@ -31,6 +31,13 @@ public class WechatPluginApi extends PluginReflectApi {
         return INSTANCE;
     }
 
+    public void login(Context context,Map<String,Object>map,CallBackListener callBackListener){
+        if (wechatPlugin!=null){
+            invoke(wechatPlugin,"wechatLogin",new Class[]{Context.class,Map.class,CallBackListener.class},new Object[]{
+                    context,map,callBackListener});
+        }
+    }
+
     /**
      * 调用微信app支付
      */

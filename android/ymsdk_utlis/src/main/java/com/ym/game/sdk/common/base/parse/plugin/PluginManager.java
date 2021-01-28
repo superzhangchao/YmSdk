@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 
 import com.google.gson.Gson;
+import com.ym.game.sdk.common.frame.logger.Logger;
 import com.ym.game.sdk.common.utils.FileUtils;
 import com.ym.game.sdk.common.utils.LogUtils;
 

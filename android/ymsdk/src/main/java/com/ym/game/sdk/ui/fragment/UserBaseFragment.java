@@ -35,6 +35,12 @@ public class UserBaseFragment extends BaseFragment implements IUserView {
     }
 
     @Override
+    public void closeCurrnetFragment() {
+
+    }
+
+
+    @Override
     public void cancelLogin() {
 
     }

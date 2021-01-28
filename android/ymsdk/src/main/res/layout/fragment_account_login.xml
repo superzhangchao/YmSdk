@@ -28,7 +28,7 @@
                 android:textColor="@color/ym_edit_name"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:textSize="@dimen/text_size_f10"
+                android:textSize="@dimen/text_size_f12"
                 android:lines="1"
                 android:text="手机号:"/>
 
@@ -42,7 +42,7 @@
                     android:layout_centerVertical="true"
                     android:hint="@string/ym_account_hint"
                     android:textColorHint="@color/ym_edit_hintcolor"
-                    android:textSize="@dimen/text_size_f10"
+                    android:textSize="@dimen/text_size_f12"
                     android:maxLength="11"
                     android:textColor="@color/ym_edit_color"
                     android:background="@null"
@@ -56,7 +56,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/ym_edit_height"
-            android:layout_marginTop="@dimen/ym_margin18"
+            android:layout_marginTop="@dimen/ym_margin10"
             android:layout_marginLeft="@dimen/ym_edit_horizontal_margin"
             android:layout_marginRight="@dimen/ym_edit_horizontal_margin"
             android:background="@mipmap/ym_edbg">
@@ -69,7 +69,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:lines="1"
-                android:textSize="@dimen/text_size_f10"
+                android:textSize="@dimen/text_size_f12"
                 android:text="验证码:"/>
 
 
@@ -83,11 +83,12 @@
                 android:paddingEnd="@dimen/ym_padding"
                 android:hint="@string/ym_ethint_phonecode"
                 android:textColorHint="@color/ym_edit_hintcolor"
-                android:textSize="@dimen/text_size_f10"
+                android:textSize="@dimen/text_size_f12"
                 android:maxLength="6"
                 android:textColor="@color/ym_edit_color"
                 android:background="@null"
                 android:layout_toStartOf="@id/ym_tv_phonecode"
+                android:imeOptions="actionDone"
                 android:inputType="number"/>
 
             <com.ym.game.sdk.ui.widget.TimerTextView android:id="@+id/ym_tv_phonecode"
@@ -98,7 +99,7 @@
                 android:layout_marginEnd="@dimen/ym_padding"
                 android:visibility="visible"
                 android:textColor="@color/ym_phonecode"
-                android:textSize="@dimen/text_size_f10"
+                android:textSize="@dimen/text_size_f12"
                 android:text="@string/ym_tv_getphonecode"/>
         </RelativeLayout>
 
@@ -106,7 +107,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/ym_xieyi_height"
-            android:layout_marginTop="@dimen/ym_margin10"
+            android:layout_marginTop="@dimen/ym_margin8"
             android:layout_marginLeft="@dimen/ym_edit_horizontal_margin"
             android:layout_marginRight="@dimen/ym_edit_horizontal_margin">
 
@@ -134,7 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/ym_xieyi_height"
                 android:layout_toEndOf="@id/ym_im_ck_xieyi"
-                android:textSize="@dimen/text_size_f8"
+                android:textSize="@dimen/text_size_f9"
                 android:textColor="@color/ym_edit_name"
                 android:text="@string/ym_xieyi1"/>
             <TextView
@@ -142,7 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/ym_xieyi_height"
                 android:layout_toEndOf="@id/ym_tv_xieyi1"
-                android:textSize="@dimen/text_size_f8"
+                android:textSize="@dimen/text_size_f9"
                 android:textColor="@color/ym_xieyi"
                 android:clickable="true"
                 android:text="@string/ym_xieyi2"/>
@@ -151,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/ym_xieyi_height"
                 android:layout_toEndOf="@id/ym_tv_xieyitext"
-                android:textSize="@dimen/text_size_f8"
+                android:textSize="@dimen/text_size_f9"
                 android:textColor="@color/ym_edit_name"
                 android:text="@string/ym_xieyi3"/>
 
@@ -160,10 +161,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/ym_xieyi_height"
                 android:layout_toEndOf="@id/ym_tv_xieyi2"
-                android:textSize="@dimen/text_size_f8"
+                android:textSize="@dimen/text_size_f9"
                 android:textColor="@color/ym_xieyi"
                 android:clickable="true"
                 android:text="@string/ym_yinsi"/>
+            
+            <ImageView
+                android:id="@+id/ym_im_phone"
+                android:layout_width="@dimen/ym_phone_width"
+                android:layout_height="@dimen/ym_phone_height"
+                android:layout_toStartOf="@id/ym_tv_pwdlogin"
+                android:paddingEnd="@dimen/ym_margin2"
+                android:src="@mipmap/ym_phone"/>
+            
+            <TextView
+                android:id="@+id/ym_tv_pwdlogin"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/ym_xieyi_height"
+                android:layout_alignParentEnd="true"
+                android:textSize="@dimen/text_size_f9"
+                android:textColor="@color/ym_edit_name"
+                android:clickable="true"
+                android:text="手机密码登录"/>
         </RelativeLayout>
 
         <Button
@@ -172,7 +191,7 @@
             android:layout_height="@dimen/ym_login_height"
             android:layout_marginStart="@dimen/ym_edit_horizontal_margin"
             android:layout_marginEnd="@dimen/ym_edit_horizontal_margin"
-            android:layout_marginTop="@dimen/ym_margin10"
+            android:layout_marginTop="@dimen/ym_margin8"
             android:text="@string/ym_bt_login"
             android:textColor="@color/ym_bt_login"
             android:background="@mipmap/ym_button_long"/>
@@ -181,7 +200,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/ym_line_height"
-            android:layout_marginTop="@dimen/ym_margin10">
+            android:layout_marginTop="@dimen/ym_margin5">
 
             <TextView
                 android:id="@+id/ym_other_title"
@@ -190,7 +209,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textColor="@color/ym_edit_name"
-                android:textSize="@dimen/text_size_f12"
+                android:textSize="@dimen/text_size_f13"
                 android:text="@string/ym_tv_otherlogin"/>
 
             <ImageView
@@ -216,13 +235,12 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/ym_otherlogin_height"
-            android:layout_marginTop="@dimen/ym_margin10"
-            android:layout_marginBottom="@dimen/ym_margin10">
+            android:layout_marginTop="@dimen/ym_margin5">
 
             <ImageView
                 android:id="@+id/ym_login_weixin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/ym_im_login"
+                android:layout_height="@dimen/ym_im_login"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:clickable="true"
@@ -231,28 +249,70 @@
 
             <ImageView
                 android:id="@+id/ym_login_qq"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/ym_im_login"
+                android:layout_height="@dimen/ym_im_login"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@id/ym_login_weixin"
-                android:layout_marginEnd="@dimen/ym_margin10"
+                android:layout_marginEnd="@dimen/ym_margin30"
                 android:clickable="true"
                 android:focusable="true"
                 android:src="@mipmap/ym_login_qq"/>
             <ImageView
                 android:id="@+id/ym_login_gt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/ym_im_login"
+                android:layout_height="@dimen/ym_im_login"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/ym_login_weixin"
-                android:layout_marginStart="@dimen/ym_margin10"
+                android:layout_marginStart="@dimen/ym_margin30"
                 android:clickable="true"
                 android:focusable="true"
                 android:src="@mipmap/ym_login_gt"/>
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/ym_margin5">
 
+            <TextView
+                android:id="@+id/ym_last_weixin"
+                android:layout_width="@dimen/ym_tv_lastlogin_width"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:visibility="invisible"
+                android:textColor="@color/ym_tip_red"
+                android:textSize="@dimen/text_size_f8"
+                android:text="上次登录"/>
+
+            <TextView
+                android:id="@+id/ym_last_qq"
+                android:layout_width="@dimen/ym_tv_lastlogin_width"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/ym_margin20"
+                android:layout_toStartOf="@id/ym_last_weixin"
+                android:gravity="center"
+                android:visibility="invisible"
+                android:textColor="@color/ym_tip_red"
+                android:textSize="@dimen/text_size_f8"
+                android:text="上次登录"/>
+
+            <TextView
+                android:id="@+id/ym_last_gt"
+                android:layout_width="@dimen/ym_tv_lastlogin_width"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/ym_margin20"
+                android:layout_toEndOf="@id/ym_last_weixin"
+                android:gravity="center"
+                android:visibility="invisible"
+                android:textColor="@color/ym_tip_red"
+                android:textSize="@dimen/text_size_f8"
+                android:text="上次登录"/>
+
+        </RelativeLayout>
 
 
 

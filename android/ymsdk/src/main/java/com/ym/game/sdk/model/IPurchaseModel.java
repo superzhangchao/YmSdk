@@ -16,5 +16,4 @@ public interface IPurchaseModel {
     void destroy(Activity activity);
 
 
-
 }

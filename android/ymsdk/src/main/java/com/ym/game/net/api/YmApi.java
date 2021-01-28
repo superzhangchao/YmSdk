@@ -15,6 +15,8 @@ import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.QueryMap;
 
 public class YmApi {
     private static YmApi instance;
@@ -60,8 +62,18 @@ public class YmApi {
     public Call<ResultVcodeBean> getVcode(Map<String, String> vcodeReq){
         return service.getVcode(vcodeReq);
     }
-    public Call<ResultVcodeBean> checkBind(Map<String, String> vcodeReq){
-        return service.checkBind(vcodeReq);
+
+    public Call<ResultVcodeBean> checkRegister(Map<String, String> vcodeReq){
+        return service.checkRegister(vcodeReq);
+    }
+    public Call<ResultAccoutBean> register(Map<String, String> accountReq){
+        return service.register(accountReq);
+    }
+    public Call<ResultAccoutBean> resetPassword(Map<String, String> accountReq){
+        return service.resetPassword(accountReq);
+    }
+    public Call<ResultAccoutBean> getPasswordAccoutInfo(Map<String, String> accountReq){
+        return service.getPasswordAccoutInfo(accountReq);
     }
 
     public Call<ResultAccoutBean>  getPhoneAccoutInfo(Map<String, String> accountReq){

@@ -1,9 +1,7 @@
 package com.ym.game.sdk.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,8 +11,6 @@ import android.widget.TextView;
 
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
 import com.ym.game.sdk.ui.fragment.BackHandlerHelper;
-
-
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

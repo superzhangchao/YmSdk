@@ -1,17 +1,26 @@
 package com.ym.game.sdk.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.ym.game.plugin.wechat.WechatPlugin;
 import com.ym.game.sdk.bean.AccountBean;
+import com.ym.game.sdk.bean.PurchaseBean;
+import com.ym.game.sdk.common.base.parse.plugin.PluginManager;
+import com.ym.game.sdk.invoke.plugin.WechatPluginApi;
+import com.ym.game.sdk.model.IUserModel;
+import com.ym.game.sdk.model.UserModel;
 import com.ym.game.sdk.presenter.UserPresenter;
 import com.ym.game.sdk.ui.fragment.AccountBindFragment;
 import com.ym.game.sdk.ui.fragment.AccountLoginFragment;
+import com.ym.game.sdk.ui.fragment.AccountPasswordLoignFragment;
+import com.ym.game.sdk.ui.fragment.PurchaseFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.ym.game.sdk.common.base.config.TypeConfig;
+import com.ym.game.sdk.base.config.TypeConfig;
 import com.ym.game.sdk.ui.fragment.RealNameFragment;
 
 public class YmUserActivity extends BaseActivity {
@@ -23,7 +32,13 @@ public class YmUserActivity extends BaseActivity {
 
         Intent intent = getIntent();
         int type = intent.getIntExtra("type",TypeConfig.LOGIN);
-        if (type == TypeConfig.LOGIN) {
+        if (type ==TypeConfig.QUICKPWDPAGE){
+            AccountPasswordLoignFragment accountPasswordLoignFragment = AccountPasswordLoignFragment.getFragmentByName(this,AccountPasswordLoignFragment.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("pwdPageType", TypeConfig.QUICKPWDPAGE);
+            accountPasswordLoignFragment.setArguments(bundle);
+            initFragment(accountPasswordLoignFragment);
+        }else if (type == TypeConfig.LOGIN) {
 //            LoginFragment loginFragment = LoginFragment.getFragmentByName(this, LoginFragment.class);
             AccountLoginFragment accountLoginFragment = AccountLoginFragment.getFragmentByName(this,AccountLoginFragment.class);
             initFragment(accountLoginFragment);
@@ -38,9 +53,11 @@ public class YmUserActivity extends BaseActivity {
             initFragment(accountBindFragment);
         }else if (type == TypeConfig.REALNAME){
             AccountBean accountBean = (AccountBean) getIntent().getSerializableExtra("accountBean");
+            int realNameType =  getIntent().getIntExtra("realNameType",1);
             RealNameFragment realNameFragment = RealNameFragment.getFragmentByName(this, RealNameFragment.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("accountBean", accountBean);
+            bundle.putInt("realNameType",realNameType);
             realNameFragment.setArguments(bundle);
             initFragment(realNameFragment);
         }
@@ -61,6 +78,8 @@ public class YmUserActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        UserPresenter.checkWxLogin();
+        if (PluginManager.getInstance().getPlugin("plugin_wechat")!=null){
+            WechatPluginApi.getInstance().onResume(YmUserActivity.this);
+        }
     }
 }

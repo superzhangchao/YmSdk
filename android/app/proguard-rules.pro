@@ -37,6 +37,8 @@
 -keep class * extends android.app.Dialog
 #qq end
 
+-keep class com.davemorrissey.labs.subscaleview.** { *; }
+
 #微信
 -keep class com.tencent.mm.opensdk.** {
     *;

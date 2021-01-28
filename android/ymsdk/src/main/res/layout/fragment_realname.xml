@@ -26,7 +26,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textColor="@color/ym_edit_name"
-                android:textSize="@dimen/text_size_f12"
+                android:textSize="@dimen/text_size_f13"
                 android:text="@string/ym_tv_shiming"/>
 
             <ImageView
@@ -63,7 +63,7 @@
                 android:textColor="@color/ym_edit_name"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:textSize="@dimen/text_size_f10"
+                android:textSize="@dimen/text_size_f12"
                 android:lines="1"
                 android:text="真实姓名:"/>
 
@@ -77,9 +77,10 @@
                 android:layout_centerVertical="true"
                 android:hint="@string/ym_ethint_real_name"
                 android:textColorHint="@color/ym_edit_hintcolor"
-                android:textSize="@dimen/text_size_f10"
+                android:textSize="@dimen/text_size_f12"
                 android:textColor="@color/ym_edit_color"
                 android:background="@null"
+                android:imeOptions="actionNext"
                 android:inputType="text"/>
 
 
@@ -101,7 +102,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:lines="1"
-                android:textSize="@dimen/text_size_f10"
+                android:textSize="@dimen/text_size_f12"
                 android:text="身份证码:"/>
 
 
@@ -114,16 +115,17 @@
                 android:layout_centerVertical="true"
                 android:hint="@string/ym_ethint_idcard_code"
                 android:textColorHint="@color/ym_edit_hintcolor"
-                android:textSize="@dimen/text_size_f10"
+                android:textSize="@dimen/text_size_f12"
                 android:textColor="@color/ym_edit_color"
                 android:background="@null"
+                android:imeOptions="actionDone"
                 android:inputType="text"/>
 
         </RelativeLayout>
 
 
         <Button
-            android:id="@+id/ym_bt_realName"
+            android:id="@+id/ym_bt_realname"
             android:layout_width="match_parent"
             android:layout_height="@dimen/ym_realname_height"
             android:layout_marginTop="@dimen/ym_margin15"
@@ -131,16 +133,46 @@
             android:layout_marginEnd="@dimen/ym_edit_horizontal_margin"
             android:text="@string/ym_bt_realname"
             android:textColor="@color/ym_bt_login"
-            android:background="@mipmap/ym_button_long"/>
+            android:background="@mipmap/ym_button_long"
+            android:visibility="gone"/>
 
+        <LinearLayout
+            android:id="@+id/ym_ll_realname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ym_edit_horizontal_margin"
+            android:layout_marginRight="@dimen/ym_edit_horizontal_margin"
+            android:layout_marginTop="@dimen/ym_margin20"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/ym_bt_unrealname"
+                android:layout_width="@dimen/ym_realname_width"
+                android:layout_height="@dimen/ym_realname_height"
+                android:layout_marginEnd="@dimen/ym_margin10"
+                android:background="@mipmap/ym_button_short"
+                android:text="@string/ym_bt_cancel"
+                android:textColor="@color/ym_bt_login" />
+
+            <Button
+                android:id="@+id/ym_bt_realname_short"
+                android:layout_width="@dimen/ym_realname_width"
+                android:layout_height="@dimen/ym_realname_height"
+                android:layout_marginStart="@dimen/ym_margin10"
+                android:background="@mipmap/ym_button_short2"
+                android:text="@string/ym_bt_realname"
+                android:textColor="@color/ym_bt_login" />
+        </LinearLayout>
 
         <TextView
+            android:id="@+id/ym_tv_realname"
             android:layout_marginTop="@dimen/ym_margin10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/ym_edit_horizontal_margin"
             android:layout_marginEnd="@dimen/ym_edit_horizontal_margin"
-            android:textSize="@dimen/text_size_f8"
+            android:textSize="@dimen/text_size_f10"
             android:textColor="@color/ym_color_bindtip"
             android:text="@string/ym_tv_shimingtip"
             android:lines="4"/>

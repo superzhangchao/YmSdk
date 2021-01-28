@@ -10,13 +10,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.ym.game.net.bean.ResultAccoutBean;
-import com.ym.game.sdk.common.base.config.TypeConfig;
+import com.ym.game.sdk.base.config.TypeConfig;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.callback.listener.ChangeVcodeViewListener;
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
 import com.ym.game.sdk.common.utils.ToastUtils;
 import com.ym.game.sdk.presenter.UserPresenter;
 import com.ym.game.sdk.ui.widget.TimerTextView;
+import com.ym.game.utils.CommonUtils;
+import com.ym.game.utils.ImageUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +33,7 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
     private Button ymBtUnbind;
     private Button ymBtBind;
     private AccountBean accountBean;
+    private ImageView fengjiexianRight;
 
     @Nullable
     @Override
@@ -38,6 +41,7 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
         View view = inflater.inflate(ResourseIdUtils.getLayoutId("fragment_account_bind"), null, true);
         ymImBack = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_im_back"));
         ymImClose = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_im_close"));
+        fengjiexianRight = (ImageView) view.findViewById(ResourseIdUtils.getId("fengjiexian_right"));
         ymEtPhone = (EditText) view.findViewById(ResourseIdUtils.getId("ym_et_phone"));
         ymEtPhonecode = (EditText) view.findViewById(ResourseIdUtils.getId("ym_et_phonecode"));
         ymTvPhonecode = (TimerTextView) view.findViewById(ResourseIdUtils.getId("ym_tv_phonecode"));
@@ -54,6 +58,8 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        fengjiexianRight.setImageBitmap(ImageUtils.rotateIm(baseActivity, ResourseIdUtils.getMipmapId("ym_fenjiexian")));
+
         accountBean = getAccountData();
         ymImBack.setVisibility(View.INVISIBLE);
         ymImClose.setVisibility(View.INVISIBLE);
@@ -68,7 +74,9 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
             cancelBind();
         }else if(view.getId()==ymTvPhonecode.getId()){
             if (!TextUtils.isEmpty(getPhone())&&!ymTvPhonecode.isRun()){
-
+                if(CommonUtils.isFastDoubleClick()){
+                    return;
+                }
                 UserPresenter.sendVcode(this, TypeConfig.BIND, getPhone(), new ChangeVcodeViewListener(){
 
                     @Override
@@ -109,14 +117,17 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
         } else if (ymEtPhone.getText().toString().trim().length() != 11) {
             ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_phone_error1")));
             ymEtPhone.requestFocus();
+            ymEtPhone.setSelection(ymEtPhone.getText().length());
             return "";
         } else {
             String phone_number = ymEtPhone.getText().toString().trim();
-            String num = "\\d{11}";
+            String num = "1[3456789]\\d{9}";
             if (phone_number.matches(num))
                 return phone_number;
             else {
                 ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_phone_error2")));
+                ymEtPhone.requestFocus();
+                ymEtPhone.setSelection(ymEtPhone.getText().length());
                 return "";
             }
         }
@@ -129,6 +140,7 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
             return "";
         } else if (ymEtPhonecode.getText().toString().trim().length() != 6) {
             ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_vcode_error1")));
+            ymEtPhonecode.setText("");
             ymEtPhonecode.requestFocus();
             return "";
         } else {
@@ -138,6 +150,8 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
                 return phoneCode;
             else {
                 ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_vcode_error2")));
+                ymEtPhonecode.setText("");
+                ymEtPhonecode.requestFocus();
                 return "";
             }
         }

@@ -14,17 +14,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.ym.game.sdk.common.base.config.TypeConfig;
+import com.ym.game.sdk.YmConstants;
+import com.ym.game.sdk.base.config.TypeConfig;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.callback.listener.ChangeVcodeViewListener;
-import com.ym.game.sdk.common.base.parse.plugin.Plugin;
 import com.ym.game.sdk.common.base.parse.plugin.PluginManager;
-import com.ym.game.sdk.common.utils.ImageUtils;
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
 import com.ym.game.sdk.common.utils.ToastUtils;
 import com.ym.game.sdk.presenter.UserPresenter;
 import com.ym.game.sdk.ui.widget.TimerTextView;
-
+import com.ym.game.utils.CommonUtils;
+import com.ym.game.utils.ImageUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,6 +49,10 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
     private ImageView ymLoginWeixin;
     private ImageView ymLoginQq;
     private ImageView ymLoginGt;
+    private TextView ymLastWeixin;
+    private TextView ymLastQq;
+    private TextView ymLastGt;
+    private TextView ymTvPwdlogin;
 
     @Nullable
     @Override
@@ -64,11 +68,15 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         ymImCkXieyi = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_im_ck_xieyi"));
         ymTvXieyiText = (TextView) view.findViewById(ResourseIdUtils.getId("ym_tv_xieyitext"));
         ymTvYinsiText = (TextView) view.findViewById(ResourseIdUtils.getId("ym_tv_yinsitext"));
+        ymTvPwdlogin = (TextView) view.findViewById(ResourseIdUtils.getId("ym_tv_pwdlogin"));
         ymBtLogin = (Button) view.findViewById(ResourseIdUtils.getId("ym_bt_login"));
         fengjiexianRight = (ImageView) view.findViewById(ResourseIdUtils.getId("fengjiexian_right"));
         ymLoginWeixin = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_login_weixin"));
         ymLoginQq = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_login_qq"));
         ymLoginGt = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_login_gt"));
+        ymLastWeixin = (TextView) view.findViewById(ResourseIdUtils.getId("ym_last_weixin"));
+        ymLastQq = (TextView) view.findViewById(ResourseIdUtils.getId("ym_last_qq"));
+        ymLastGt = (TextView) view.findViewById(ResourseIdUtils.getId("ym_last_gt"));
 
 
         ymImBack.setOnClickListener(this);
@@ -77,6 +85,7 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         ymImCkXieyi.setOnClickListener(this);
         ymTvXieyiText.setOnClickListener(this);
         ymTvYinsiText.setOnClickListener(this);
+        ymTvPwdlogin.setOnClickListener(this);
         ymBtLogin.setOnClickListener(this);
         ymLoginWeixin.setOnClickListener(this);
         ymLoginQq.setOnClickListener(this);
@@ -93,15 +102,36 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         ymImBack.setVisibility(View.INVISIBLE);
         ymImClose.setVisibility(View.INVISIBLE);
         boolean xieyiStatus = UserPresenter.getXieyiStatus(this);
+        AccountBean lastNormalLoginInfo = UserPresenter.getLastNormalLoginInfo(baseActivity);
+        String loginType = lastNormalLoginInfo.getLoginType();
+        if (TextUtils.equals(loginType, YmConstants.PHONELOGIN)&&!TextUtils.isEmpty(lastNormalLoginInfo.getNumber().trim())){
+            ymEtPhone.setText(lastNormalLoginInfo.getNumber().trim());
+            ymLastWeixin.setVisibility(View.INVISIBLE);
+            ymLastQq.setVisibility(View.INVISIBLE);
+            ymLastGt.setVisibility(View.INVISIBLE);
+        }else if (TextUtils.equals(loginType,YmConstants.QQLOGIN)){
+            ymLastWeixin.setVisibility(View.INVISIBLE);
+            ymLastQq.setVisibility(View.VISIBLE);
+            ymLastGt.setVisibility(View.INVISIBLE);
+        }else if (TextUtils.equals(loginType,YmConstants.WXLOGIN)){
+            ymLastWeixin.setVisibility(View.VISIBLE);
+            ymLastQq.setVisibility(View.INVISIBLE);
+            ymLastGt.setVisibility(View.INVISIBLE);
+        }else if (TextUtils.equals(loginType,YmConstants.GUSETLOGIN)){
+            ymLastWeixin.setVisibility(View.INVISIBLE);
+            ymLastQq.setVisibility(View.INVISIBLE);
+            ymLastGt.setVisibility(View.VISIBLE);
+        }
         if (xieyiStatus){
             ymImCkXieyi.setVisibility(View.VISIBLE);
         }
         if (PluginManager.getInstance().getPlugin("plugin_qq")==null){
-            ymLoginQq.setVisibility(View.GONE);
+            ymLoginQq.setVisibility(View.INVISIBLE);
+            ymLastQq.setVisibility(View.INVISIBLE);
         }
         ymTvPhonecode.setText(ResourseIdUtils.getStringId("ym_tv_getphonecode"));
         ymTvPhonecode.setTimesandText(getString(ResourseIdUtils.getStringId("ym_tv_getphonecode")),"已发送（","s)",60);
-        fengjiexianRight.setImageBitmap(ImageUtils.rotateIm(baseActivity,ResourseIdUtils.getMipmapId("ym_fenjiexian")));
+        fengjiexianRight.setImageBitmap(ImageUtils.rotateIm(baseActivity, ResourseIdUtils.getMipmapId("ym_fenjiexian")));
 
     }
 
@@ -112,6 +142,9 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
 //            UserPresenter.cancelLogin(this);
         }else if(view.getId()==ymTvPhonecode.getId()){
             if (!TextUtils.isEmpty(getPhone())&&!ymTvPhonecode.isRun()){
+                if(CommonUtils.isFastDoubleClick()){
+                    return;
+                }
                 UserPresenter.sendVcode(this, TypeConfig.LOGIN, getPhone(), new ChangeVcodeViewListener() {
                     @Override
                     public void onChangeVcodeView() {
@@ -133,44 +166,45 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         }else if(view.getId()==ymImUnCkXieyi.getId()){
             ymImCkXieyi.setVisibility(View.VISIBLE);
             UserPresenter.saveXieyiStatud(this,true);
+        }else if(view.getId()==ymTvPwdlogin.getId()){
+            if (isShowCk()){
+                AccountPasswordLoignFragment accountPwdFragment = getFragmentByName(baseActivity, AccountPasswordLoignFragment.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("pwdPageType", TypeConfig.COMMONPWDPAGE);
+                accountPwdFragment.setArguments(bundle);
+                redirectFragment(accountPwdFragment);
+            }
         }else if(view.getId()==ymBtLogin.getId()){
             if (!TextUtils.isEmpty(getPhone())&&!TextUtils.isEmpty(getVcode())&&isShowCk()){
                 accountBean.setNumber(getPhone());
                 accountBean.setVcode(getVcode());
-                accountBean.setLoginType("phone");
+                accountBean.setLoginType(YmConstants.PHONELOGIN);
                 ymBtLogin.setClickable(false);
                 UserPresenter.startLogin(this,accountBean);
 
             }
         }else if(view.getId()==ymLoginWeixin.getId()){
-            accountBean.setLoginType("wx");
-             if (ymImCkXieyi.getVisibility()==View.VISIBLE){
+            accountBean.setLoginType(YmConstants.WXLOGIN);
+             if (isShowCk()){
                  ymLoginWeixin.setClickable(false);
                  UserPresenter.startLogin(this,accountBean);
-            }else{
-                 ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_xieyi")));
-             }
+            }
 
         }else if(view.getId()==ymLoginQq.getId()){
-            accountBean.setLoginType("qq");
-             if (ymImCkXieyi.getVisibility()==View.VISIBLE){
+            accountBean.setLoginType(YmConstants.QQLOGIN);
+             if (isShowCk()){
                  ymLoginQq.setClickable(false);
                  UserPresenter.startLogin(this,accountBean);
-            }else{
-                 ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_xieyi")));
-             }
+            }
         }else if(view.getId()==ymLoginGt.getId()){
-            accountBean.setLoginType("guest");
-             if (ymImCkXieyi.getVisibility()==View.VISIBLE){
+            accountBean.setLoginType(YmConstants.GUSETLOGIN);
+             if (isShowCk()){
                  ymLoginGt.setClickable(false);
                 UserPresenter.startLogin(this,accountBean);
-            }else{
-                 ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_xieyi")));
-             }
+            }
         }
 
     }
-
 
 
     //    验证手机号
@@ -182,14 +216,17 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         } else if (ymEtPhone.getText().toString().trim().length() != 11) {
             ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_phone_error1")));
             ymEtPhone.requestFocus();
+            ymEtPhone.setSelection(ymEtPhone.getText().length());
             return "";
         } else {
             String phone_number = ymEtPhone.getText().toString().trim();
-            String num = "\\d{11}";
+            String num = "1[3456789]\\d{9}";
             if (phone_number.matches(num))
                 return phone_number;
             else {
                 ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_phone_error2")));
+                ymEtPhone.requestFocus();
+                ymEtPhone.setSelection(ymEtPhone.getText().length());
                 return "";
             }
         }
@@ -202,6 +239,7 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
             return "";
         } else if (ymEtPhonecode.getText().toString().trim().length() != 6) {
             ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_vcode_error1")));
+            ymEtPhonecode.setText("");
             ymEtPhonecode.requestFocus();
             return "";
         } else {
@@ -211,6 +249,8 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
                 return phoneCode;
             else {
                 ToastUtils.showToast(baseActivity, getString(ResourseIdUtils.getStringId("ym_tip_vcode_error2")));
+                ymEtPhonecode.setText("");
+                ymEtPhonecode.requestFocus();
                 return "";
             }
         }
@@ -235,6 +275,7 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         ymLoginWeixin.setClickable(true);
         ymLoginQq.setClickable(true);
         ymLoginGt.setClickable(true);
+        ymTvPhonecode.setClickable(true);
     }
 
 

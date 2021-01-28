@@ -1,9 +1,7 @@
 package com.ym.game.sdk.ui.fragment;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.PointF;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,14 +15,8 @@ import android.widget.ImageView;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 
-import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
-
-import com.ym.game.sdk.R;
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
-
-
-import java.io.InputStream;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

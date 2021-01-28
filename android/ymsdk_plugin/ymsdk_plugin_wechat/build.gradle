@@ -22,16 +22,25 @@ android {
     }
 
 }
-
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation fileTree(dir: 'libs', include: ['*.jar'], exclude: 'wechat-sdk-android-with-mta-5.3.1.jar')
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    //开发编译依赖
     api project(':ymsdk_utlis')
-    api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
+//    api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
+
+    //正式编译依赖
+//    compileOnly project(':ymsdk_utlis')
 
 }

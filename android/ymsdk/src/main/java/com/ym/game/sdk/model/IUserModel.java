@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.callback.listener.CheckBindListener;
+import com.ym.game.sdk.callback.listener.CheckRegisterListener;
 import com.ym.game.sdk.callback.listener.GetVerifyDataListener;
 import com.ym.game.sdk.callback.listener.LoginStatusListener;
 import com.ym.game.sdk.callback.listener.RealNameStatusListener;
@@ -15,14 +16,18 @@ import com.ym.game.sdk.callback.listener.SendVcodeListener;
 public interface IUserModel {
     AccountBean getLoginAccountInfo();
 
-    void saveAccountInfo(Context context,String uid, String token);
+    void saveAccountInfo(Context context);
     String getToken(Context context);
     String getUid(Context context);
     void getVerifyData(Context context,GetVerifyDataListener getVerifyDataListener);
 
     void sendVcode(Context context, String phone,String ts,String accessToken, SendVcodeListener sendVcodeListener);
 
-    void checkBind(Context context, String phone, String ts, String accessToken, CheckBindListener checkBindListener);
+    void checkRegister(Context context, String phone, String ts, String accessToken, CheckRegisterListener checkRegisterListener);
+
+
+
+    void startRegister(Activity activity, AccountBean accountBean, LoginStatusListener loginStatusListener);
 
     void loginByType(Activity activity, AccountBean accountBean, LoginStatusListener loginStatusListener);
 
@@ -43,4 +48,6 @@ public interface IUserModel {
     boolean getXieyiStatus(Context context);
 
     int getRealNameStatus();
+
+
 }

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ym_no_install_wechat">检测到您未安装微信客户端，请先安装微信客户端</string>
+</resources>

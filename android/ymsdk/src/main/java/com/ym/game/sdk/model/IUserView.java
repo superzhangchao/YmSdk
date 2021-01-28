@@ -13,6 +13,7 @@ public interface IUserView {
 
     void closeActivity();
 
+    void closeCurrnetFragment();
     void cancelLogin();
 
 }

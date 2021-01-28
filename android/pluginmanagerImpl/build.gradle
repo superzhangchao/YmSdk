@@ -22,6 +22,11 @@ android {
     }
 
 }
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -30,9 +35,17 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    //开发依赖
     api project(':ymsdk_utlis')
     api project(':ymsdk_plugin_alipay')
     api project(':ymsdk_plugin_wechat')
     api project(':ymsdk_plugin_qq')
+
+//    //正式编译依赖
+//    compileOnly project(':ymsdk_utlis')
+//    compileOnly project(':ymsdk_plugin_alipay')
+//    compileOnly project(':ymsdk_plugin_wechat')
+//    compileOnly project(':ymsdk_plugin_qq')
 
 }

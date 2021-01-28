@@ -1,16 +1,9 @@
 package com.ym.game.sdk.ui.widget;
 
 import android.content.Context;
-
 import android.util.AttributeSet;
 
-
-
-
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
-
-
-
 
 public class TimerTextView extends androidx.appcompat.widget.AppCompatTextView implements Runnable {
 

@@ -16,24 +16,27 @@ import android.os.Message;
 import android.provider.Settings;
 import android.text.TextUtils;
 
-
-
+import com.tencent.connect.UserInfo;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
 import com.ym.game.net.api.YmApi;
 import com.ym.game.net.bean.ResultAccoutBean;
 import com.ym.game.net.bean.ResultVcodeBean;
 import com.ym.game.net.bean.TokenBean;
 
 import com.ym.game.sdk.YmConstants;
-import com.ym.game.sdk.common.base.config.ErrorCode;
+import com.ym.game.sdk.base.config.ErrorCode;
 import com.ym.game.sdk.bean.AccountBean;
-import com.ym.game.sdk.callback.listener.CheckBindListener;
+import com.ym.game.sdk.bean.HistoryAccountBean;
+import com.ym.game.sdk.callback.listener.CheckRegisterListener;
 import com.ym.game.sdk.callback.listener.GetVerifyDataListener;
 import com.ym.game.sdk.callback.listener.LoginStatusListener;
 import com.ym.game.sdk.callback.listener.RealNameStatusListener;
 import com.ym.game.sdk.callback.listener.SendVcodeListener;
+import com.ym.game.sdk.callback.listener.SetPasswordStatusListener;
 import com.ym.game.sdk.common.base.interfaces.CallBackListener;
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
 import com.ym.game.sdk.common.utils.ToastUtils;
@@ -41,11 +44,12 @@ import com.ym.game.sdk.common.utils.YmFileUtils;
 import com.ym.game.sdk.common.utils.YmSignUtils;
 import com.ym.game.sdk.invoke.plugin.QQPluginApi;
 import com.ym.game.sdk.invoke.plugin.WechatPluginApi;
-
+import com.ym.game.utils.SharedPreferencesUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +65,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 public class UserModel implements IUserModel {
+
     private static UserModel instance;
     private boolean needBind = false;
     private GetVerifyDataListener mGetVerifyDataListener;
@@ -87,52 +92,33 @@ public class UserModel implements IUserModel {
     private static final int REALNAMESUCCESS = 20;
     private static final int REALNAMEFAIL = 21;
     private static final int REALNAMENETFAIL = 22;
-    private static final int GETBINDSTATUSSUCCESS = 23;
-    private static final int GETBINDSTATUNETFAIL = 24;
+    private static final int GETREGISTERSTATUSSUCCESS = 23;
+    private static final int GETREGISTERSTATUNETFAIL = 24;
+    private static final int SETPWDSUCCESS = 25;
+    private static final int SETPWDFAIL = 26;
+    private static final int SETPWDNETFAIL = 27;
+
 
     private static final int PERMISSION_REQUESTCODE = 1001;
 
     private String currentTs;
     private SendVcodeListener mSendVcodeListener;
     private LoginStatusListener mLoginStatusListener;
+    private SetPasswordStatusListener mSetPasswordStatusListener;
     private LoginStatusListener mAutoLoginStatusListener;
     private LoginStatusListener mBindloginStatusListener;
     private RealNameStatusListener mRealNameStatusListener;
-    private CheckBindListener mCheckBindListener;
+    private CheckRegisterListener mCheckRegisterListener;
+
     private String currentLoginType;
     private Context mContext;
     private String uuid;
     private Activity mActivity;
 
-
-
     private AccountBean mAccountBean;
     private AccountBean loginAccountInfo;
-    private IWXAPI api;
-    private boolean mIsLoginwx = false;
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            int paycode = intent.getIntExtra("ERRORCODE", -1);
-            setWxLoginStatus(false);
-            switch (paycode) {
-                case YmConstants.LOGIN_SUCC_CODE:
-                    String usercode = intent.getStringExtra("USERCODE");
-                    mAccountBean.setWxCode(usercode);
-                    getWeixinInfo();
-
-                    break;
-                case YmConstants.LOGIN_CANCEL_CODE:
-                    mLoginStatusListener.onCancel();
-                    break;
-                case YmConstants.LOGIN_FAIL_CODE:
-                    mLoginStatusListener.onFail(ErrorCode.LOGIN_FAIL,context.getString(ResourseIdUtils.getStringId("ym_loginwx_fail")));
-                    break;
-            }
-        }
-    };
-
+    private AccountBean saveAccountInfoBean;
 
 
     public static UserModel getInstance(){
@@ -153,6 +139,8 @@ public class UserModel implements IUserModel {
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             Map<String, Object> errorData;
+            String messageName = "ym_text_neterror";
+            int netError = ErrorCode.NET_ERROR;
             switch (msg.what) {
                 case SENDTIME:
                     JSONObject timeInfo = (JSONObject) msg.obj;
@@ -167,9 +155,9 @@ public class UserModel implements IUserModel {
                 case SENDVCODESUCCESS:
                     mSendVcodeListener.onSuccess();
                     break;
-                case GETBINDSTATUSSUCCESS:
+                case GETREGISTERSTATUSSUCCESS:
                     errorData = (Map<String, Object>) msg.obj;
-                    mCheckBindListener.getBindStatus((int) errorData.get("code"), (String) errorData.get("message"));
+                    mCheckRegisterListener.getRegisterStatus((int) errorData.get("code"), (String) errorData.get("message"));
                     break;
                 case GETACCOUNTSUCCESS:
                     ResultAccoutBean resultAccoutBean = (ResultAccoutBean) msg.obj;
@@ -178,7 +166,33 @@ public class UserModel implements IUserModel {
                     loginAccountInfo.setLoginToken(resultAccoutBean.getData().getLoginToken());
                     loginAccountInfo.setNickName(resultAccoutBean.getData().getNickName());
                     loginAccountInfo.setAuthStatus(resultAccoutBean.getData().getAuthStatus());
-                    saveAccountInfo(mActivity, resultAccoutBean.getData().getUid(), resultAccoutBean.getData().getLoginToken());
+                    saveAccountInfoBean = new AccountBean();
+                    saveAccountInfoBean.setUid(resultAccoutBean.getData().getUid());
+                    saveAccountInfoBean.setLoginToken(resultAccoutBean.getData().getLoginToken());
+                    saveAccountInfoBean.setLoginType(resultAccoutBean.getData().getLoginType());
+
+                    if (!TextUtils.isEmpty(resultAccoutBean.getData().getPhoneNumber())){
+                        String phoneNumber = resultAccoutBean.getData().getPhoneNumber();
+                        saveAccountInfoBean.setNumber(phoneNumber);
+                        if (resultAccoutBean.getData().isHasPassword()){
+                            //TODO:保存历史账号密码
+                            saveAccountInfoBean.setHasPassword(true);
+                            String password = resultAccoutBean.getData().getPassword();
+                            ArrayList<HistoryAccountBean> historyAccountBeanList = (ArrayList<HistoryAccountBean>) SharedPreferencesUtils.getHistoryAccountBean(mActivity, "histroyAccount", "histroyAccount");
+                            HistoryAccountBean historyAccountBean  = new HistoryAccountBean(phoneNumber,password,System.currentTimeMillis(),false);
+                            if (historyAccountBeanList==null){
+                                historyAccountBeanList = new ArrayList<>();
+                            }
+                            for (int i = 0; i < historyAccountBeanList.size(); i++) {
+                                if (TextUtils.equals(historyAccountBeanList.get(i).getPhone(), historyAccountBean.getPhone())){
+                                    historyAccountBeanList.remove(i);
+                                }
+                            }
+                            historyAccountBeanList.add(historyAccountBean);
+                            SharedPreferencesUtils.putHistoryAccountBean(mActivity, "histroyAccount",historyAccountBeanList,"histroyAccount" );
+                        }
+                    }
+
                     mLoginStatusListener.onSuccess(resultAccoutBean);
                     break;
                 case UPDATEQQUSERINFO:
@@ -206,6 +220,10 @@ public class UserModel implements IUserModel {
                     loginAccountInfo.setLoginToken(bindResultAccoutBean.getData().getLoginToken());
                     loginAccountInfo.setNickName(bindResultAccoutBean.getData().getNickName());
                     mBindloginStatusListener.onSuccess(bindResultAccoutBean);
+                    if(saveAccountInfoBean!=null&&TextUtils.equals(saveAccountInfoBean.getLoginType(),YmConstants.GUSETLOGIN)){
+                        saveAccountInfoBean.setLoginType(YmConstants.PHONELOGIN);
+                        saveAccountInfoBean.setNumber(bindResultAccoutBean.getData().getPhoneNumber());
+                    }
                     break;
                 case REALNAMESUCCESS:
                     ResultAccoutBean realNameResultAccoutBean = (ResultAccoutBean) msg.obj;
@@ -217,21 +235,33 @@ public class UserModel implements IUserModel {
                     mRealNameStatusListener.onFail((int) errorData.get("code"), (String) errorData.get("message"));
                     break;
                 case REALNAMENETFAIL:
-                    mRealNameStatusListener.onFail(ErrorCode.NET_ERROR, mContext.getString(ResourseIdUtils.getStringId("ym_text_neterror")));
+                    netError = (int) msg.obj;
+                    if (netError ==ErrorCode.NET_DISCONNET){
+                        messageName = "ym_text_disconnet";
+                    }
+                    mRealNameStatusListener.onFail(netError, mContext.getString(ResourseIdUtils.getStringId(messageName)));
                     break;
                 case BINDFAIL:
                     errorData = (Map<String, Object>) msg.obj;
                     mBindloginStatusListener.onFail((int) errorData.get("code"), (String) errorData.get("message"));
                     break;
                 case BINDNETFAIL:
-                    mBindloginStatusListener.onFail(ErrorCode.NET_ERROR, mContext.getString(ResourseIdUtils.getStringId("ym_text_neterror")));
+                    netError = (int) msg.obj;
+                    if (netError ==ErrorCode.NET_DISCONNET){
+                        messageName = "ym_text_disconnet";
+                    }
+                    mBindloginStatusListener.onFail(netError, mContext.getString(ResourseIdUtils.getStringId(messageName)));
                     break;
                 case AUTOLOGINFAIL:
                     errorData = (Map<String, Object>) msg.obj;
                     mAutoLoginStatusListener.onFail((int) errorData.get("code"), (String) errorData.get("message"));
                     break;
                 case AUTOLOGINNETFAIL:
-                    mAutoLoginStatusListener.onFail(ErrorCode.NET_ERROR, mActivity.getString(ResourseIdUtils.getStringId("ym_text_neterror")));
+                    netError = (int) msg.obj;
+                    if (netError ==ErrorCode.NET_DISCONNET){
+                        messageName = "ym_text_disconnet";
+                    }
+                    mAutoLoginStatusListener.onFail(netError, mActivity.getString(ResourseIdUtils.getStringId(messageName)));
                     break;
                 case SENDTIMEERROR:
                     //服务器验证失败
@@ -239,7 +269,11 @@ public class UserModel implements IUserModel {
                     break;
                 case SENDTIMENETERROR:
                     //TODO:请求ts网络失败
-                    mGetVerifyDataListener.onFail(ErrorCode.NET_ERROR, mContext.getString(ResourseIdUtils.getStringId("ym_text_neterror")));
+                    netError = (int) msg.obj;
+                    if (netError ==ErrorCode.NET_DISCONNET){
+                        messageName = "ym_text_disconnet";
+                    }
+                    mGetVerifyDataListener.onFail(netError, mContext.getString(ResourseIdUtils.getStringId(messageName)));
                     break;
                 case GETTOKENFAIL:
                     errorData = (Map<String, Object>) msg.obj;
@@ -247,24 +281,55 @@ public class UserModel implements IUserModel {
                     break;
                 case GETTOKENNETFAIL:
                     //TODO:网络请求token失败
-                    mGetVerifyDataListener.onFail(ErrorCode.NET_ERROR, mContext.getString(ResourseIdUtils.getStringId("ym_text_neterror")));
+                    netError = (int) msg.obj;
+                    if (netError ==ErrorCode.NET_DISCONNET){
+                        messageName = "ym_text_disconnet";
+                    }
+                    mGetVerifyDataListener.onFail(netError, mContext.getString(ResourseIdUtils.getStringId(messageName)));
                     break;
-                case GETBINDSTATUNETFAIL:
-                    mCheckBindListener.onFail(ErrorCode.NET_ERROR, mContext.getString(ResourseIdUtils.getStringId("ym_text_neterror")));
+                case GETREGISTERSTATUNETFAIL:
+                    netError = (int) msg.obj;
+                    if (netError ==ErrorCode.NET_DISCONNET){
+                        messageName = "ym_text_disconnet";
+                    }
+                    mCheckRegisterListener.onFail(netError, mContext.getString(ResourseIdUtils.getStringId(messageName)));
                     break;
                 case SENDVCODEFAIL:
                     errorData = (Map<String, Object>) msg.obj;
                     mSendVcodeListener.onFail((int) errorData.get("code"), (String) errorData.get("message"));
                     break;
                 case SENDVCODENETFAIL:
-                    mSendVcodeListener.onFail(ErrorCode.NET_ERROR, mContext.getString(ResourseIdUtils.getStringId("ym_text_neterror")));
+                    netError = (int) msg.obj;
+                    if (netError ==ErrorCode.NET_DISCONNET){
+                        messageName = "ym_text_disconnet";
+                    }
+                    mSendVcodeListener.onFail(netError, mContext.getString(ResourseIdUtils.getStringId(messageName)));
                     break;
                 case GETACCOUNTFAIL:
                     errorData = (Map<String, Object>) msg.obj;
                     mLoginStatusListener.onFail((int) errorData.get("code"), (String) errorData.get("message"));
                     break;
                 case GETACCOUNTNETFAIL:
-                    mLoginStatusListener.onFail(ErrorCode.NET_ERROR, mActivity.getString(ResourseIdUtils.getStringId("ym_text_neterror")));
+                    netError = (int) msg.obj;
+                    if (netError ==ErrorCode.NET_DISCONNET){
+                        messageName = "ym_text_disconnet";
+                    }
+
+                    mLoginStatusListener.onFail(netError, mActivity.getString(ResourseIdUtils.getStringId(messageName)));
+                    break;
+                case SETPWDSUCCESS:
+                    mSetPasswordStatusListener.onSuccess();
+                    break;
+                case SETPWDFAIL:
+                    errorData = (Map<String, Object>) msg.obj;
+                    mSetPasswordStatusListener.onFail((int) errorData.get("code"), (String) errorData.get("message"));
+                    break;
+                case SETPWDNETFAIL:
+                    netError = (int) msg.obj;
+                    if (netError ==ErrorCode.NET_DISCONNET){
+                        messageName = "ym_text_disconnet";
+                    }
+                    mSetPasswordStatusListener.onFail(netError, mActivity.getString(ResourseIdUtils.getStringId(messageName)));
                     break;
                 default:
                     break;
@@ -278,19 +343,25 @@ public class UserModel implements IUserModel {
     }
 
     @Override
-    public void saveAccountInfo(Context context, String uid, String token) {
-        SharedPreferences loginTye = context.getSharedPreferences(YmConstants.SVAE_LOGIN_INFO, MODE_PRIVATE);
+    public void saveAccountInfo(Context context) {
+        if (saveAccountInfoBean !=null){
+            SharedPreferences loginTye = context.getSharedPreferences(YmConstants.SVAE_LOGIN_INFO, MODE_PRIVATE);
 
-        SharedPreferences.Editor editor = loginTye.edit();
-//        try {
-//            uid = YmFileUtils.encryptDES(uid, YmConstants.APPID);
-        editor.putString("uid", uid);
-        editor.putString("token", token);
-        editor.apply();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+            SharedPreferences.Editor editor = loginTye.edit();
 
+            editor.putString("uid", saveAccountInfoBean.getUid());
+            editor.putString("token", saveAccountInfoBean.getLoginToken());
+            editor.putString("loginType", saveAccountInfoBean.getLoginType());
+            if (!TextUtils.isEmpty(saveAccountInfoBean.getNumber())){
+                editor.putString("phoneNumber", saveAccountInfoBean.getNumber());
+            }
+            if (saveAccountInfoBean.isHasPassword()){
+                editor.putBoolean("hasPassword",saveAccountInfoBean.isHasPassword());
+            }else {
+                editor.putBoolean("hasPassword",false);
+            }
+            editor.apply();
+            }
     }
 
     @Override
@@ -313,11 +384,30 @@ public class UserModel implements IUserModel {
     }
 
     public void resetAccountInfo(Activity activity) {
-        SharedPreferences loginTye = activity.getSharedPreferences(YmConstants.SVAE_LOGIN_INFO, MODE_PRIVATE);
-        if(loginTye!=null){
-            loginTye.edit().clear().apply();
+        SharedPreferences loginInfo = activity.getSharedPreferences(YmConstants.SVAE_LOGIN_INFO, MODE_PRIVATE);
+        if(loginInfo!=null){
+            SharedPreferences.Editor editor = loginInfo.edit();
+            editor.remove("uid");
+            editor.remove("token");
+//            loginTye.edit().clear().apply();
+            editor.commit();
         }
     }
+
+    public AccountBean getLastNormalLoginInfo(Activity activity){
+        AccountBean accountBean = new AccountBean();
+        SharedPreferences loginInfo = activity.getSharedPreferences(YmConstants.SVAE_LOGIN_INFO, MODE_PRIVATE);
+        String loginType = loginInfo.getString("loginType", "");
+        accountBean.setLoginType(loginType);
+        if (TextUtils.equals(loginType,YmConstants.PHONELOGIN)){
+            String phoneNumber = loginInfo.getString("phoneNumber", "");
+            boolean hasPassword = loginInfo.getBoolean("hasPassword",false);
+            accountBean.setNumber(phoneNumber);
+            accountBean.setHasPassword(hasPassword);
+        }
+        return accountBean;
+    }
+
     @Override
     public String getUid(Context context) {
         SharedPreferences fastLogin = context.getSharedPreferences(YmConstants.SVAE_LOGIN_INFO, MODE_PRIVATE);
@@ -356,7 +446,7 @@ public class UserModel implements IUserModel {
         param.put(YmConstants.NUMBER, phone);
         param.put(YmConstants.ACCESSTOKEN, accessToken);
         final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
-        param.put("sign", sign);
+        param.put(YmConstants.SIGN, sign);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -364,17 +454,23 @@ public class UserModel implements IUserModel {
                 token.enqueue(new Callback<ResultVcodeBean>() {
                     @Override
                     public void onResponse(Call<ResultVcodeBean> call, Response<ResultVcodeBean> response) {
-                        ResultVcodeBean body = response.body();
-                        int errorCode = body.getCode();
                         Message message = new Message();
-                        if (errorCode == YmConstants.SUCCESSCODE){
-                            message.what = SENDVCODESUCCESS;
+                        if (response.isSuccessful()){
+                            ResultVcodeBean body = response.body();
+                            int errorCode = body.getCode();
+                            if (errorCode == YmConstants.SUCCESSCODE){
+                                message.what = SENDVCODESUCCESS;
+                            }else {
+                                Map<String,Object> errorData = new HashMap<>();
+                                errorData.put("code",body.getCode());
+                                errorData.put("message",body.getMessage());
+                                message.obj = errorData;
+                                message.what = SENDVCODEFAIL;
+                            }
                         }else {
-                            Map<String,Object> errorData = new HashMap<>();
-                            errorData.put("code",body.getCode());
-                            errorData.put("message",body.getMessage());
-                            message.obj = errorData;
-                            message.what = SENDVCODEFAIL;
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = SENDVCODENETFAIL;
                         }
                         handler.sendMessage(message);
                     }
@@ -382,6 +478,8 @@ public class UserModel implements IUserModel {
                     @Override
                     public void onFailure(Call<ResultVcodeBean> call, Throwable t) {
                         Message message = new Message();
+                        int errorCode = ErrorCode.NET_ERROR;
+                        message.obj = errorCode;
                         message.what = SENDVCODENETFAIL;
                         handler.sendMessage(message);
                     }
@@ -390,9 +488,10 @@ public class UserModel implements IUserModel {
         }).start();
     }
 
+
     @Override
-    public void checkBind(Context context, String phone, String ts, String accessToken, CheckBindListener checkBindListener) {
-        mCheckBindListener = checkBindListener;
+    public void checkRegister(Context context, String phone, String ts, String accessToken, CheckRegisterListener checkRegisterListener) {
+        mCheckRegisterListener = checkRegisterListener;
         mContext = context;
         final Map<String, String> param = new HashMap<>();
         //app_id=**&from=client'
@@ -401,28 +500,36 @@ public class UserModel implements IUserModel {
         param.put(YmConstants.NUMBER, phone);
         param.put(YmConstants.ACCESSTOKEN, accessToken);
         final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
-        param.put("sign", sign);
+        param.put(YmConstants.SIGN, sign);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Call<ResultVcodeBean> token = YmApi.getInstance().checkBind(param);
+                Call<ResultVcodeBean> token = YmApi.getInstance().checkRegister(param);
                 token.enqueue(new Callback<ResultVcodeBean>() {
                     @Override
                     public void onResponse(Call<ResultVcodeBean> call, Response<ResultVcodeBean> response) {
-                        ResultVcodeBean body = response.body();
                         Message message = new Message();
-                        Map<String,Object> errorData = new HashMap<>();
-                        errorData.put("code",body.getCode());
-                        errorData.put("message",body.getMessage());
-                        message.obj = errorData;
-                        message.what = GETBINDSTATUSSUCCESS;
-                        handler.sendMessage(message);
+                        if (response.isSuccessful()){
+                            ResultVcodeBean body = response.body();
+                            Map<String,Object> errorData = new HashMap<>();
+                            errorData.put("code",body.getCode());
+                            errorData.put("message",body.getMessage());
+                            message.obj = errorData;
+                            message.what = GETREGISTERSTATUSSUCCESS;
+                            handler.sendMessage(message);
+                        }else {
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = GETREGISTERSTATUNETFAIL;
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<ResultVcodeBean> call, Throwable t) {
                         Message message = new Message();
-                        message.what = GETBINDSTATUNETFAIL;
+                        int errorCode = ErrorCode.NET_ERROR;
+                        message.obj = errorCode;
+                        message.what = GETREGISTERSTATUNETFAIL;
                         handler.sendMessage(message);
                     }
                 });
@@ -440,16 +547,22 @@ public class UserModel implements IUserModel {
                 token.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        String body = response.body();
-                        JSONObject timeInfo = new JSONObject();
                         Message message = new Message();
-                        try {
-                            timeInfo.put("ts",body);
-                            message.obj= timeInfo;
-                            message.what = SENDTIME;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            message.what = SENDTIMEERROR;
+                        if (response.isSuccessful()){
+                            String body = response.body();
+                            JSONObject timeInfo = new JSONObject();
+                            try {
+                                timeInfo.put("ts",body);
+                                message.obj= timeInfo;
+                                message.what = SENDTIME;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                message.what = SENDTIMEERROR;
+                            }
+                        }else {
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = SENDTIMENETERROR;
                         }
 
                         handler.sendMessage(message);
@@ -458,6 +571,8 @@ public class UserModel implements IUserModel {
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
                         Message message = new Message();
+                        int errorCode = ErrorCode.NET_ERROR;
+                        message.obj = errorCode;
                         message.what = SENDTIMENETERROR;
                         handler.sendMessage(message);
                     }
@@ -481,19 +596,25 @@ public class UserModel implements IUserModel {
                 token.enqueue(new Callback<TokenBean>() {
                     @Override
                     public void onResponse(@NonNull Call<TokenBean> call, @NonNull Response<TokenBean> response) {
-                        TokenBean body = response.body();
-                        int errorCode = body.getCode();
                         Message message = new Message();
-                        if (errorCode == YmConstants.SUCCESSCODE) {
-                            message.obj = body.getData().getAccessToken();
-                            message.what = GETTOKENSUCCESS;
+                        if (response.isSuccessful()){
+                            TokenBean body = response.body();
+                            int errorCode = body.getCode();
+                            if (errorCode == YmConstants.SUCCESSCODE) {
+                                message.obj = body.getData().getAccessToken();
+                                message.what = GETTOKENSUCCESS;
 
-                        }else {
-                            Map<String,Object> errorData = new HashMap<>();
-                            errorData.put("code",body.getCode());
-                            errorData.put("message",body.getMessage());
-                            message.obj = errorData;
-                            message.what = GETTOKENFAIL;
+                            }else {
+                                Map<String,Object> errorData = new HashMap<>();
+                                errorData.put("code",body.getCode());
+                                errorData.put("message",body.getMessage());
+                                message.obj = errorData;
+                                message.what = GETTOKENFAIL;
+                            }
+                        }else{
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = GETTOKENNETFAIL;
                         }
                         handler.sendMessage(message);
                     }
@@ -501,7 +622,8 @@ public class UserModel implements IUserModel {
                     @Override
                     public void onFailure(@NonNull Call<TokenBean> call, @NonNull Throwable t) {
                         Message message = new Message();
-
+                        int errorCode = ErrorCode.NET_ERROR;
+                        message.obj = errorCode;
                         message.what = GETTOKENNETFAIL;
                         handler.sendMessage(message);
                     }
@@ -511,6 +633,122 @@ public class UserModel implements IUserModel {
 
     }
 
+    public void startRegister(Activity activity, AccountBean accountBean, LoginStatusListener loginStatusListener) {
+        mActivity = activity;
+        mAccountBean = accountBean;
+        mLoginStatusListener = loginStatusListener;
+        //TODO:账号密码注册
+        final Map<String, String> param = new HashMap<>();
+        //app_id=**&from=client'
+        param.put(YmConstants.APPIDKEY, YmConstants.APPID);
+        param.put(YmConstants.TS, mAccountBean.getTimeStamp());
+        param.put(YmConstants.NUMBER, mAccountBean.getNumber());
+        param.put(YmConstants.VCODE, mAccountBean.getVcode());
+        param.put(YmConstants.PASSWORD, mAccountBean.getPassword());
+        param.put(YmConstants.ACCESSTOKEN, mAccountBean.getAccessToken());
+        final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
+        param.put(YmConstants.SIGN, sign);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Call<ResultAccoutBean> token = YmApi.getInstance().register(param);
+                token.enqueue(new Callback<ResultAccoutBean>() {
+                    @Override
+                    public void onResponse(Call<ResultAccoutBean> call, Response<ResultAccoutBean> response) {
+                        Message message = new Message();
+                        if(response.isSuccessful()){
+                            ResultAccoutBean body = response.body();
+                            int errorCode = body.getCode();
+                            if (errorCode == YmConstants.SUCCESSCODE){
+                                message.what = GETACCOUNTSUCCESS;
+                                body.getData().setPhoneNumber(mAccountBean.getNumber());
+                                body.getData().setPassword(mAccountBean.getPassword());
+                                message.obj = body;
+
+                            }else {
+                                Map<String,Object> errorData = new HashMap<>();
+                                errorData.put("code",body.getCode());
+                                errorData.put("message",body.getMessage());
+                                message.obj = errorData;
+                                message.what = GETACCOUNTFAIL;
+                            }
+                        }else {
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = GETACCOUNTNETFAIL;
+                        }
+                        handler.sendMessage(message);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResultAccoutBean> call, Throwable t) {
+                        Message message = new Message();
+                        int errorCode = ErrorCode.NET_ERROR;
+                        message.obj = errorCode;
+                        message.what = GETACCOUNTNETFAIL;
+                        handler.sendMessage(message);
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void startSetPwd(Activity activity, AccountBean accountBean, SetPasswordStatusListener setPasswordStatusListener) {
+        mActivity = activity;
+        mAccountBean = accountBean;
+        mSetPasswordStatusListener = setPasswordStatusListener;
+        //TODO:账号密码设置
+        final Map<String, String> param = new HashMap<>();
+        //app_id=**&from=client'
+        param.put(YmConstants.APPIDKEY, YmConstants.APPID);
+        param.put(YmConstants.TS, mAccountBean.getTimeStamp());
+        param.put(YmConstants.NUMBER, mAccountBean.getNumber());
+        param.put(YmConstants.PASSWORD, mAccountBean.getPassword());
+        param.put(YmConstants.VCODE,mAccountBean.getVcode());
+        param.put(YmConstants.ACCESSTOKEN, mAccountBean.getAccessToken());
+        final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
+        param.put(YmConstants.SIGN, sign);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Call<ResultAccoutBean> token = YmApi.getInstance().resetPassword(param);
+                token.enqueue(new Callback<ResultAccoutBean>() {
+                    @Override
+                    public void onResponse(Call<ResultAccoutBean> call, Response<ResultAccoutBean> response) {
+                        Message message = new Message();
+                        if(response.isSuccessful()){
+                            ResultAccoutBean body = response.body();
+                            int errorCode = body.getCode();
+                            if (errorCode == YmConstants.SUCCESSCODE){
+                                message.what = SETPWDSUCCESS;
+
+                            }else {
+                                Map<String,Object> errorData = new HashMap<>();
+                                errorData.put("code",body.getCode());
+                                errorData.put("message",body.getMessage());
+                                message.obj = errorData;
+                                message.what = SETPWDFAIL;
+                            }
+                        }else {
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = SETPWDNETFAIL;
+                        }
+                        handler.sendMessage(message);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResultAccoutBean> call, Throwable t) {
+                        Message message = new Message();
+                        int errorCode = ErrorCode.NET_ERROR;
+                        message.obj = errorCode;
+                        message.what = SETPWDNETFAIL;
+                        handler.sendMessage(message);
+                    }
+                });
+            }
+        }).start();
+    }
 
     @Override
     public void loginByType(Activity activity, AccountBean accountBean, LoginStatusListener loginStatusListener) {
@@ -519,39 +757,41 @@ public class UserModel implements IUserModel {
         mLoginStatusListener = loginStatusListener;
         currentLoginType = accountBean.getLoginType();
 
-        if (TextUtils.equals("phone",currentLoginType)){
-            phoneVerify();
-        }else if (TextUtils.equals("qq",currentLoginType)){
-            qqLogin();
-        }else  if (TextUtils.equals("wx",currentLoginType)){
-            IntentFilter filter = new IntentFilter(YmConstants.WXLOGINACTION);
-            mActivity.registerReceiver(broadcastReceiver, filter);
-            api = WXAPIFactory.createWXAPI(mActivity, YmConstants.WX_APP_ID, false);
-            if (api.isWXAppInstalled()) {
-                setWxLoginStatus(true);
-                wxLogin();
-            } else {
-                mLoginStatusListener.onCancel();
-                ToastUtils.showToast(mActivity, mActivity.getString(ResourseIdUtils.getStringId("ym_no_install_wechat")));
+        if (TextUtils.equals(YmConstants.PHONELOGIN,currentLoginType)) {
+            if (accountBean.isHasPassword()){
+                //TODO:密码登录
+                pwdLogin();
+            }else {
+                phoneVerify();
             }
-
-//            WechatPluginApi.getInstance().
-
-        }else if (TextUtils.equals("guest",currentLoginType)){
+        }else if (TextUtils.equals(YmConstants.QQLOGIN,currentLoginType)){
+            qqLogin();
+        }else  if (TextUtils.equals(YmConstants.WXLOGIN,currentLoginType)){
+//            IntentFilter filter = new IntentFilter(YmConstants.WXLOGINACTION);
+//            mActivity.registerReceiver(broadcastReceiver, filter);
+//            api = WXAPIFactory.createWXAPI(mActivity, YmConstants.WX_APP_ID, false);
+//            if (api.isWXAppInstalled()) {
+//                setWxLoginStatus(true);
+                wxLogin();
+//            } else {
+//                mLoginStatusListener.onCancel();
+//                ToastUtils.showToast(mActivity, mActivity.getString(ResourseIdUtils.getStringId("ym_no_install_wechat")));
+//            }
+        }else if (TextUtils.equals(YmConstants.GUSETLOGIN,currentLoginType)){
             gtLogin();
         }
     }
 
-    private void setWxLoginStatus(boolean isLoginwx) {
-        mIsLoginwx = isLoginwx;
-    }
-    public boolean getWxLoginStatus(){
-        return mIsLoginwx;
-    }
+//    private void setWxLoginStatus(boolean isLoginwx) {
+//        mIsLoginwx = isLoginwx;
+//    }
+//    public boolean getWxLoginStatus(){
+//        return mIsLoginwx;
+//    }
 
-    public void resetWxlogin(){
-        mLoginStatusListener.onCancel();
-    }
+//    public void resetWxlogin(){
+//        mLoginStatusListener.onCancel();
+//    }
 
     private void phoneVerify() {
         final Map<String, String> param = new HashMap<>();
@@ -562,7 +802,7 @@ public class UserModel implements IUserModel {
         param.put(YmConstants.VCODE, mAccountBean.getVcode());
         param.put(YmConstants.ACCESSTOKEN, mAccountBean.getAccessToken());
         final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
-        param.put("sign", sign);
+        param.put(YmConstants.SIGN, sign);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -570,19 +810,26 @@ public class UserModel implements IUserModel {
                 token.enqueue(new Callback<ResultAccoutBean>() {
                     @Override
                     public void onResponse(Call<ResultAccoutBean> call, Response<ResultAccoutBean> response) {
-                        ResultAccoutBean body = response.body();
-                        int errorCode = body.getCode();
                         Message message = new Message();
-                        if (errorCode == YmConstants.SUCCESSCODE){
+                        if(response.isSuccessful()){
+                            ResultAccoutBean body = response.body();
+                            int errorCode = body.getCode();
+                            if (errorCode == YmConstants.SUCCESSCODE){
                                 message.what = GETACCOUNTSUCCESS;
+                                body.getData().setPhoneNumber(mAccountBean.getNumber());
                                 message.obj = body;
 
+                            }else {
+                                Map<String,Object> errorData = new HashMap<>();
+                                errorData.put("code",body.getCode());
+                                errorData.put("message",body.getMessage());
+                                message.obj = errorData;
+                                message.what = GETACCOUNTFAIL;
+                            }
                         }else {
-                            Map<String,Object> errorData = new HashMap<>();
-                            errorData.put("code",body.getCode());
-                            errorData.put("message",body.getMessage());
-                            message.obj = errorData;
-                            message.what = GETACCOUNTFAIL;
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = GETACCOUNTNETFAIL;
                         }
                         handler.sendMessage(message);
                     }
@@ -590,6 +837,8 @@ public class UserModel implements IUserModel {
                     @Override
                     public void onFailure(Call<ResultAccoutBean> call, Throwable t) {
                         Message message = new Message();
+                        int errorCode = ErrorCode.NET_ERROR;
+                        message.obj = errorCode;
                         message.what = GETACCOUNTNETFAIL;
                         handler.sendMessage(message);
                     }
@@ -597,15 +846,68 @@ public class UserModel implements IUserModel {
             }
         }).start();
     }
-//
 
+    private void pwdLogin(){
+        //TODO：密码登录
+        final Map<String, String> param = new HashMap<>();
+        //app_id=**&from=client'
+        param.put(YmConstants.APPIDKEY, YmConstants.APPID);
+        param.put(YmConstants.TS, mAccountBean.getTimeStamp());
+        param.put(YmConstants.NUMBER, mAccountBean.getNumber());
+        param.put(YmConstants.PASSWORD, mAccountBean.getPassword());
+        param.put(YmConstants.ACCESSTOKEN, mAccountBean.getAccessToken());
+        final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
+        param.put(YmConstants.SIGN, sign);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Call<ResultAccoutBean> token = YmApi.getInstance().getPasswordAccoutInfo(param);
+                token.enqueue(new Callback<ResultAccoutBean>() {
+                    @Override
+                    public void onResponse(Call<ResultAccoutBean> call, Response<ResultAccoutBean> response) {
+                        Message message = new Message();
+                        if(response.isSuccessful()){
+                            ResultAccoutBean body = response.body();
+                            int errorCode = body.getCode();
+                            if (errorCode == YmConstants.SUCCESSCODE){
+                                message.what = GETACCOUNTSUCCESS;
+                                body.getData().setPhoneNumber(mAccountBean.getNumber());
+                                body.getData().setPassword(mAccountBean.getPassword());
+                                message.obj = body;
+
+                            }else {
+                                Map<String,Object> errorData = new HashMap<>();
+                                errorData.put("code",body.getCode());
+                                errorData.put("message",body.getMessage());
+                                message.obj = errorData;
+                                message.what = GETACCOUNTFAIL;
+                            }
+                        }else {
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = GETACCOUNTNETFAIL;
+                        }
+                        handler.sendMessage(message);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResultAccoutBean> call, Throwable t) {
+                        Message message = new Message();
+                        int errorCode = ErrorCode.NET_ERROR;
+                        message.obj = errorCode;
+                        message.what = GETACCOUNTNETFAIL;
+                        handler.sendMessage(message);
+                    }
+                });
+            }
+        }).start();
+    }
 
 
     private void qqLogin() {
-        CallBackListener qqLoginCallback = new CallBackListener<String>() {
+        CallBackListener qqLoginCallbackListener = new CallBackListener() {
             @Override
-            public void onSuccess(String o) {
-                Message msg = new Message();
+            public void onSuccess(Object o) {
                 JSONObject response = new JSONObject();
                 try {
                     response.put("nickName","QQ用户");
@@ -613,6 +915,7 @@ public class UserModel implements IUserModel {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                Message msg = new Message();
                 msg.obj = response;
                 msg.what = UPDATEQQUSERINFO;
                 handler.sendMessage(msg);
@@ -620,17 +923,30 @@ public class UserModel implements IUserModel {
 
             @Override
             public void onFailure(int code, String msg) {
-                mLoginStatusListener.onFail(ErrorCode.LOGIN_FAIL,mActivity.getString(ResourseIdUtils.getStringId("ym_loginqq_fail")));
+
             }
         };
-        QQPluginApi.getInstance().login(mActivity,null,qqLoginCallback);
+        QQPluginApi.getInstance().login(mActivity,null,qqLoginCallbackListener);
     }
 
     private void wxLogin() {
-        SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = "wechat_sdk_demo_test";
-        api.sendReq(req);
+//        SendAuth.Req req = new SendAuth.Req();
+//        req.scope = "snsapi_userinfo";
+//        req.state = "wechat_sdk_demo_test";
+//        api.sendReq(req);
+        CallBackListener wechatCallback = new CallBackListener() {
+            @Override
+            public void onSuccess(Object o) {
+                String wechatCode = (String) o;
+                getWeixinInfo(wechatCode);
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+
+            }
+        };
+        WechatPluginApi.getInstance().login(mActivity,null,wechatCallback);
     }
 
     private void gtLogin() {
@@ -667,7 +983,7 @@ public class UserModel implements IUserModel {
         param.put(YmConstants.LOGINTOKEN, getToken(context));
         param.put(YmConstants.ACCESSTOKEN, mAccountBean.getAccessToken());
         final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
-        param.put("sign", sign);
+        param.put(YmConstants.SIGN, sign);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -675,18 +991,24 @@ public class UserModel implements IUserModel {
                 token.enqueue(new Callback<ResultAccoutBean>() {
                     @Override
                     public void onResponse(Call<ResultAccoutBean> call, Response<ResultAccoutBean> response) {
-                        ResultAccoutBean body = response.body();
-                        int errorCode = body.getCode();
                         Message message = new Message();
-                        if (errorCode == YmConstants.SUCCESSCODE) {
-                            message.what = AUTOLOGINSUCCESS;
-                            message.obj = body;
-                        } else {
-                            Map<String,Object> errorData = new HashMap<>();
-                            errorData.put("code",body.getCode());
-                            errorData.put("message",body.getMessage());
-                            message.obj = errorData;
-                            message.what = AUTOLOGINFAIL;
+                        if (response.isSuccessful()){
+                            ResultAccoutBean body = response.body();
+                            int errorCode = body.getCode();
+                            if (errorCode == YmConstants.SUCCESSCODE) {
+                                message.what = AUTOLOGINSUCCESS;
+                                message.obj = body;
+                            } else {
+                                Map<String,Object> errorData = new HashMap<>();
+                                errorData.put("code",body.getCode());
+                                errorData.put("message",body.getMessage());
+                                message.obj = errorData;
+                                message.what = AUTOLOGINFAIL;
+                            }
+                        }else {
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = AUTOLOGINNETFAIL;
                         }
                         handler.sendMessage(message);
                     }
@@ -694,6 +1016,8 @@ public class UserModel implements IUserModel {
                     @Override
                     public void onFailure(Call<ResultAccoutBean> call, Throwable t) {
                         Message message = new Message();
+                        int errorCode = ErrorCode.NET_ERROR;
+                        message.obj = errorCode;
                         message.what = AUTOLOGINNETFAIL;
                         handler.sendMessage(message);
                     }
@@ -717,7 +1041,7 @@ public class UserModel implements IUserModel {
         param.put(YmConstants.VCODE, accountBean.getVcode());
         param.put(YmConstants.ACCESSTOKEN, accountBean.getAccessToken());
         final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
-        param.put("sign", sign);
+        param.put(YmConstants.SIGN, sign);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -725,24 +1049,29 @@ public class UserModel implements IUserModel {
                 token.enqueue(new Callback<ResultAccoutBean>() {
                     @Override
                     public void onResponse(Call<ResultAccoutBean> call, Response<ResultAccoutBean> response) {
-                        ResultAccoutBean body = response.body();
-                        int errorCode = body.getCode();
-//                        ResultAccoutBean bindAccoutBean = new ResultAccoutBean();
-//                        bindAccoutBean.setData();
-                        body.getData().setUid(mAccountBean.getUid());
-                        body.getData().setLoginToken(mAccountBean.getLoginToken());
-                        body.getData().setAuthStatus(mAccountBean.getAuthStatus());
                         Message message = new Message();
-                        if (errorCode == YmConstants.SUCCESSCODE){
-                            message.what = BINDSUCCESS;
-                            message.obj = body;
+                        if (response.isSuccessful()){
+                            ResultAccoutBean body = response.body();
+                            int errorCode = body.getCode();
+                            if (errorCode == YmConstants.SUCCESSCODE){
+                                body.getData().setUid(mAccountBean.getUid());
+                                body.getData().setLoginToken(mAccountBean.getLoginToken());
+                                body.getData().setAuthStatus(mAccountBean.getAuthStatus());
+                                body.getData().setPhoneNumber(mAccountBean.getNumber());
+                                message.what = BINDSUCCESS;
+                                message.obj = body;
 
+                            }else {
+                                Map<String,Object> errorData = new HashMap<>();
+                                errorData.put("code",body.getCode());
+                                errorData.put("message",body.getMessage());
+                                message.obj = errorData;
+                                message.what = BINDFAIL;
+                            }
                         }else {
-                            Map<String,Object> errorData = new HashMap<>();
-                            errorData.put("code",body.getCode());
-                            errorData.put("message",body.getMessage());
-                            message.obj = errorData;
-                            message.what = BINDFAIL;
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = BINDNETFAIL;
                         }
                         handler.sendMessage(message);
                     }
@@ -750,6 +1079,8 @@ public class UserModel implements IUserModel {
                     @Override
                     public void onFailure(Call<ResultAccoutBean> call, Throwable t) {
                         Message message = new Message();
+                        int errorCode = ErrorCode.NET_DISCONNET;
+                        message.obj = errorCode;
                         message.what = BINDNETFAIL;
                         handler.sendMessage(message);
                     }
@@ -761,16 +1092,13 @@ public class UserModel implements IUserModel {
     @Override
     public void logout(Activity activity) {
         loginAccountInfo = null;
-//        clearQQInfo(activity);
+        clearQQInfo(activity);
         resetAccountInfo(activity);
     }
 
-//    private void clearQQInfo(Activity activity) {
-//        mTencent = Tencent.createInstance(activity.getString(ResourseIdUtils.getStringId("qq_appid")),
-//                activity.getApplicationContext(),
-//                activity.getString(ResourseIdUtils.getStringId("qq_authorities")));
-//        mTencent.logout(activity);
-//    }
+    private void clearQQInfo(Activity activity) {
+       QQPluginApi.getInstance().logout(activity);
+    }
 
     public boolean isLogin(){
         if (loginAccountInfo == null){
@@ -803,7 +1131,7 @@ public class UserModel implements IUserModel {
         param.put(YmConstants.IDCARD, accountBean.getIdCard());
         param.put(YmConstants.ACCESSTOKEN, accountBean.getAccessToken());
         final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
-        param.put("sign", sign);
+        param.put(YmConstants.SIGN, sign);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -811,19 +1139,25 @@ public class UserModel implements IUserModel {
                 token.enqueue(new Callback<ResultAccoutBean>() {
                     @Override
                     public void onResponse(Call<ResultAccoutBean> call, Response<ResultAccoutBean> response) {
-                        ResultAccoutBean body = response.body();
-                        int errorCode = body.getCode();
                         Message message = new Message();
-                        if (errorCode == YmConstants.SUCCESSCODE){
-                            message.what = REALNAMESUCCESS;
-                            message.obj = body;
+                        if (response.isSuccessful()){
+                            ResultAccoutBean body = response.body();
+                            int errorCode = body.getCode();
+                            if (errorCode == YmConstants.SUCCESSCODE){
+                                message.what = REALNAMESUCCESS;
+                                message.obj = body;
 
+                            }else {
+                                Map<String,Object> errorData = new HashMap<>();
+                                errorData.put("code",body.getCode());
+                                errorData.put("message",body.getMessage());
+                                message.obj = errorData;
+                                message.what = REALNAMEFAIL;
+                            }
                         }else {
-                            Map<String,Object> errorData = new HashMap<>();
-                            errorData.put("code",body.getCode());
-                            errorData.put("message",body.getMessage());
-                            message.obj = errorData;
-                            message.what = REALNAMEFAIL;
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = REALNAMENETFAIL;
                         }
                         handler.sendMessage(message);
                     }
@@ -831,6 +1165,8 @@ public class UserModel implements IUserModel {
                     @Override
                     public void onFailure(Call<ResultAccoutBean> call, Throwable t) {
                         Message message = new Message();
+                        int errorCode = ErrorCode.NET_ERROR;
+                        message.obj = errorCode;
                         message.what = REALNAMENETFAIL;
                         handler.sendMessage(message);
                     }
@@ -849,7 +1185,7 @@ public class UserModel implements IUserModel {
         param.put(YmConstants.NICKNAME, mAccountBean.getNickName());
         param.put(YmConstants.ACCESSTOKEN, mAccountBean.getAccessToken());
         final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
-        param.put("sign", sign);
+        param.put(YmConstants.SIGN, sign);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -857,19 +1193,24 @@ public class UserModel implements IUserModel {
                 token.enqueue(new Callback<ResultAccoutBean>() {
                     @Override
                     public void onResponse(Call<ResultAccoutBean> call, Response<ResultAccoutBean> response) {
-
-                        ResultAccoutBean body = response.body();
-                        int errorCode = body.getCode();
                         Message message = new Message();
-                        if (errorCode == YmConstants.SUCCESSCODE) {
-                            message.what = GETACCOUNTSUCCESS;
-                            message.obj = body;
-                        } else {
-                            Map<String,Object> errorData = new HashMap<>();
-                            errorData.put("code",body.getCode());
-                            errorData.put("message",body.getMessage());
-                            message.obj = errorData;
-                            message.what = GETACCOUNTFAIL;
+                        if (response.isSuccessful()){
+                            ResultAccoutBean body = response.body();
+                            int errorCode = body.getCode();
+                            if (errorCode == YmConstants.SUCCESSCODE) {
+                                message.what = GETACCOUNTSUCCESS;
+                                message.obj = body;
+                            } else {
+                                Map<String,Object> errorData = new HashMap<>();
+                                errorData.put("code",body.getCode());
+                                errorData.put("message",body.getMessage());
+                                message.obj = errorData;
+                                message.what = GETACCOUNTFAIL;
+                            }
+                        }else {
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = GETACCOUNTNETFAIL;
                         }
                         handler.sendMessage(message);
                     }
@@ -877,6 +1218,8 @@ public class UserModel implements IUserModel {
                     @Override
                     public void onFailure(Call<ResultAccoutBean> call, Throwable t) {
                         Message message = new Message();
+                        int errorCode = ErrorCode.NET_ERROR;
+                        message.obj = errorCode;
                         message.what = GETACCOUNTNETFAIL;
                         handler.sendMessage(message);
 
@@ -886,22 +1229,15 @@ public class UserModel implements IUserModel {
         }).start();
     }
 
-    private void getWeixinInfo() {
-        try {
-            if (null != broadcastReceiver) {
-                mActivity.unregisterReceiver(broadcastReceiver);
-            }
-        } catch (IllegalArgumentException e) {
-        }
-
+    private void getWeixinInfo(String wxCode) {
         final Map<String, String> param = new HashMap<>();
         //app_id=**&from=client'
         param.put(YmConstants.APPIDKEY, YmConstants.APPID);
         param.put(YmConstants.TS, currentTs);
-        param.put(YmConstants.WEIXINCODE, mAccountBean.getWxCode());
+        param.put(YmConstants.WEIXINCODE, wxCode);
         param.put(YmConstants.ACCESSTOKEN, mAccountBean.getAccessToken());
         final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
-        param.put("sign", sign);
+        param.put(YmConstants.SIGN, sign);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -909,18 +1245,24 @@ public class UserModel implements IUserModel {
                 token.enqueue(new Callback<ResultAccoutBean>() {
                     @Override
                     public void onResponse(Call<ResultAccoutBean> call, Response<ResultAccoutBean> response) {
-                        ResultAccoutBean body = response.body();
-                        int errorCode = body.getCode();
                         Message message = new Message();
-                        if (errorCode == YmConstants.SUCCESSCODE) {
+                        if (response.isSuccessful()){
+                            ResultAccoutBean body = response.body();
+                            int errorCode = body.getCode();
+                            if (errorCode == YmConstants.SUCCESSCODE) {
                                 message.what = GETACCOUNTSUCCESS;
                                 message.obj = body;
-                        } else {
-                            Map<String,Object> errorData = new HashMap<>();
-                            errorData.put("code",body.getCode());
-                            errorData.put("message",body.getMessage());
-                            message.obj = errorData;
-                            message.what = GETACCOUNTFAIL;
+                            } else {
+                                Map<String,Object> errorData = new HashMap<>();
+                                errorData.put("code",body.getCode());
+                                errorData.put("message",body.getMessage());
+                                message.obj = errorData;
+                                message.what = GETACCOUNTFAIL;
+                            }
+                        }else {
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = GETACCOUNTNETFAIL;
                         }
                         handler.sendMessage(message);
                     }
@@ -928,6 +1270,8 @@ public class UserModel implements IUserModel {
                     @Override
                     public void onFailure(Call<ResultAccoutBean> call, Throwable t) {
                         Message message = new Message();
+                        int errorCode = ErrorCode.NET_ERROR;
+                        message.obj = errorCode;
                         message.what = GETACCOUNTNETFAIL;
                         handler.sendMessage(message);
                     }
@@ -944,7 +1288,7 @@ public class UserModel implements IUserModel {
         param.put(YmConstants.UUID, mAccountBean.getUuid());
         param.put(YmConstants.ACCESSTOKEN, mAccountBean.getAccessToken());
         final String sign = YmSignUtils.getYmSign(param, YmConstants.CLIENTSECRET);
-        param.put("sign", sign);
+        param.put(YmConstants.SIGN, sign);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -952,18 +1296,24 @@ public class UserModel implements IUserModel {
                 token.enqueue(new Callback<ResultAccoutBean>() {
                     @Override
                     public void onResponse(Call<ResultAccoutBean> call, Response<ResultAccoutBean> response) {
-                        ResultAccoutBean body = response.body();
-                        int errorCode = body.getCode();
                         Message message = new Message();
-                        if (errorCode == YmConstants.SUCCESSCODE) {
+                        if (response.isSuccessful()){
+                            ResultAccoutBean body = response.body();
+                            int errorCode = body.getCode();
+                            if (errorCode == YmConstants.SUCCESSCODE) {
                                 message.what = GETACCOUNTSUCCESS;
                                 message.obj = body;
-                        } else {
-                            Map<String,Object> errorData = new HashMap<>();
-                            errorData.put("code",body.getCode());
-                            errorData.put("message",body.getMessage());
-                            message.obj = errorData;
-                            message.what = GETACCOUNTFAIL;
+                            } else {
+                                Map<String,Object> errorData = new HashMap<>();
+                                errorData.put("code",body.getCode());
+                                errorData.put("message",body.getMessage());
+                                message.obj = errorData;
+                                message.what = GETACCOUNTFAIL;
+                            }
+                        }else {
+                            int errorCode = ErrorCode.NET_DISCONNET;
+                            message.obj = errorCode;
+                            message.what = GETACCOUNTNETFAIL;
                         }
                         handler.sendMessage(message);
                     }
@@ -971,6 +1321,8 @@ public class UserModel implements IUserModel {
                     @Override
                     public void onFailure(Call<ResultAccoutBean> call, Throwable t) {
                         Message message = new Message();
+                        int errorCode = ErrorCode.NET_ERROR;
+                        message.obj = errorCode;
                         message.what = GETACCOUNTNETFAIL;
                         handler.sendMessage(message);
                     }
@@ -980,14 +1332,10 @@ public class UserModel implements IUserModel {
 
     }
 
-
-
-
-
-
     @Override
     public void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
         QQPluginApi.getInstance().onActivityResult(context,requestCode,resultCode,data);
+
     }
 
     @Override
@@ -1036,5 +1384,6 @@ public class UserModel implements IUserModel {
         });
         builder.create().show();
     }
+
 
 }

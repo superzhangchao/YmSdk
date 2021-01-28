@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
 
 
 
@@ -20,13 +19,22 @@
     <dimen name="text_size_f10">14sp</dimen>
     <dimen name="text_size_f9">13sp</dimen>
     <dimen name="text_size_f8">12sp</dimen>
-
+    <dimen name="text_size_f7">7sp</dimen>
+    <dimen name="ym_price_font">20sp</dimen>
+    <dimen name="ym_title_font">16sp</dimen>
+    <dimen name="ym_edit_font">14</dimen>
+    <dimen name="ym_xieyi_font">12sp</dimen>
 
 
 
     <dimen name="ym_content_width">540dp</dimen>
     <dimen name="ym_content_heigth">413dp</dimen>
     <dimen name="ym_viewtitle_heigth">62dp</dimen>
+
+    <dimen name="ym_history_width">381dp</dimen>
+    <dimen name="ym_item_heigth">60dp</dimen>
+    <dimen name="ym_item_tv_heigth">24dp</dimen>
+    <dimen name="ym_item_im_size">30dp</dimen>
 
     <dimen name="ym_edit_horizontal_margin">75dp</dimen>
     <dimen name="ym_edit_horizontal_margin1">1dp</dimen>
@@ -36,24 +44,37 @@
     <dimen name="ym_margin18">27dp</dimen>
     <dimen name="ym_margin15">22dp</dimen>
     <dimen name="ym_margin10">15dp</dimen>
+    <dimen name="ym_margin8">12dp</dimen>
     <dimen name="ym_margin5">8dp</dimen>
+    <dimen name="ym_margin4">6dp</dimen>
+    <dimen name="ym_margin3">5dp</dimen>
+    <dimen name="ym_margin2">3dp</dimen>
     <dimen name="ym_text_width">75dp</dimen>
     <dimen name="ym_padding">9dp</dimen>
 
 
 
 
-    <dimen name="ym_edit_height">39dp</dimen>
+    <dimen name="ym_edit_height">48dp</dimen>
     <dimen name="ym_xieyi_height">21dp</dimen>
     <dimen name="ym_xieyi_width">26dp</dimen>
+    <dimen name="ym_phone_width">17dp</dimen>
+    <dimen name="ym_phone_height">22dp</dimen>
+    <dimen name="ym_arr_width">30dp</dimen>
+    <dimen name="ym_arr_height">23dp</dimen>
+    <dimen name="ym_showpwd_width">30dp</dimen>
+    <dimen name="ym_showpwd_height">30dp</dimen>
     <dimen name="ym_login_height">48dp</dimen>
     <dimen name="ym_otherlogin_height">45dp</dimen>
+    <dimen name="ym_im_login">42dp</dimen>
+    <dimen name="ym_tv_lastlogin_width">57dp</dimen>
     <dimen name="ym_line_height">27dp</dimen>
     <dimen name="ym_line_width">99dp</dimen>
     <dimen name="ym_bind_height">48dp</dimen>
     <dimen name="ym_bind_width">180dp</dimen>
     <dimen name="ym_textrealname_width">90dp</dimen>
     <dimen name="ym_realname_height">48dp</dimen>
+    <dimen name="ym_realname_width">180dp</dimen>
     <dimen name="ym_xieyicontext_width">510dp</dimen>
 
     <dimen name="ym_productdes_width">150dp</dimen>

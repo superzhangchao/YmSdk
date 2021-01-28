@@ -1,7 +1,5 @@
 package com.ym.game.sdk.common.utils;
 
-import android.util.Log;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -26,8 +24,7 @@ public class YmSignUtils {
 
         String prestr = createLinkString(filteredReq, true, false);	//得到待签名字符串 需要对map进行sort，不需要对value进行URL编码
         String signstr = prestr + key;
-        Log.i(TAG, "getYmSign: "+signstr);
-        return MD5Util.getMD5String(signstr).toLowerCase();
+        return MD5Utils.getMD5String(signstr).toLowerCase();
     }
 
     /**

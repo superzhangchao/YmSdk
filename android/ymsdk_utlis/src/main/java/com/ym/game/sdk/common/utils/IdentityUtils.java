@@ -33,9 +33,10 @@ public class IdentityUtils {
 //    private String newIDCard="";
 //    地区及编码
     /**
-     * 正则表达式:验证汉字(1-9个汉字)  {1,9} 自定义区间
+     * 正则表达式:验证名字(1-9个汉字)  {1,9} 自定义区间
      */
-    private static final String REGEX_CHINESE = "^[\u4e00-\u9fa5]{1,9}$";
+
+    private static final String REGEX_NAME = "^[\\u4e00-\\u9fa5.·\\u36c3\\u4DAE]{2,32}$";
 
     //private String Area[][2] =
     private static void setWiBuffer() {
@@ -234,7 +235,7 @@ public class IdentityUtils {
     }
 
     public static boolean isChinese(String chinese) {
-        return Pattern.matches(REGEX_CHINESE, chinese);
+        return Pattern.matches(REGEX_NAME, chinese);
     }
 
     public IdentityUtils() {

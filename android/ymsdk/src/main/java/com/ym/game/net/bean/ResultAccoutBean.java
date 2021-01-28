@@ -44,6 +44,7 @@ public class ResultAccoutBean {
          * login_token :
          * login_type:
          * auth_status:
+         * has_password:
          */
 
         private String uid;
@@ -60,6 +61,12 @@ public class ResultAccoutBean {
         @SerializedName("auth_status")
         private int authStatus;
 
+        private String phoneNumber;
+
+        @SerializedName("has_password")
+        private boolean hasPassword;
+
+        private String password;
 
         public String getUid() {
             return uid;
@@ -103,6 +110,30 @@ public class ResultAccoutBean {
             this.authStatus = authStatus;
         }
 
+        public String getPhoneNumber() {
+            return phoneNumber;
+        }
+
+        public void setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+        }
+
+        public boolean isHasPassword() {
+            return hasPassword;
+        }
+
+        public void setHasPassword(boolean hasPassword) {
+            this.hasPassword = hasPassword;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
         @Override
         public String toString() {
             return "DataBean{" +
@@ -111,6 +142,9 @@ public class ResultAccoutBean {
                     ", nickName='" + nickName + '\'' +
                     ", loginType='" + loginType + '\'' +
                     ", authStatus=" + authStatus +
+                    ", phoneNumber='" + phoneNumber + '\'' +
+                    ", hasPassword=" + hasPassword +
+                    ", password='" + password + '\'' +
                     '}';
         }
     }

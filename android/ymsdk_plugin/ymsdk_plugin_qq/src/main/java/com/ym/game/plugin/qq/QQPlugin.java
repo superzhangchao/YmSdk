@@ -24,6 +24,10 @@ public class QQPlugin extends Plugin {
         QQLogin.getInstance().login(context,loginMap,callBackListener);
     }
 
+    public void qqLogout(Context context){
+        QQLogin.getInstance().logout(context);
+    }
+
     public void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
         QQLogin.getInstance().onActivityResult(context,requestCode,resultCode,data);
 

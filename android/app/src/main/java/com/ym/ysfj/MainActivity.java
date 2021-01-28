@@ -6,36 +6,34 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.tencent.mm.opensdk.openapi.IWXAPI;
+
 import com.ym.game.net.bean.ResultAccoutBean;
+import com.ym.game.sdk.YmConstants;
 import com.ym.game.sdk.YmSdkApi;
-import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.bean.PurchaseBean;
 import com.ym.game.sdk.callback.LoginCallBack;
 import com.ym.game.sdk.callback.PayCallBack;
+import com.ym.game.sdk.callback.RealNameCallBack;
+import com.ym.game.sdk.common.frame.logger.Logger;
+import com.ym.game.sdk.common.utils.RSAEncryptUtils;
 import com.ym.game.sdk.common.utils.ToastUtils;
 import com.ym.game.sdk.common.utils.YmSignUtils;
-
-
 
 
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -45,13 +43,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btLogout;
     private Button btPay;
     private Button btSendinfo;
-    private IWXAPI api;
+
     private String text;
     private String key ="vJV8kCxV";
     private String encryptDES;
     private TextView tv;
     private Button btGetrealnameinfo;
     private Button btAuthStatus;
+    private Button btGuestRealNane;
+    private Button btGuestRealNane2;
+    private Button btTestnet1;
+    private Button btTestnet2;
 
 
     @Override
@@ -64,14 +66,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btPay = (Button) findViewById(R.id.bt_pay);
         btAuthStatus = (Button) findViewById(R.id.bt_status);
         btSendinfo = (Button) findViewById(R.id.bt_sendinfo);
+        btGuestRealNane = (Button) findViewById(R.id.bt_guestrealnane);
+        btGuestRealNane2 = (Button) findViewById(R.id.bt_guestrealnane2);
+        btTestnet1 = (Button) findViewById(R.id.bt_testnet1);
+        btTestnet2 = (Button) findViewById(R.id.bt_testnet2);
         tv = (TextView) findViewById(R.id.tv);
         btInit.setOnClickListener(this);
         btLogin.setOnClickListener(this);
         btLogout.setOnClickListener(this);
         btAuthStatus.setOnClickListener(this);
+        btGuestRealNane.setOnClickListener(this);
+        btGuestRealNane2.setOnClickListener(this);
         btPay.setOnClickListener(this);
         btSendinfo.setOnClickListener(this);
-
+        btTestnet1.setOnClickListener(this);
+        btTestnet2.setOnClickListener(this);
     }
 
 
@@ -85,7 +94,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        YmSdkApi.getInstance().onResume(this);
+        if(MainActivity.this ==null){
+            Logger.i("context 为空");
+        }
+        YmSdkApi.getInstance().onResume(MainActivity.this);
     }
 
     @Override
@@ -147,18 +159,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onWindowFocusChanged(hasFocus);
         if(hasFocus){
             setFullScreen();
+
         }
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId()==btInit.getId()){
-            YmSdkApi.getInstance().initPlatform(this,"5012");
+//            YmSdkApi.getInstance().initEventReport(getApplication(),"toutiao",true);
+//            YmSdkApi.getInstance().setDebugMode(true);
+
+
+            YmSdkApi.getInstance().registerEvent();
         }else if(btLogin.getId()==v.getId()){
             YmSdkApi.getInstance().login(this, new LoginCallBack() {
                 @Override
                 public void onCancel() {
-                    Log.i(TAG, "onCancle: ");
                     tv.setText("onCancle");
                 }
 
@@ -168,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     Log.i(TAG, "onSuccess: "+resultAccoutBean.getData().toString());
                     tv.setText(resultAccoutBean.getData().toString());
+                    YmSdkApi.getInstance().loginEvent(resultAccoutBean.getData().getUid());
                     ToastUtils.showToast(MainActivity.this,resultAccoutBean.getData().toString());
                 }
 
@@ -180,14 +197,60 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }else if (btSendinfo.getId()==v.getId()){
 //            YmSdkApi.getInstance().resetFastLogin(false);
-        }else if(btLogout.getId() ==v.getId()){
+            YmSdkApi.getInstance().trackEvent("event_1");
+            try {
+                RSAEncryptUtils.encrypt("a123456", YmConstants.publickey);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }else if(btLogout.getId() ==v.getId()) {
             YmSdkApi.getInstance().logout(this);
+        }else if(btGuestRealNane.getId() == v.getId()){
+            YmSdkApi.getInstance().showRealName(this, false, new RealNameCallBack() {
+                @Override
+                public void onSuccess(Object o) {
+                    ResultAccoutBean resultAccoutBean = (ResultAccoutBean) o;
+                    Log.i(TAG, "showRealName onSuccess: "+resultAccoutBean.getData().getAuthStatus());
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+
+                @Override
+                public void onFailure(int code, String msg) {
+
+                }
+            });
+        }else if(btGuestRealNane2.getId() == v.getId()){
+            YmSdkApi.getInstance().showRealName(this, true, new RealNameCallBack() {
+                @Override
+                public void onSuccess(Object o) {
+                    ResultAccoutBean resultAccoutBean = (ResultAccoutBean) o;
+                    Log.i(TAG, "showRealName onSuccess: "+resultAccoutBean.getData().getAuthStatus());
+
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+
+                @Override
+                public void onFailure(int code, String msg) {
+
+                }
+            });
         }else if(btPay.getId()==v.getId()){
 
             YmSdkApi.getInstance().pay(this,getPurchaseBean(), new PayCallBack() {
                 @Override
                 public void onSuccess(Object o) {
                     Log.i(TAG, "onSuccess: ");
+                    PurchaseBean purchaseBean = (PurchaseBean) o;
+                    YmSdkApi.getInstance().paySuccessEvent(purchaseBean.getPlatformOrderId(),purchaseBean.getPayType(),"CNY",0.01f);
                 }
 
                 @Override
@@ -203,6 +266,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else if(btAuthStatus.getId()==v.getId()){
             int realNameStatus = YmSdkApi.getInstance().getRealNameStatus();
             ToastUtils.showToast(this,"AuthStatus:"+realNameStatus);
+        }else if (btTestnet1.getId()==v.getId()) {
+            YmSdkApi.getInstance().testNet();
+        }else if (btTestnet2.getId()==v.getId()){
+            YmSdkApi.getInstance().testNet2();
         }
     }
 
@@ -213,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int productPrice = (int) (Double.parseDouble("0.01")*100);
         String gameSign = getGameSign("itemId_60","新手装备大礼包",productPrice+"",orderId,
                 "s1","147258","张三","1","gt-1258");
+        YmSdkApi.getInstance().createOrder(orderId,"CNY",0.01f);
         PurchaseBean purchaseBean = new PurchaseBean.PurchaseBeanBuilder()
                 .setProductDesc("新手装备大礼包")
                 .setProductId("itemId_60")

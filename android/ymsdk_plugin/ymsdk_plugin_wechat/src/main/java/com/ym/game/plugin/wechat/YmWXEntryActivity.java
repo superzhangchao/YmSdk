@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-
-
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -13,9 +11,6 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.ym.game.sdk.common.base.config.ErrorCode;
-
-
 
 
 public class YmWXEntryActivity extends Activity implements IWXAPIEventHandler {
@@ -54,32 +49,32 @@ public class YmWXEntryActivity extends Activity implements IWXAPIEventHandler {
                     SendAuth.Resp resp = (SendAuth.Resp) baseResp;
                     // 获得code
                     String userCode = resp.code;
-                    sendWXLoginCode(ErrorCode.SUCCESS,userCode);
+                    sendWXLoginCode(WechatConstants.LOGIN_RESULT_SUCC_CODE,userCode);
 
                     break;
                 case BaseResp.ErrCode.ERR_USER_CANCEL:
                     //用户取消
-                    sendWXLoginCode(ErrorCode.CANCEL,"");
+                    sendWXLoginCode(WechatConstants.LOGIN_RESULT_CANCEL_CODE,"");
                     break;
                 case BaseResp.ErrCode.ERR_AUTH_DENIED:
                     //用户拒绝授权
                 default:
-                    sendWXLoginCode(ErrorCode.FAILURE,"");
+                    sendWXLoginCode(WechatConstants.LOGIN_RESULT_FAIL_CODE,"");
                     break;
             }
         }else if(baseResp.getType()== ConstantsAPI.COMMAND_PAY_BY_WX){
             switch (baseResp.errCode) {
                 case BaseResp.ErrCode.ERR_OK:
-                    sendWXPayCode(ErrorCode.SUCCESS);
+                    sendWXPayCode(WechatConstants.WXPAY_RESULT_SUCC_CODE);
                     break;
                 case BaseResp.ErrCode.ERR_USER_CANCEL:
-                    sendWXPayCode(ErrorCode.CANCEL);
+                    sendWXPayCode(WechatConstants.WXPAY_RESULT_CANCEL_CODE);
                     break;
                 case BaseResp.ErrCode.ERR_COMM:
                 case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 case BaseResp.ErrCode.ERR_UNSUPPORT:
                 default:
-                    sendWXPayCode(ErrorCode.FAILURE);
+                    sendWXPayCode(WechatConstants.WXPAY_RESULT_FAIL_CODE);
                     break;
             }
         }

@@ -30,14 +30,16 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    //开发依赖
     api project(':ymsdk_utlis')
-    implementation(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
 
+    //正式编译依赖
+//    compileOnly project(':ymsdk_utlis')
 }

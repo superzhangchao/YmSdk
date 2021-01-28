@@ -113,6 +113,12 @@ public class QQLogin {
 
         }
     }
+    public void logout(Context context){
+        mTencent = Tencent.createInstance(context.getString(ResourseIdUtils.getStringId("qq_appid")),
+                context.getApplicationContext(),
+                context.getString(ResourseIdUtils.getStringId("qq_authorities")));
+        mTencent.logout(context);
+    }
     public void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
         Tencent.onActivityResultData(requestCode, resultCode, data, loginListener);
     }

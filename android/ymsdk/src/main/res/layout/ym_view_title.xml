@@ -9,13 +9,13 @@
 
     <ImageView
         android:id="@+id/ym_im_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="@dimen/ym_margin5"
-        android:layout_marginBottom="@dimen/ym_margin5"
-        android:layout_marginStart="@dimen/ym_margin5"
+        android:layout_marginTop="@dimen/ym_margin10"
+        android:layout_marginBottom="@dimen/ym_margin10"
+        android:layout_marginStart="@dimen/ym_margin10"
         android:src="@mipmap/ym_back"
         android:visibility="visible" />
 
@@ -30,13 +30,12 @@
 
     <ImageView
         android:id="@+id/ym_im_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="@dimen/ym_margin5"
-        android:layout_marginBottom="@dimen/ym_margin5"
-        android:layout_marginEnd="@dimen/ym_margin5"
+        android:layout_marginTop="@dimen/ym_margin10"
+        android:layout_marginEnd="@dimen/ym_margin10"
+        android:layout_marginBottom="@dimen/ym_margin10"
         android:src="@mipmap/ym_close"
         android:visibility="invisible"
         tools:ignore="ContentDescription" />

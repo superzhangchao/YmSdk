@@ -19,6 +19,7 @@ public class YmConstants {
     public static final String SIGN = "sign";
     public static final String NUMBER = "number";
     public static final String VCODE = "code";
+    public static final String PASSWORD = "password";
     public static final String OPENID = "open_id";
     public static final String UUID = "uuid";
     public static final String UID = "uid";
@@ -53,7 +54,7 @@ public class YmConstants {
     public static final String WXLOGIN = "wx";
     public static final String GUSETLOGIN = "guest";
     public static final String PHONELOGIN = "phone";
-
+    public static final String PASSWORDLOGIN = "password";
     //通用错误码
     public static final int SUCCESSCODE = 0;
     public static final int FAILCODE = 1;
@@ -71,6 +72,20 @@ public class YmConstants {
     public static final int PAY_CANCEL_CODE = 212;
     public static final int PAY_FAIL_CODE = 213;
 
+    public static final int WXPAY_RESULT_SUCC_CODE = 214;
+    public static final int WXPAY_RESULT_CANCEL_CODE = 215;
+    public static final int WXPAY_RESULT_FAIL_CODE = 216;
+
+    public static final int COMMONLOGINREALNAMETYPE = 1;
+    public static final int GUESTLOGINREALNAMETYPE = 2;
+    public static final int LIMITREALNAMETYPE = 3;
+    public static final int UNLIMITREALNAMETYPE = 4;
+
+    public static final int REALNAMERELOGINSTATE = 1;
+    public static final int REALNAMESKIPSTATE = 2;
+    public static final int REALNAMECALLBACKSTATE = 3;
+
+    public static final String publickey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCau7yTHZ+M/1ZmwVpmiG4IEocOZX0KHYPmkrqq/QNULAJw//33lcEgCpEXOhQl0Jg8Gd4JywkfZRM0FYPaZAL10AceywzpbiQnUDaCc/C44X4gNtVdnruu4Cegt46iA4M5ukRoZEz+TkzgQgbMzOJSsFKVsQ+tMVgr8Y7uyBz6IwIDAQAB";
 
 
 }
