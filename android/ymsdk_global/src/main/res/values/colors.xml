@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="text_white">@android:color/white</color>
+
+
+    <color name="title_color">#fcc800</color>
+    <color name="line_color">#6e6e6f</color>
+    <color name="edit_bg">#333333</color>
+    <color name="edit_bg2">#232325</color>
+    <color name="edit_text">@android:color/white</color>
+
+
+    <color name="ym_edit_name">#727272</color>
+    <color name="ym_xieyi">#2a8dfc</color>
+
+    <color name="ym_tip_red">#f56060</color>
+    <color name="ym_tip_black">#000000</color>
+    <color name="ym_phonecode">#eea83b</color>
+    <color name="ym_edit_hintcolor">#adc8e4</color>
+    <color name="ym_edit_color">#000000</color>
+    <color name="ym_bt_login">#ffffff</color>
+    <color name="ym_color_bindtip">#464545</color>
+
+    <color name="ym_tv_phone_color">#e4f1ff</color>
+    <color name="ym_tv_time_color">#656363</color>
+
+
+
+</resources>

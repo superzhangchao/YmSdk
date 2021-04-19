@@ -14,16 +14,16 @@ import android.widget.TextView;
 
 
 import com.ym.game.net.bean.ResultAccoutBean;
-import com.ym.game.sdk.YmConstants;
+import com.ym.game.sdk.constants.YmConstants;
 import com.ym.game.sdk.YmSdkApi;
 import com.ym.game.sdk.bean.PurchaseBean;
 import com.ym.game.sdk.callback.LoginCallBack;
 import com.ym.game.sdk.callback.PayCallBack;
-import com.ym.game.sdk.callback.RealNameCallBack;
 import com.ym.game.sdk.common.frame.logger.Logger;
 import com.ym.game.sdk.common.utils.RSAEncryptUtils;
 import com.ym.game.sdk.common.utils.ToastUtils;
 import com.ym.game.sdk.common.utils.YmSignUtils;
+import com.ym.ysfjen.R;
 
 
 import java.util.HashMap;
@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btSendinfo.setOnClickListener(this);
         btTestnet1.setOnClickListener(this);
         btTestnet2.setOnClickListener(this);
+        YmSdkApi.getInstance().onCreate(this,savedInstanceState);
     }
 
 
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        YmSdkApi.getInstance().onActivityResult(requestCode,resultCode,data);
+        YmSdkApi.getInstance().onActivityResult(this,requestCode,resultCode,data);
     }
 
     @Override
@@ -166,8 +167,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId()==btInit.getId()){
-//            YmSdkApi.getInstance().initEventReport(getApplication(),"toutiao",true);
-//            YmSdkApi.getInstance().setDebugMode(true);
+            YmSdkApi.getInstance().initEventReport(getApplication(),"toutiao",true);
+            YmSdkApi.getInstance().setDebugMode(true);
 
 
             YmSdkApi.getInstance().registerEvent();
@@ -196,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
 
         }else if (btSendinfo.getId()==v.getId()){
-//            YmSdkApi.getInstance().resetFastLogin(false);
             YmSdkApi.getInstance().trackEvent("event_1");
             try {
                 RSAEncryptUtils.encrypt("a123456", YmConstants.publickey);
@@ -207,65 +207,65 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else if(btLogout.getId() ==v.getId()) {
             YmSdkApi.getInstance().logout(this);
         }else if(btGuestRealNane.getId() == v.getId()){
-            YmSdkApi.getInstance().showRealName(this, false, new RealNameCallBack() {
-                @Override
-                public void onSuccess(Object o) {
-                    ResultAccoutBean resultAccoutBean = (ResultAccoutBean) o;
-                    Log.i(TAG, "showRealName onSuccess: "+resultAccoutBean.getData().getAuthStatus());
-                }
-
-                @Override
-                public void onCancel() {
-
-                }
-
-                @Override
-                public void onFailure(int code, String msg) {
-
-                }
-            });
+//            YmSdkApi.getInstance().showRealName(this, false, new RealNameCallBack() {
+//                @Override
+//                public void onSuccess(Object o) {
+//                    ResultAccoutBean resultAccoutBean = (ResultAccoutBean) o;
+//                    Log.i(TAG, "showRealName onSuccess: "+resultAccoutBean.getData().getAuthStatus());
+//                }
+//
+//                @Override
+//                public void onCancel() {
+//
+//                }
+//
+//                @Override
+//                public void onFailure(int code, String msg) {
+//
+//                }
+//            });
         }else if(btGuestRealNane2.getId() == v.getId()){
-            YmSdkApi.getInstance().showRealName(this, true, new RealNameCallBack() {
-                @Override
-                public void onSuccess(Object o) {
-                    ResultAccoutBean resultAccoutBean = (ResultAccoutBean) o;
-                    Log.i(TAG, "showRealName onSuccess: "+resultAccoutBean.getData().getAuthStatus());
-
-                }
-
-                @Override
-                public void onCancel() {
-
-                }
-
-                @Override
-                public void onFailure(int code, String msg) {
-
-                }
-            });
+//            YmSdkApi.getInstance().showRealName(this, true, new RealNameCallBack() {
+//                @Override
+//                public void onSuccess(Object o) {
+//                    ResultAccoutBean resultAccoutBean = (ResultAccoutBean) o;
+//                    Log.i(TAG, "showRealName onSuccess: "+resultAccoutBean.getData().getAuthStatus());
+//
+//                }
+//
+//                @Override
+//                public void onCancel() {
+//
+//                }
+//
+//                @Override
+//                public void onFailure(int code, String msg) {
+//
+//                }
+//            });
         }else if(btPay.getId()==v.getId()){
 
-            YmSdkApi.getInstance().pay(this,getPurchaseBean(), new PayCallBack() {
-                @Override
-                public void onSuccess(Object o) {
-                    Log.i(TAG, "onSuccess: ");
-                    PurchaseBean purchaseBean = (PurchaseBean) o;
-                    YmSdkApi.getInstance().paySuccessEvent(purchaseBean.getPlatformOrderId(),purchaseBean.getPayType(),"CNY",0.01f);
-                }
+YmSdkApi.getInstance().pay(this,getPurchaseBean(), new PayCallBack() {
+    @Override
+    public void onSuccess(Object o) {
+        Log.i(TAG, "onSuccess: ");
+        PurchaseBean purchaseBean = (PurchaseBean) o;
+        YmSdkApi.getInstance().paySuccessEvent(purchaseBean.getPlatformOrderId(),purchaseBean.getPayType(),"CNY",0.01f);
+    }
 
-                @Override
-                public void onFailure(int code, String msg) {
-                    Log.i(TAG, "onFailure: ");
-                }
+    @Override
+    public void onFailure(int code, String msg) {
+        Log.i(TAG, "onFailure: ");
+    }
 
-                @Override
-                public void onCancel() {
-                    Log.i(TAG, "onCancel: ");
-                }
-            });
+    @Override
+    public void onCancel() {
+        Log.i(TAG, "onCancel: ");
+    }
+});
         }else if(btAuthStatus.getId()==v.getId()){
-            int realNameStatus = YmSdkApi.getInstance().getRealNameStatus();
-            ToastUtils.showToast(this,"AuthStatus:"+realNameStatus);
+//            int realNameStatus = YmSdkApi.getInstance().getRealNameStatus();
+//            ToastUtils.showToast(this,"AuthStatus:"+realNameStatus);
         }else if (btTestnet1.getId()==v.getId()) {
             YmSdkApi.getInstance().testNet();
         }else if (btTestnet2.getId()==v.getId()){
@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setProductId("itemId_60")
                 .setProductName("新手装备大礼包")
                 .setProductPrice(productPrice+"")
-                .setOrderId(orderId)
+                .setGameOrderId(orderId)
                 .setServerId("s1")
                 .setRoleId("147258")
                 .setRoleName("张三")

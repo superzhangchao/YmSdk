@@ -14,8 +14,9 @@ import java.util.Map;
 public class WechatPlugin extends Plugin {
     private String TAG = "WeChatPlugin";
     private int eventType = 0;
-    private int loginEvent = 1;
-    private int payEvent = 2;
+    private static final int noEvent = 0;
+    private static final int loginEvent = 1;
+    private static final int payEvent = 2;
     @Override
     protected synchronized void initPlugin() {
         super.initPlugin();
@@ -50,8 +51,10 @@ public class WechatPlugin extends Plugin {
     public void onResume(Context context) {
         if (eventType ==loginEvent){
             WechatLogin.getInstance().onResume(context);
+            eventType= noEvent;
         }else if (eventType ==payEvent){
             WechatPay.getInstance().onResume(context);
+            eventType= noEvent;
         }
     }
 }

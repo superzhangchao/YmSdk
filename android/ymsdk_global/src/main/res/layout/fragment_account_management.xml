@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:id="@+id/ll_content1"
+        android:layout_width="@dimen/ym_content_width"
+        android:layout_height="@dimen/ym_content_heigth"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <include layout="@layout/ym_view_title" />
+
+        <LinearLayout
+            android:id="@+id/ll_content"
+            android:layout_width="@dimen/ym_content_width"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@mipmap/ym_bg">
+
+            <!--登录分割线-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/ym_line_height"
+                android:layout_marginTop="@dimen/ym_margin10">
+
+                <TextView
+                    android:id="@+id/ym_bind_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/edit_bg"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_f13"
+                    android:text="@string/ym_tv_accounttitle"/>
+
+                <ImageView
+                    android:layout_width="@dimen/ym_line_width"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/ym_bind_title"
+                    android:layout_marginEnd="@dimen/ym_margin1"
+                    android:src="@mipmap/ym_fenjiexian"/>
+
+                <ImageView
+                    android:id="@+id/fengjiexian_right"
+                    android:layout_width="@dimen/ym_line_width"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/ym_margin1"
+                    android:layout_toEndOf="@id/ym_bind_title"
+                    android:src="@mipmap/ym_fenjiexian"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="@dimen/ym_bindcontent_width"
+                android:layout_height="@dimen/ym_bindcontent_heigth"
+                android:layout_marginTop="@dimen/ym_margin10"
+                android:layout_marginStart="@dimen/ym_margin27"
+                android:background="@mipmap/ym_tv_bg"
+                android:paddingTop="@dimen/ym_margin15"
+                android:paddingStart="@dimen/ym_margin10"
+                android:paddingEnd="@dimen/ym_margin10"
+                android:paddingBottom="@dimen/ym_margin10"
+                android:text="@string/ym_accountmessage"
+                android:textColor="@color/edit_bg"
+                android:textSize="@dimen/text_size_f12"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/ym_margin50"
+                android:layout_marginRight="@dimen/ym_margin50"
+                android:layout_marginTop="@dimen/ym_margin20"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <Button
+                    android:id="@+id/ym_bt_bind"
+                    android:layout_width="@dimen/ym_bind_width"
+                    android:layout_height="@dimen/ym_bind_height"
+                    android:layout_marginEnd="@dimen/ym_margin10"
+                    android:background="@mipmap/ym_button_short"
+                    android:text="@string/ym_tv_bind"
+                    android:textAllCaps="false"
+                    android:textColor="@color/ym_bt_login" />
+
+                <Button
+                    android:id="@+id/ym_bt_switch"
+                    android:layout_width="@dimen/ym_bind_width"
+                    android:layout_height="@dimen/ym_bind_height"
+                    android:layout_marginStart="@dimen/ym_margin10"
+                    android:background="@mipmap/ym_button_short2"
+                    android:text="@string/ym_tv_switch"
+                    android:textAllCaps="false"
+                    android:textColor="@color/ym_bt_login" />
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

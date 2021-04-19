@@ -5,11 +5,12 @@ import android.content.Intent;
 
 
 
-import com.ym.game.sdk.base.config.ErrorCode;
+
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.bean.PurchaseBean;
 
 import com.ym.game.sdk.callback.CallbackMananger;
+import com.ym.game.sdk.common.base.config.ErrorCode;
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
 import com.ym.game.sdk.common.utils.ToastUtils;
 import com.ym.game.sdk.model.IPurchaseView;

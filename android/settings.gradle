@@ -1,11 +1,18 @@
 rootProject.name='ymsdks'
 include ':app'
 include ':ymsdk'
+include ':ymsdk_global'
 include ':pluginmanagerImpl',
     ':ymsdk_plugin_alipay',
     ':ymsdk_plugin_wechat',
-    ':ymsdk_plugin_qq'
+    ':ymsdk_plugin_qq',
+    ':ymsdk_plugin_google',
+    ':ymsdk_plugin_facebook',
+    ':ymsdk_plugin_adjust'
 project(':ymsdk_plugin_alipay').projectDir = new File('ymsdk_plugin/ymsdk_plugin_alipay')
 project(':ymsdk_plugin_wechat').projectDir = new File('ymsdk_plugin/ymsdk_plugin_wechat')
 project(':ymsdk_plugin_qq').projectDir = new File('ymsdk_plugin/ymsdk_plugin_qq')
+project(':ymsdk_plugin_google').projectDir = new File('ymsdk_plugin/ymsdk_plugin_google')
+project(':ymsdk_plugin_facebook').projectDir = new File('ymsdk_plugin/ymsdk_plugin_facebook')
+project(':ymsdk_plugin_adjust').projectDir = new File('ymsdk_plugin/ymsdk_plugin_adjust')
 include ':ymsdk_utlis'

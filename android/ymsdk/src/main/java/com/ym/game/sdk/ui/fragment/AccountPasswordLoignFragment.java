@@ -15,7 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ym.game.sdk.YmConstants;
-import com.ym.game.sdk.base.config.TypeConfig;
+
+import com.ym.game.sdk.config.YmTypeConfig;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.bean.HistoryAccountBean;
 import com.ym.game.sdk.common.utils.RSAEncryptUtils;
@@ -152,12 +153,12 @@ public class AccountPasswordLoignFragment extends UserBaseFragment implements Vi
                 super.onTextChanged(s, start, before, count);
             }
         });
-        if (pwdPageType ==TypeConfig.COMMONPWDPAGE){
+        if (pwdPageType == YmTypeConfig.COMMONPWDPAGE){
             ymImBack.setVisibility(View.VISIBLE);
             ymImClose.setVisibility(View.INVISIBLE);
             ymRlAccountset.setVisibility(View.VISIBLE);
             ymTvLoginOther.setVisibility(View.GONE);
-        }else if (pwdPageType ==TypeConfig.QUICKPWDPAGE){
+        }else if (pwdPageType ==YmTypeConfig.QUICKPWDPAGE){
             ymImBack.setVisibility(View.INVISIBLE);
             ymImClose.setVisibility(View.VISIBLE);
             ymRlAccountset.setVisibility(View.GONE);
@@ -208,14 +209,14 @@ public class AccountPasswordLoignFragment extends UserBaseFragment implements Vi
             ymEtPwd.setText("");
             AccountSetFragment accountSetFragment = getFragmentByName(baseActivity, AccountSetFragment.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("setType", TypeConfig.REGISTER);
+            bundle.putSerializable("setType", YmTypeConfig.REGISTER);
             accountSetFragment.setArguments(bundle);
             redirectFragment(accountSetFragment);
         } else if (v.getId() == ymTvSetpwd.getId()) {
             ymEtPwd.setText("");
             AccountSetFragment accountSetFragment = getFragmentByName(baseActivity, AccountSetFragment.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("setType", TypeConfig.SETPASSWORD);
+            bundle.putSerializable("setType", YmTypeConfig.SETPASSWORD);
             accountSetFragment.setArguments(bundle);
             redirectFragment(accountSetFragment);
         }else if (v.getId()==ymImClose.getId()){

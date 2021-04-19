@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/ym_loginbg"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/bt_init"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:text="init" />
+
+            <Button
+                android:id="@+id/bt_login"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:text="login" />
+
+            <Button
+                android:id="@+id/bt_logout"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:text="logout" />
+            <Button
+                android:id="@+id/bt_bind"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:text="bind" />
+            <Button
+                android:id="@+id/bt_pay"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:text="pay" />
+
+            <Button
+                android:id="@+id/bt_sendinfo"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:text="sendevent" />
+
+            <Button
+                android:id="@+id/bt_share"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:text="share" />
+
+            <Button
+                android:id="@+id/bt_product1"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:text="product01" />
+            <Button
+                android:id="@+id/bt_product2"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:text="product02" />
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="info"
+        android:textColor="@android:color/holo_red_light" />
+</LinearLayout>

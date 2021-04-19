@@ -1,0 +1,16 @@
+{
+    "plugin": [
+         {
+             "plugin_name": "plugin_facebook",
+             "class_name": "com.ym.game.plugin.facebook.FBPlugin",
+             "description": "脸书功能插件",
+             "version": "4.33.0"
+         },
+         {
+             "plugin_name": "plugin_google",
+             "class_name": "com.ym.game.plugin.google.GooglePlugin",
+             "description": "google功能插件",
+             "version": "19.0.0"
+         }
+    ]
+}

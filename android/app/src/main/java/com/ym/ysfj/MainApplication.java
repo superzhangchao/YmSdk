@@ -17,7 +17,7 @@ public class MainApplication extends Application {
         super.onCreate();
         sInstance = this;
         ApplicationCache.init(this);
-        YmSdkApi.getInstance().initPlatform(sInstance,"5012");
+        YmSdkApi.getInstance().initPlatform(sInstance,"5012","abcd");
 
     }
 

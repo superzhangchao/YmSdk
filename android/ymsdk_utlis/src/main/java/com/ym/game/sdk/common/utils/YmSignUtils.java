@@ -75,6 +75,7 @@ public class YmSignUtils {
 
             if (encode) {
                 try {
+
                     value = URLEncoder.encode(value, "utf-8");
                 } catch (UnsupportedEncodingException e) {
                 }

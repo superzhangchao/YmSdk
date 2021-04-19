@@ -10,7 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.ym.game.net.bean.ResultAccoutBean;
-import com.ym.game.sdk.base.config.TypeConfig;
+
+import com.ym.game.sdk.config.YmTypeConfig;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.callback.listener.ChangeVcodeViewListener;
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
@@ -77,7 +78,7 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
                 if(CommonUtils.isFastDoubleClick()){
                     return;
                 }
-                UserPresenter.sendVcode(this, TypeConfig.BIND, getPhone(), new ChangeVcodeViewListener(){
+                UserPresenter.sendVcode(this, YmTypeConfig.BIND, getPhone(), new ChangeVcodeViewListener(){
 
                     @Override
                     public void onChangeVcodeView() {

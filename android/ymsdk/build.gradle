@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.2"
 
     defaultConfig {
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -58,16 +58,15 @@ dependencies {
 
     //开发依赖
     api 'androidx.recyclerview:recyclerview:1.1.0'
-    api(name: 'oaid_sdk_1.0.22', ext: 'aar')
+    api(name: 'oaid_sdk_1.0.25', ext: 'aar')
     api project(':ymsdk_utlis')
     api project(':pluginmanagerImpl')
-
+    api 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
     //正式编译依赖
 //    compileOnly 'androidx.recyclerview:recyclerview:1.1.0'
-//    compileOnly(name: 'oaid_sdk_1.0.22', ext: 'aar')
+//    compileOnly(name: 'oaid_sdk_1.0.25', ext: 'aar')
 //    compileOnly(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
 //    compileOnly project(':ymsdk_utlis')
 //    compileOnly project(':pluginmanagerImpl')
-
 
 }

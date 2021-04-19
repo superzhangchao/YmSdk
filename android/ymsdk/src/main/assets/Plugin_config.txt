@@ -18,5 +18,6 @@
             "description": "QQ功能插件",
             "version": "2.3.4"
         }
+
     ]
 }

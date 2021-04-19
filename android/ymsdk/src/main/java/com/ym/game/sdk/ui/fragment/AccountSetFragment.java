@@ -15,7 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ym.game.sdk.YmConstants;
-import com.ym.game.sdk.base.config.TypeConfig;
+
+import com.ym.game.sdk.config.YmTypeConfig;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.callback.listener.ChangeVcodeViewListener;
 import com.ym.game.sdk.common.utils.RSAEncryptUtils;
@@ -117,12 +118,12 @@ public class AccountSetFragment extends UserBaseFragment implements View.OnClick
         });
         ymTvPhonecode.setText(ResourseIdUtils.getStringId("ym_tv_getphonecode"));
         ymTvPhonecode.setTimesandText(getString(ResourseIdUtils.getStringId("ym_tv_getphonecode")),"已发送（","s)",60);
-        if(setType==TypeConfig.REGISTER){
+        if(setType== YmTypeConfig.REGISTER){
             ymLlXieyi.setVisibility(View.VISIBLE);
             ymImCkXieyi.setVisibility(View.VISIBLE);
             ymSetTitle.setText(ResourseIdUtils.getStringId("ym_tv_registertitle"));
             ymBtSet.setText(ResourseIdUtils.getStringId("ym_bt_register"));
-        }else if (setType==TypeConfig.SETPASSWORD){
+        }else if (setType==YmTypeConfig.SETPASSWORD){
             ymTvTip.setVisibility(View.GONE);
             ymLlXieyi.setVisibility(View.GONE);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -182,7 +183,7 @@ public class AccountSetFragment extends UserBaseFragment implements View.OnClick
             ymImCkXieyi.setVisibility(View.VISIBLE);
             UserPresenter.saveXieyiStatud(this,true);
         }else if(view.getId()==ymBtSet.getId()){
-            if (setType==TypeConfig.REGISTER && !isShowCk()){
+            if (setType==YmTypeConfig.REGISTER && !isShowCk()){
                 return;
             }
             String phone = getPhone();
@@ -202,9 +203,9 @@ public class AccountSetFragment extends UserBaseFragment implements View.OnClick
                     e.printStackTrace();
                 }
 
-                if (setType == TypeConfig.REGISTER){
+                if (setType == YmTypeConfig.REGISTER){
                     UserPresenter.registerAccount(this,accountBean);
-                }else if (setType ==TypeConfig.SETPASSWORD){
+                }else if (setType ==YmTypeConfig.SETPASSWORD){
                     UserPresenter.setPwd(this,accountBean);
                 }
             }

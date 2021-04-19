@@ -50,7 +50,7 @@
     *;
 }
 #微信end
-
+-keep class com.davemorrissey.labs.subscaleview.** { *; }
 #支付宝
 
 -keep class com.alipay.android.app.IAlixPay{*;}

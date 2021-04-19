@@ -6,11 +6,10 @@ public class TypeConfig {
     //账号事件配置  (200 ~ 219) *************
     public static final int LOGIN = 100;  //登录
     public static final int AUTOLOGIN = 101;  //登录
-    public static final int REGIST = 102;  //注册
+    public static final int REGISTER = 102;  //注册
     public static final int SWITCHACCOUNT = 103;  //切换
     public static final int BIND = 104;  //绑定
     public static final int LOGOUT = 105;  //注销
-    public static final int REALNAME = 106;  //实名
 
 
     //购买事件配置(220~239)

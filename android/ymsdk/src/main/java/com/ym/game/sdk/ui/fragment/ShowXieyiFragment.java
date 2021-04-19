@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,7 @@ public class ShowXieyiFragment extends BaseFragment implements View.OnClickListe
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(ResourseIdUtils.getLayoutId("fragment_xieyi"), null, true);
+
         ymImBack = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_im_back"));
         ymImClose = (ImageView) view.findViewById(ResourseIdUtils.getId("ym_im_close"));
         ymImLarge = (SubsamplingScaleImageView) view.findViewById(ResourseIdUtils.getId("ym_im_large"));

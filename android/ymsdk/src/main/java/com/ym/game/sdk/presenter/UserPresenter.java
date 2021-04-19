@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.ym.game.net.bean.ResultAccoutBean;
 
 import com.ym.game.sdk.YmConstants;
+import com.ym.game.sdk.config.YmTypeConfig;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.callback.CallbackMananger;
 import com.ym.game.sdk.callback.listener.ChangeVcodeViewListener;
@@ -28,7 +29,7 @@ import com.ym.game.sdk.model.IUserView;
 import com.ym.game.sdk.model.UserModel;
 import com.ym.game.sdk.ui.activity.BaseActivity;
 import com.ym.game.sdk.ui.activity.YmUserActivity;
-import com.ym.game.sdk.base.config.TypeConfig;
+
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -52,16 +53,16 @@ public class UserPresenter {
         if (TextUtils.equals(YmConstants.PHONELOGIN,lastNormalLoginInfo.getLoginType())&&lastNormalLoginInfo.isHasPassword()&&isRelogin){
             //TODO:跳转快速密码页
             Intent intent = new Intent(activity, YmUserActivity.class);
-            intent.putExtra("type",TypeConfig.QUICKPWDPAGE);
+            intent.putExtra("type", YmTypeConfig.QUICKPWDPAGE);
             activity.startActivity(intent);
             isRelogin =false;
         }else if (TextUtils.isEmpty(token)||TextUtils.isEmpty(uid)){
             Intent intent = new Intent(activity, YmUserActivity.class);
-            intent.putExtra("type",TypeConfig.LOGIN);
+            intent.putExtra("type",YmTypeConfig.LOGIN);
             activity.startActivity(intent);
         }else{
             Intent intent = new Intent(activity, YmUserActivity.class);
-            intent.putExtra("type",TypeConfig.AUTOLOGIN);
+            intent.putExtra("type",YmTypeConfig.AUTOLOGIN);
             activity.startActivity(intent);
         }
     }
@@ -74,7 +75,7 @@ public class UserPresenter {
         accountBean.setNickName(resultAccoutBean.getData().getNickName());
         accountBean.setAuthStatus(resultAccoutBean.getData().getAuthStatus());
         Intent intent = new Intent(activity, YmUserActivity.class);
-        intent.putExtra("type",TypeConfig.BIND);
+        intent.putExtra("type",YmTypeConfig.BIND);
         intent.putExtra("accountBean",accountBean);
         activity.startActivity(intent);
     }
@@ -82,7 +83,7 @@ public class UserPresenter {
     public static void showRealNameActiviy(Activity activity,AccountBean accountBean,int realNameType){
         realNameActivity = activity;
         Intent intent = new Intent(activity, YmUserActivity.class);
-        intent.putExtra("type",TypeConfig.REALNAME);
+        intent.putExtra("type",YmTypeConfig.REALNAME);
         intent.putExtra("accountBean",accountBean);
         intent.putExtra("realNameType",realNameType);
         activity.startActivity(intent);
@@ -395,14 +396,14 @@ public class UserPresenter {
         UserModel.getInstance().getVerifyData(userView.getContext(),new GetVerifyDataListener() {
             @Override
             public void onSuccess(String ts,String accessToken) {
-                if (TypeConfig.LOGIN == type){
+                if (YmTypeConfig.LOGIN == type){
                     changeSendVcodeViewListener.onChangeVcodeView();
                     startSendVcode(userView,phone,ts,accessToken);
-                }else if (TypeConfig.BIND == type){
+                }else if (YmTypeConfig.BIND == type){
                     checkBind(userView,phone,ts,accessToken,changeSendVcodeViewListener);
-                }else if (TypeConfig.REGISTER == type){
+                }else if (YmTypeConfig.REGISTER == type){
                     checkRegister(userView,phone,ts,accessToken,changeSendVcodeViewListener);
-                }else if (TypeConfig.SETPASSWORD ==type){
+                }else if (YmTypeConfig.SETPASSWORD ==type){
                     checkSetPwd(userView,phone,ts,accessToken,changeSendVcodeViewListener);
                 }
             }

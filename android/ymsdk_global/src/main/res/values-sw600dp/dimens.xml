@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="ym_loginbt_width">309dp</dimen>
+    <dimen name="ym_loginbt_height">68dp</dimen>
+    <dimen name="ym_content_width">540dp</dimen>
+    <dimen name="ym_content_heigth">413dp</dimen>
+    <dimen name="ym_line_height">27dp</dimen>
+    <dimen name="ym_line_width">99dp</dimen>
+    <dimen name="ym_bindcontent_width">459dp</dimen>
+    <dimen name="ym_bindcontent_heigth">180dp</dimen>
+    <dimen name="ym_bind_height">48dp</dimen>
+    <dimen name="ym_bind_width">180dp</dimen>
+    <dimen name="ym_viewtitle_heigth">62dp</dimen>
+
+    <dimen name="text_size_f20">24sp</dimen>
+    <dimen name="text_size_f19">23sp</dimen>
+    <dimen name="text_size_f18">22sp</dimen>
+    <dimen name="text_size_f17">21sp</dimen>
+    <dimen name="text_size_f16">20sp</dimen>
+    <dimen name="text_size_f15">19sp</dimen>
+    <dimen name="text_size_f14">18sp</dimen>
+    <dimen name="text_size_f13">17sp</dimen>
+    <dimen name="text_size_f12">16sp</dimen>
+    <dimen name="text_size_f11">15sp</dimen>
+    <dimen name="text_size_f10">14sp</dimen>
+    <dimen name="text_size_f9">13sp</dimen>
+    <dimen name="text_size_f8">12sp</dimen>
+    <dimen name="text_size_f7">7sp</dimen>
+
+    <dimen name="ym_margin60">90dp</dimen>
+    <dimen name="ym_margin50">75dp</dimen>
+    <dimen name="ym_margin40">60dp</dimen>
+    <dimen name="ym_margin30">45dp</dimen>
+    <dimen name="ym_margin27">40dp</dimen>
+    <dimen name="ym_margin20">30dp</dimen>
+    <dimen name="ym_margin18">27dp</dimen>
+    <dimen name="ym_margin15">22dp</dimen>
+    <dimen name="ym_margin10">15dp</dimen>
+    <dimen name="ym_margin8">12dp</dimen>
+    <dimen name="ym_margin5">8dp</dimen>
+    <dimen name="ym_margin4">6dp</dimen>
+    <dimen name="ym_margin3">5dp</dimen>
+    <dimen name="ym_margin2">3dp</dimen>
+    <dimen name="ym_margin1">1dp</dimen>
+</resources>

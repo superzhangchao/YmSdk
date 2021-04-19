@@ -15,7 +15,8 @@ import android.widget.TextView;
 
 
 import com.ym.game.sdk.YmConstants;
-import com.ym.game.sdk.base.config.TypeConfig;
+
+import com.ym.game.sdk.config.YmTypeConfig;
 import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.callback.listener.ChangeVcodeViewListener;
 import com.ym.game.sdk.common.base.parse.plugin.PluginManager;
@@ -145,7 +146,7 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
                 if(CommonUtils.isFastDoubleClick()){
                     return;
                 }
-                UserPresenter.sendVcode(this, TypeConfig.LOGIN, getPhone(), new ChangeVcodeViewListener() {
+                UserPresenter.sendVcode(this, YmTypeConfig.LOGIN, getPhone(), new ChangeVcodeViewListener() {
                     @Override
                     public void onChangeVcodeView() {
                         ymTvPhonecode.start();
@@ -170,7 +171,7 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
             if (isShowCk()){
                 AccountPasswordLoignFragment accountPwdFragment = getFragmentByName(baseActivity, AccountPasswordLoignFragment.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("pwdPageType", TypeConfig.COMMONPWDPAGE);
+                bundle.putSerializable("pwdPageType", YmTypeConfig.COMMONPWDPAGE);
                 accountPwdFragment.setArguments(bundle);
                 redirectFragment(accountPwdFragment);
             }

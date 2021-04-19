@@ -2,25 +2,19 @@ package com.ym.game.sdk.model;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.alipay.sdk.app.PayTask;
-
-
 
 import com.ym.game.net.api.YmApi;
-import com.ym.game.net.bean.AliPayResult;
 import com.ym.game.net.bean.ResultOrderBean;
 import com.ym.game.net.bean.TokenBean;
 import com.ym.game.sdk.YmConstants;
-import com.ym.game.sdk.base.config.ErrorCode;
+
 import com.ym.game.sdk.bean.PurchaseBean;
+import com.ym.game.sdk.common.base.config.ErrorCode;
 import com.ym.game.sdk.common.base.interfaces.CallBackListener;
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
 
