@@ -27,9 +27,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/YmTheme"/>
-
-
-
     </application>
 
 </manifest>

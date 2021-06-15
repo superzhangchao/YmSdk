@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="facebook_app_id">475528263458960</string>
-    <string name="fb_login_protocol_scheme">fb475528263458960</string>
-    <string name="fb_authorities">com.facebook.app.FacebookContentProvider475528263458960</string>
+    <string name="facebook_app_id">209057774195026</string>
+    <string name="fb_login_protocol_scheme">fb209057774195026</string>
+    <string name="fb_authorities">com.facebook.app.FacebookContentProvider209057774195026</string>
 
 </resources>

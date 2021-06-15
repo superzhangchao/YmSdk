@@ -11,8 +11,7 @@ import android.text.TextUtils;
 import com.ym.game.net.api.YmApi;
 import com.ym.game.net.bean.ResultOrderBean;
 import com.ym.game.net.bean.TokenBean;
-import com.ym.game.plugin.google.dao.DaoUtils;
-import com.ym.game.plugin.google.dao.LocalPurchaseBean;
+import com.ym.game.plugin.google.pay.GooglePay;
 import com.ym.game.sdk.callback.CallbackMananger;
 import com.ym.game.sdk.callback.listener.CreateOrderListener;
 import com.ym.game.sdk.callback.listener.GetVerifyDataListener;
@@ -27,6 +26,8 @@ import com.ym.game.sdk.common.utils.ResourseIdUtils;
 
 import com.ym.game.sdk.common.utils.YmSignUtils;
 import com.ym.game.sdk.invoke.plugin.GooglePluginApi;
+import com.ym.game.plugin.google.dao.DaoUtils;
+import com.ym.game.plugin.google.dao.LocalPurchaseBean;
 import com.ym.game.sdk.presenter.PurchasePresenter;
 import com.ym.game.sdk.presenter.UserPresenter;
 
@@ -140,26 +141,13 @@ public class PurchaseModel implements IPurchaseModel{
                     break;
                 case VERIFYGOOGLEORDERFAIL:
                 case VERIFYGOOGLEORDERNETFAIL:
-                    if (reportNum!=0)
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                /**
-                                 *要执行的操作
-                                 */
-                                reportNum--;
-                                reportPurchaseDb(mContext);
-                            }
-                        }, 1000);
+                    rereportPurchaseDb();
                     break;
                 default:
                     break;
             }
         }
     };
-
-
-
 
     @Override
     public void initPay(Activity activity) {
@@ -176,10 +164,6 @@ public class PurchaseModel implements IPurchaseModel{
         mGetVerifyDataListener = getVerifyDataListener;
         getTime();
     }
-
-
-
-
 
 
     private  void getTime(){
@@ -355,7 +339,7 @@ public class PurchaseModel implements IPurchaseModel{
 
     @Override
     public void startPay(final Context context, PurchaseBean purchaseBean, final PayStateListener payStateListener) {
-        Map<String,Object> payMap = new HashMap<>();
+        final Map<String,Object> payMap = new HashMap<>();
         payMap.put("userId", purchaseBean.getUserId());
         payMap.put("gameOrderId",purchaseBean.getGameOrderId());
         payMap.put("productId",purchaseBean.getProductId());
@@ -378,7 +362,7 @@ public class PurchaseModel implements IPurchaseModel{
 
             @Override
             public void onFailure(int code, String msg) {
-
+                //获取验证参数失败不作处理
             }
         });
     }
@@ -410,7 +394,7 @@ public class PurchaseModel implements IPurchaseModel{
 
             @Override
             public void onFail(int status, String message) {
-
+                rereportPurchaseDb();
             }
         });
     }
@@ -475,6 +459,21 @@ public class PurchaseModel implements IPurchaseModel{
                 });
             }
         }).start();
+    }
+
+    private void rereportPurchaseDb() {
+        if (reportNum!=0){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    /**
+                     *要执行的操作
+                     */
+                    reportNum--;
+                    reportPurchaseDb(mContext);
+                }
+            }, 1000);
+        }
     }
 
     private void deleteSuccessOrder(LocalPurchaseBean deletePurchaseBean) {

@@ -28,7 +28,6 @@ public class GooglePluginApi extends PluginReflectApi {
         return INSTANCE;
     }
 
-
     //接入google登入
     public void login(Context context, Map<String,Object> map, CallBackListener callBackListener){
         if (googlePlugin != null) {

@@ -5,4 +5,9 @@
          from https://console.developers.google.com/ -->
     <string name="default_web_client_id">490984852090-tc3kd5ov5biri2pk957nqjk1pjuiq76c.apps.googleusercontent.com</string>
     <string name="ym_google_logintfail">login is fail</string>
+    <string name="ym_google_logoutsuccess">logout is success.</string>
+    <string name="ym_google_revokeaccesssuccess">revokeAccess is success.</string>
+    <string name="ym_google_pay_ordererror">orderId is error</string>
+    <string name="ym_google_pay_cancel">pay is cancel</string>
+    <string name="ym_google_pay_fail">pay is fail</string>
 </resources>

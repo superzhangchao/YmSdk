@@ -127,7 +127,7 @@ public class PurchaseFragment extends BaseFragment implements View.OnClickListen
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        PurchasePresenter.destroy(baseActivity);
+//        PurchasePresenter.destroy(baseActivity);
     }
 
     @Override

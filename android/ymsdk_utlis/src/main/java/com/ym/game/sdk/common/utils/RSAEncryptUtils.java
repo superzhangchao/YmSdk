@@ -50,7 +50,6 @@ public class RSAEncryptUtils {
         KeyPair keyPair = keyPairGen.generateKeyPair();
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();   // 得到私钥
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();  // 得到公钥
-//        String publicKeyString = new String(Base64.encodeBase64(publicKey.getEncoded()));
         String publicKeyString = Base64.encodeToString(publicKey.getEncoded(),Base64.URL_SAFE | Base64.NO_WRAP);
 
         // 得到私钥字符串

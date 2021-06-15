@@ -59,21 +59,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-//    bundle {
-//        density {
-//            // Different APKs are generated for devices with different screen densities; true by default.
-//            enableSplit true
-//        }
-//        abi {
-//            // Different APKs are generated for devices with different CPU architectures; true by default.
-//            enableSplit true
-//        }
-//        language {
-//            // This is disabled so that the App Bundle does NOT split the APK for each language.
-//            // We're gonna use the same APK for all languages.
-//            enableSplit true
-//        }
-//    }
+    bundle {
+        density {
+            // Different APKs are generated for devices with different screen densities; true by default.
+            enableSplit true
+        }
+        abi {
+            // Different APKs are generated for devices with different CPU architectures; true by default.
+            enableSplit true
+        }
+        language {
+            // This is disabled so that the App Bundle does NOT split the APK for each language.
+            // We're gonna use the same APK for all languages.
+            enableSplit true
+        }
+    }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
     }
@@ -88,6 +88,7 @@ repositories {
 
 
 dependencies {
+//    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -95,27 +96,45 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-    implementation 'com.tencent.bugly:crashreport:latest.release'
-    //其中lat est.release指代最新版本号，也可以指定明确的版本号，例如2.1.5
-    implementation 'com.tencent.bugly:nativecrashreport:3.8.0'
 
-    implementation group: 'com.google.apis', name: 'google-api-services-androidpublisher', version: 'v3-rev142-1.25.0'
+
+//    implementation group: 'com.google.apis', name: 'google-api-services-androidpublisher', version: 'v3-rev142-1.25.0'
     //开发依赖
 //    implementation project(':ymsdk')
     implementation project(':ymsdk_global')
 
     //正式依赖
 //    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-//    api 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
-//    implementation(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
-//    implementation(name: 'oaid_sdk_1.0.22', ext: 'aar')
-//    implementation(name: 'pluginmanagerImpl-release-20210126', ext: 'aar')
-//    implementation(name: 'ymsdk-release-20210126', ext: 'aar')
-//    implementation(name: 'ymsdk_plugin_alipay-release-20210126', ext: 'aar')
-//    implementation(name: 'ymsdk_plugin_qq-release-20210126', ext: 'aar')
-//    implementation(name: 'ymsdk_plugin_wechat-release-20210126', ext: 'aar')
-//    implementation(name: 'ymsdk_utlis-release-20210126', ext: 'aar')
+//    implementation platform('com.google.firebase:firebase-bom:26.5.0')
+//    implementation 'com.google.firebase:firebase-analytics'
+//    // Declare the dependency for the Firebase Authentication library
+//    // When using the BoM, you don't specify versions in Firebase library dependencies
+//    implementation 'com.google.firebase:firebase-auth'
+//
+//    // Also declare the dependency for the Google Play services library and specify its version
+//    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+//
+//    implementation 'com.android.billingclient:billing:3.0.0'
+//
+//    implementation 'org.greenrobot:greendao:3.3.0' // add library
+//
+//    implementation 'com.facebook.android:facebook-login:4.33.0'
+//    implementation 'com.facebook.android:facebook-share:4.33.0'
+
+    implementation 'com.tencent.bugly:crashreport:3.3.92'
+    //其中lat est.release指代最新版本号，也可以指定明确的版本号，例如2.1.5
+    implementation 'com.tencent.bugly:nativecrashreport:3.9.1'
+
+//    implementation (name: 'pluginmanagerImpl-release-20210524', ext: 'aar')
+//    implementation (name: 'ymsdk_global-release-20210524', ext: 'aar')
+//    implementation (name: 'pluginmanagerImpl-release-20210524', ext: 'aar')
+//    implementation (name: 'ymsdk_plugin_adjust-release-20210524', ext: 'aar')
+//    implementation (name: 'ymsdk_plugin_facebook-release-20210524', ext: 'aar')
+//    implementation (name: 'ymsdk_plugin_google-release-20210524', ext: 'aar')
+//    implementation (name: 'ymsdk_utlis-release-20210524', ext: 'aar')
+
+
 }

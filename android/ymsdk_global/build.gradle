@@ -32,7 +32,7 @@ android {
         }
 
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -61,10 +61,7 @@ dependencies {
 
     //正式编译依赖
 //    compileOnly 'androidx.recyclerview:recyclerview:1.1.0'
-//    compileOnly(name: 'oaid_sdk_1.0.22', ext: 'aar')
-//    compileOnly(name: 'alipaySdk-15.7.6-20200521195109', ext: 'aar')
 //    compileOnly project(':ymsdk_utlis')
 //    compileOnly project(':pluginmanagerImpl')
-
 
 }

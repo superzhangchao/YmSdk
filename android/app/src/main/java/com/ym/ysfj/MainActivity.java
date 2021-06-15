@@ -198,11 +198,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }else if (btSendinfo.getId()==v.getId()){
             YmSdkApi.getInstance().trackEvent("event_1");
-            try {
-                RSAEncryptUtils.encrypt("a123456", YmConstants.publickey);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
         }else if(btLogout.getId() ==v.getId()) {
             YmSdkApi.getInstance().logout(this);

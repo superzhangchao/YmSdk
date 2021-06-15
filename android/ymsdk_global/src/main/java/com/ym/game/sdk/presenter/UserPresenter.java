@@ -2,6 +2,7 @@ package com.ym.game.sdk.presenter;
 
 import android.app.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 
 
@@ -18,11 +19,14 @@ import com.ym.game.sdk.callback.listener.LoginStatusListener;
 import com.ym.game.sdk.common.base.config.ErrorCode;
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
 import com.ym.game.sdk.common.utils.ToastUtils;
+import com.ym.game.sdk.invoke.plugin.GooglePluginApi;
 import com.ym.game.sdk.model.IUserModel;
 import com.ym.game.sdk.model.IUserView;
 import com.ym.game.sdk.model.UserModel;
+import com.ym.game.sdk.ui.activity.BaseActivity;
 import com.ym.game.sdk.ui.activity.YmUserActivity;
 import com.ym.game.sdk.config.YmTypeConfig;
+import com.ym.game.utils.AdvertisingIdUtils;
 
 
 public class UserPresenter {
@@ -32,6 +36,9 @@ public class UserPresenter {
 
     public static void showLoginActiviy(Activity activity){
         loginActivity = activity;
+        if (GooglePluginApi.getInstance()!=null){
+            AdvertisingIdUtils.initialAdvertisingId(activity);
+        }
         UserModel userModel = UserModel.getInstance();
         String uid = userModel.getLastUid(activity);
         String token = userModel.getLastToken(activity);
@@ -64,6 +71,7 @@ public class UserPresenter {
     public static void loginbyType(final IUserView userView, String loginType){
         final AccountBean accountBean = new AccountBean();
         accountBean.setLoginType(loginType);
+        userView.showLoading();
         UserModel.getInstance().getVerifyData(userView.getContext(),new GetVerifyDataListener() {
             @Override
             public void onSuccess(String ts, String accessToken) {
@@ -74,6 +82,7 @@ public class UserPresenter {
 
             @Override
             public void onFail(int status,String message) {
+                userView.dismissLoading();
                 CallbackMananger.getLoginCallBack().onFailure(status,message);
             }
         });
@@ -86,28 +95,28 @@ public class UserPresenter {
             public void onSuccess(ResultAccoutBean resultAccountBean) {
                 userView.dismissLoading();
                 userView.closeActivity();
-
-                loginSuccess(resultAccountBean);
+                loginSuccess(userView.getContext(),resultAccountBean);
             }
 
             @Override
             public void onCancel() {
+                userView.dismissLoading();
                 CallbackMananger.getLoginCallBack().onCancel();
             }
 
             @Override
             public void onFail(int status, String message) {
+                userView.dismissLoading();
                 CallbackMananger.getLoginCallBack().onFailure(status,message);
             }
         });
     }
 
 
-    public static void autoLogin(final Activity activity) {
+    public static void autoLogin(final BaseActivity activity) {
         final AccountBean accountBean = new AccountBean();
         final IUserModel userModel = UserModel.getInstance();
-//        activity.showLoading();
-
+        activity.showLoading();
         UserModel.getInstance().getVerifyData(activity,new GetVerifyDataListener() {
             @Override
             public void onSuccess(String ts, String accessToken) {
@@ -115,17 +124,19 @@ public class UserPresenter {
                 accountBean.setAccessToken(accessToken);
                 userModel.autoLogin(activity,accountBean, new LoginStatusListener() {
                     public void onSuccess(final ResultAccoutBean resultAccountBean) {
+                        activity.dismissLoading();
                         activity.finish();
-                        loginSuccess(resultAccountBean);
+                        loginSuccess(activity,resultAccountBean);
                     }
 
                     @Override
                     public void onCancel() {
-
+                        activity.dismissLoading();
                     }
 
                     @Override
                     public void onFail(int status,String message) {
+                        activity.dismissLoading();
                         UserModel.getInstance().resetAccountInfo(activity);
 
                     }
@@ -134,13 +145,20 @@ public class UserPresenter {
 
             @Override
             public void onFail(int status,String message) {
+                activity.dismissLoading();
                 UserModel.getInstance().resetAccountInfo(activity);
             }
         });
     }
 
-    private static void loginSuccess(ResultAccoutBean resultAccountBean) {
+    private static void loginSuccess(Context context,ResultAccoutBean resultAccountBean) {
+        if (TextUtils.equals(resultAccountBean.getData().getLoginType(),YmConstants.GUSETTYPE)){
+            ToastUtils.showToast(context,"游客账号容易丢失，请及时绑定正式账号");
+
+            //TODO:需要主动弹出实名认证界面暂缓发送登录结果
+        }
         CallbackMananger.getLoginCallBack().onSuccess(resultAccountBean.getData());
+        //PurchasePresenter.checkPurchaseState(context);
 
     }
 

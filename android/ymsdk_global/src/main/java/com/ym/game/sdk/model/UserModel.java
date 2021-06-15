@@ -13,11 +13,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.ym.game.net.api.YmApi;
 import com.ym.game.net.bean.ResultAccoutBean;
 import com.ym.game.net.bean.TokenBean;
 
+import com.ym.game.sdk.common.frame.logger.Logger;
 import com.ym.game.sdk.constants.YmConstants;
 import com.ym.game.sdk.callback.listener.BindStatusListener;
 import com.ym.game.sdk.callback.listener.GetVerifyDataListener;
@@ -34,17 +36,18 @@ import com.ym.game.sdk.common.utils.YmSignUtils;
 import com.ym.game.sdk.config.YmTypeConfig;
 import com.ym.game.sdk.invoke.plugin.FBPluginApi;
 import com.ym.game.sdk.invoke.plugin.GooglePluginApi;
+import com.ym.game.utils.AdvertisingIdUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -133,6 +136,7 @@ public class UserModel implements IUserModel {
                     mGetVerifyDataListener.onFail(ErrorCode.NET_DATA_NULL, mContext.getString(ResourseIdUtils.getStringId("ym_text_netdata_null")));
                     break;
                 case SENDTIMENETERROR:
+                case GETACCESSTOKENNETFAIL:
                     //TODO:请求ts网络失败
                     netError = (int) msg.obj;
                     if (netError ==ErrorCode.NET_DISCONNET){
@@ -149,14 +153,6 @@ public class UserModel implements IUserModel {
                     errorData = (Map<String, Object>) msg.obj;
                     mGetVerifyDataListener.onFail((int) errorData.get("code"), (String) errorData.get("message"));
                     break;
-                case GETACCESSTOKENNETFAIL:
-                    //TODO:网络请求token失败
-                    netError = (int) msg.obj;
-                    if (netError ==ErrorCode.NET_DISCONNET){
-                        messageName = "ym_text_disconnet";
-                    }
-                    mGetVerifyDataListener.onFail(netError, mContext.getString(ResourseIdUtils.getStringId(messageName)));
-                    break;
                 case GETACCOUNTSUCCESS:
                     ResultAccoutBean resultAccoutBean = (ResultAccoutBean) msg.obj;
                     loginAccountInfo = new AccountBean();
@@ -170,6 +166,8 @@ public class UserModel implements IUserModel {
                     saveAccountInfoBean.setLoginToken(resultAccoutBean.getData().getLoginToken());
                     saveAccountInfoBean.setLoginType(resultAccoutBean.getData().getLoginType());
                     saveAccountInfo(mContext,saveAccountInfoBean);
+                    //海外版用登录类型指代昵称
+                    resultAccoutBean.getData().setNickName(resultAccoutBean.getData().getLoginType());
                     mLoginStatusListener.onSuccess(resultAccoutBean);
 
                     break;
@@ -198,6 +196,8 @@ public class UserModel implements IUserModel {
                     saveAccountInfoBean.setLoginToken(bindResultAccoutBean.getData().getLoginToken());
                     saveAccountInfoBean.setLoginType(bindResultAccoutBean.getData().getLoginType());
                     saveAccountInfo(mContext,saveAccountInfoBean);
+                    //海外版用登录类型指代昵称
+                    bindResultAccoutBean.getData().setNickName(bindResultAccoutBean.getData().getLoginType());
                     mBindStatusListener.onSuccess(bindResultAccoutBean);
                     break;
                 case BINDFAIL:
@@ -218,7 +218,8 @@ public class UserModel implements IUserModel {
                     loginAccountInfo.setLoginToken(autoResultAccoutBean.getData().getLoginToken());
                     loginAccountInfo.setLoginType(autoResultAccoutBean.getData().getLoginType());
                     loginAccountInfo.setNickName(mContext.getString(ResourseIdUtils.getStringId("ym_nickname_"+autoResultAccoutBean.getData().getLoginType())));
-
+                    //海外版用登录类型指代昵称
+                    autoResultAccoutBean.getData().setNickName(autoResultAccoutBean.getData().getLoginType());
                     mAutoLoginStatusListener.onSuccess(autoResultAccoutBean);
                     break;
                 case AUTOLOGINFAIL:
@@ -382,9 +383,10 @@ public class UserModel implements IUserModel {
                     @Override
                     public void onResponse(@NonNull Call<TokenBean> call, @NonNull Response<TokenBean> response) {
                         Message message = new Message();
+                        int errorCode;
                         if (response.isSuccessful()){
                             TokenBean body = response.body();
-                            int errorCode = body.getCode();
+                            errorCode = body.getCode();
                             if (errorCode == YmConstants.SUCCESSCODE) {
                                 message.obj = body.getData().getAccessToken();
                                 message.what = GETACCESSTOKENSUCCESS;
@@ -397,7 +399,7 @@ public class UserModel implements IUserModel {
                                 message.what = GETACCESSTOKENFAIL;
                             }
                         }else{
-                            int errorCode = YmErrorCode.NET_DISCONNET;
+                             errorCode = YmErrorCode.NET_DISCONNET;
                             message.obj = errorCode;
                             message.what = GETACCESSTOKENNETFAIL;
                         }
@@ -546,10 +548,6 @@ public class UserModel implements IUserModel {
                     mBindAccountBean.setOpenId((String)o);
                     bindAccess(mBindAccountBean);
                 }
-//                ResultAccoutBean resultAccoutBean = new ResultAccoutBean();
-//                resultAccoutBean.setData(new ResultAccoutBean.DataBean());
-//                resultAccoutBean.getData().setUid((String) o);
-//                mLoginStatusListener.onSuccess(resultAccoutBean);
             }
 
             @Override
@@ -574,24 +572,15 @@ public class UserModel implements IUserModel {
 
 
     private void gtLogin() {
-        String uuid = getAndroidId();
-        if (uuid.isEmpty() || "9774d56d682e549c".equals(uuid)) {
-            if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUESTCODE);
-                return;
-            } else {
-                uuid = YmFileUtils.getUUid(mContext);
-            }
+        String uuid ="";
+        if (GooglePluginApi.getInstance()!=null){
+            uuid = AdvertisingIdUtils.getAdvertisingId(mContext);
+        }
+        if (uuid.isEmpty()){
+            uuid = YmFileUtils.getUUid(mContext);
         }
         mAccountBean.setUuid(uuid);
         getGusetInfo(mAccountBean);
-    }
-
-
-    @SuppressLint("HardwareIds")
-    private String getAndroidId() {
-        return Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-
     }
 
     @Override

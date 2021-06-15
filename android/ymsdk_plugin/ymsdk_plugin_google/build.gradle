@@ -59,6 +59,16 @@ dependencies {
     api 'com.android.billingclient:billing:3.0.0'
 
     api 'org.greenrobot:greendao:3.3.0' // add library
+
     //正式编译依赖
 //    compileOnly project(':ymsdk_utlis')
+//    compileOnly platform('com.google.firebase:firebase-bom:26.5.0')
+//    compileOnly 'com.google.firebase:firebase-analytics'
+//    compileOnly 'com.google.firebase:firebase-auth'
+//
+//    compileOnly 'com.google.android.gms:play-services-auth:19.0.0'
+//
+//    compileOnly 'com.android.billingclient:billing:3.0.0'
+//
+//    compileOnly 'org.greenrobot:greendao:3.3.0' // add library
 }

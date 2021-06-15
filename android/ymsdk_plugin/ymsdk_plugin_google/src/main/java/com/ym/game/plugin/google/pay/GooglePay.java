@@ -17,18 +17,16 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
-import com.google.gson.Gson;
 import com.ym.game.plugin.google.Security;
 import com.ym.game.plugin.google.dao.DaoUtils;
 import com.ym.game.plugin.google.dao.LocalPurchaseBean;
 import com.ym.game.sdk.common.base.config.ErrorCode;
 import com.ym.game.sdk.common.base.interfaces.CallBackListener;
+import com.ym.game.sdk.common.utils.ResourseIdUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -100,7 +98,8 @@ public class GooglePay implements PurchasesUpdatedListener, BillingClientStateLi
         if (purchasesResult.getResponseCode() == BillingClient.BillingResponseCode.OK && !purchasesResult.getPurchasesList().isEmpty()) {
             for (Purchase purchase :purchasesResult.getPurchasesList()) {
                 if (currentProductId.equals(purchase.getSku())){
-                    if (saveLocalPurchaseDB(purchase.getSku(),2)){
+                    if (saveLocalPurchaseDB(purchase.getSku(),PurchaseState.NOCONSUME)){
+                        delayedPaySuccessCallback();
                         handlePurchaseHistory(purchase);
                         return;
                     }
@@ -109,6 +108,20 @@ public class GooglePay implements PurchasesUpdatedListener, BillingClientStateLi
         }
         querySkuDetailsAsync();
 
+    }
+
+    private void delayedPaySuccessCallback() {
+        if (mPayCallBackListener != null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    /**
+                     *要执行的操作
+                     */
+                    mPayCallBackListener.onSuccess("ok");
+                }
+            }, 1000);
+        }
     }
 
     private void handlePurchaseHistory(Purchase purchase) {
@@ -123,11 +136,11 @@ public class GooglePay implements PurchasesUpdatedListener, BillingClientStateLi
 
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                         // Handle the success of the consume operation.
-                        updateLocalPurchaseDB(purchase,0);
+                        updateLocalPurchaseDB(purchase, PurchaseState.CONSUMESUCCESS);
                         //TODO:
                     } else {
                         // 消费失败,后面查询消费记录后再次消费，否则，就只能等待退款
-                        updateLocalPurchaseDB(purchase,3);
+                        updateLocalPurchaseDB(purchase,PurchaseState.CONSUMEFAIL);
                         //TODO:
                     }
                 }
@@ -163,7 +176,7 @@ public class GooglePay implements PurchasesUpdatedListener, BillingClientStateLi
                             if (skuDetailsList == null || skuDetailsList.isEmpty()){
                                 //订单错误
                                 if (mPayCallBackListener!=null){
-                                    mPayCallBackListener.onFailure(1002,"orderId is error");
+                                    mPayCallBackListener.onFailure(ErrorCode.PAY_FAIL,mContext.getString(ResourseIdUtils.getStringId("ym_google_pay_ordererror")));
                                 }
                                 return;
                             }
@@ -174,17 +187,17 @@ public class GooglePay implements PurchasesUpdatedListener, BillingClientStateLi
                                 }
                             }
                             if (skuDetails!=null){
-                                saveLocalPurchaseDB(skuDetails.getSku(),1);
+                                saveLocalPurchaseDB(skuDetails.getSku(),PurchaseState.PURCHASING);
                                 launchBillingFlow((Activity)mContext,skuDetails);
                             }else {
                                 if (mPayCallBackListener!=null){
-                                    mPayCallBackListener.onFailure(1002,"orderId is error");
+                                    mPayCallBackListener.onFailure(ErrorCode.PAY_FAIL,mContext.getString(ResourseIdUtils.getStringId("ym_google_pay_ordererror")));
                                 }
                             }
 
                         }else {
                             if (mPayCallBackListener!=null){
-                                mPayCallBackListener.onFailure(1002,"orderId is error");
+                                mPayCallBackListener.onFailure(ErrorCode.PAY_FAIL,mContext.getString(ResourseIdUtils.getStringId("ym_google_pay_ordererror")));
                             }
                         }
 
@@ -197,7 +210,6 @@ public class GooglePay implements PurchasesUpdatedListener, BillingClientStateLi
         //An activity reference from which the billing flow will be launched.
     // Retrieve a value for "skuDetails" by calling querySkuDetailsAsync().
         BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
-
                 .setSkuDetails(skuDetails)
                 .build();
         int responseCode = billingClient.launchBillingFlow(activity, billingFlowParams).getResponseCode();
@@ -218,13 +230,13 @@ public class GooglePay implements PurchasesUpdatedListener, BillingClientStateLi
 
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                         // Handle the success of the consume operation.
-                        updateLocalPurchaseDB(purchase,0);
+                        updateLocalPurchaseDB(purchase,PurchaseState.CONSUMESUCCESS);
 //                        purchase.getDeveloperPayload()
 
 
                     } else {
                         // 消费失败,后面查询消费记录后再次消费，否则，就只能等待退款
-                        updateLocalPurchaseDB(purchase,3);
+                        updateLocalPurchaseDB(purchase,PurchaseState.CONSUMEFAIL);
                     }
                 }
             });
@@ -293,7 +305,7 @@ public class GooglePay implements PurchasesUpdatedListener, BillingClientStateLi
     public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
         if (billingResult.getResponseCode()==BillingClient.BillingResponseCode.OK) {
             // The BillingClient is ready. You can query purchases here.
-            mInitCallBackListener.onSuccess("is ok");
+            mInitCallBackListener.onSuccess("ok");
         }else if(billingResult.getResponseCode()==BillingClient.BillingResponseCode.BILLING_UNAVAILABLE){
             //Some apps may choose to make decisions based on this knowledge.
             Log.d(TAG, billingResult.getDebugMessage());
@@ -315,17 +327,7 @@ public class GooglePay implements PurchasesUpdatedListener, BillingClientStateLi
         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
                 && purchases != null) {
 
-            if (mPayCallBackListener != null) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        /**
-                         *要执行的操作
-                         */
-                        mPayCallBackListener.onSuccess("ok");
-                    }
-                }, 1000);
-            }
+            delayedPaySuccessCallback();
 
             for (Purchase purchase : purchases) {
                 handlePurchase(purchase);
@@ -337,12 +339,12 @@ public class GooglePay implements PurchasesUpdatedListener, BillingClientStateLi
         } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
             // Handle an error caused by a user cancelling the purchase flow.
             if (mPayCallBackListener!=null){
-                mPayCallBackListener.onFailure(ErrorCode.PAY_CANCEL,"pay is cancel");
+                mPayCallBackListener.onFailure(ErrorCode.PAY_CANCEL,mContext.getString(ResourseIdUtils.getStringId("ym_google_pay_ordererror")));
             }
         } else {
             // Handle any other error codes.
             if (mPayCallBackListener!=null){
-                mPayCallBackListener.onFailure(ErrorCode.PAY_FAIL,"pay is Fail");
+                mPayCallBackListener.onFailure(ErrorCode.PAY_FAIL,mContext.getString(ResourseIdUtils.getStringId("ym_google_pay_fail")));
             }
         }
     }

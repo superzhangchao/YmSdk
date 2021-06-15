@@ -3,6 +3,7 @@ package com.ym.game.plugin.google;
 import android.content.Context;
 import android.content.Intent;
 
+
 import com.ym.game.plugin.google.login.GoogleLogin;
 import com.ym.game.plugin.google.pay.GooglePay;
 import com.ym.game.sdk.common.base.interfaces.CallBackListener;
@@ -22,6 +23,7 @@ public class GooglePlugin  extends Plugin {
     @Override
     protected synchronized void initPlugin() {
         super.initPlugin();
+
         LogUtils.d(TAG,"init " + getClass().getSimpleName());
     }
 

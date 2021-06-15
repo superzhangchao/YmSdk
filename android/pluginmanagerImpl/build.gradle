@@ -58,8 +58,12 @@ dependencies {
 
 //    //正式编译依赖
 //    compileOnly project(':ymsdk_utlis')
+//
+//    compileOnly project(':ymsdk_plugin_adjust')
+//    compileOnly project(':ymsdk_plugin_facebook')
+//    compileOnly project(':ymsdk_plugin_google')
+
 //    compileOnly project(':ymsdk_plugin_alipay')
 //    compileOnly project(':ymsdk_plugin_wechat')
 //    compileOnly project(':ymsdk_plugin_qq')
-
 }

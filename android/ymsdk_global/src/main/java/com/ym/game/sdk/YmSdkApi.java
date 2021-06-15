@@ -99,7 +99,7 @@ public class YmSdkApi {
         Config.setGameId(gameId);
         initDate();
         initLanguage();
-
+        initGoogleAd();
 
         if (sApiHandler == null) {
             HandlerThread ht = new HandlerThread("project_sdk_thread",
@@ -118,6 +118,9 @@ public class YmSdkApi {
             }
         };
         sApiHandler.post(r);
+    }
+
+    private void initGoogleAd() {
     }
 
     private void initDate() {
@@ -289,12 +292,7 @@ public class YmSdkApi {
     }
 
     public void onResume(final Context context) {
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        },100);
+
         PluginManager.getInstance().onResume(context);
     }
 
@@ -306,13 +304,16 @@ public class YmSdkApi {
         PluginManager.getInstance().onPause(context);
     }
 
+    public void onStop(Context context){
+        PluginManager.getInstance().onStop(context);
+    }
     public void onDestroy(Context context) {
         PluginManager.getInstance().onDestroy(context);
 
     }
 
     public void onConfigurationChanged(Context context) {
-        PluginManager.getInstance().onDestroy(context);
+
     }
 
     public void onActivityResult(Context context,int requestCode, int resultCode, @Nullable Intent data) {

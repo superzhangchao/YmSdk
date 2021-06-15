@@ -24,27 +24,19 @@ public class YmFileUtils {
 
     public static synchronized String getUUid(Context ctx) {
         String key = "c4869d06";
-        if (!TextUtils.isEmpty(ym_uuid) && ym_uuid.length() > 30) {
-            return ym_uuid;
-        } else if (isAccess()) {
-            String sdcardPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            String dataPath = sdcardPath + File.separator + "Android" + File.separator + "data" + File.separator;
-            String ymdataPathDir = dataPath + "ym" + File.separator;
+            String ymdataPathDir = ctx.getFilesDir().toString() + File.separator+ "ym";// + File.separator+"ymdata-uuid.txt"
             File dir = new File(ymdataPathDir);
-
-            if (!dir.exists() && !dir.mkdirs()) {
-                Log.e("Ymsdk", "没有添加android.permission.WRITE_EXTERNAL_STORAGE权限?");
+            if (!dir.exists()) {
+                dir.mkdirs();
             }
-
-            if (dir.exists() && dir.isDirectory()) {
-                String ymdataPath = ymdataPathDir + "ymdata-uuid.txt";
-
+            if (dir.isDirectory()){
+                String ymDataPath = ymdataPathDir+File.separator+"ymdata-uuid.txt";
                 try {
-                    ym_uuid = readFile(ymdataPath);
+                    ym_uuid = readFile(ymDataPath);
                     if (!TextUtils.isEmpty(ym_uuid)) {
                         try {
-//                            return decryptDES(ym_uuid,key);
-                            return ym_uuid;
+                            return decryptDES(ym_uuid,key);
+//                            return ym_uuid;
                         } catch (Exception e) {
                             e.printStackTrace();
                             ym_uuid ="";
@@ -53,29 +45,14 @@ public class YmFileUtils {
                     }
 
                     String uuid = UUID.randomUUID().toString();
-//                    uuid = encryptDES(uuid,key);
-                    if (writeFileData(ctx, ymdataPath, uuid)) {
+                    if (writeFileData(ctx, ymDataPath, encryptDES(uuid,key))) {
                         ym_uuid = uuid;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return ym_uuid;
-            } else {
-                return "";
             }
-        } else {
-            return "";
-        }
-
-    }
-
-    public static boolean isExternalStorageExist() {
-        return Environment.getExternalStorageState().equals("mounted");
-    }
-
-    public static boolean isAccess() {
-        return isExternalStorageExist();
+            return ym_uuid;
     }
 
     public static String readFile(String fileName) throws IOException {

@@ -5,11 +5,11 @@ public class YmConstants {
     //app_id             应用ID            ys49d0579d3ad5e3
     //cp_id               商户ID             ys696d86584c608f
     //client_secret    客户端秘钥      C0E304A9DF87FE7A44F27702C74644AE
-    public static final String CPIDKEY = "ysec1e19c4869d06";
+    public static final String CPIDKEY = "ys696d86584c608f";
 //    public static final String BASEURL = "http://192.168.0.225/";
-    public static final String APPID = "ys78d535987a6a20";
+    public static final String APPID = "ys49d0579d3ad5e3";
     public static final String FROM = "client";
-    public static final String CLIENTSECRET = "B2ECBB362A2B7C53675F6EB1B2AFA9B2";
+    public static final String CLIENTSECRET = "C0E304A9DF87FE7A44F27702C74644AE";
     public static final String APPIDKEY = "app_id";
     public static final String FROMKEY = "from";
     public static final String TS = "ts";
@@ -88,7 +88,6 @@ public class YmConstants {
     public static final int REALNAMESKIPSTATE = 2;
     public static final int REALNAMECALLBACKSTATE = 3;
 
-    public static final String publickey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCau7yTHZ+M/1ZmwVpmiG4IEocOZX0KHYPmkrqq/QNULAJw//33lcEgCpEXOhQl0Jg8Gd4JywkfZRM0FYPaZAL10AceywzpbiQnUDaCc/C44X4gNtVdnruu4Cegt46iA4M5ukRoZEz+TkzgQgbMzOJSsFKVsQ+tMVgr8Y7uyBz6IwIDAQAB";
 
 
 }

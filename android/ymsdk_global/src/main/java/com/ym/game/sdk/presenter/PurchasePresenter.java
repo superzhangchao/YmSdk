@@ -25,27 +25,24 @@ import java.util.Map;
 
 
 public class PurchasePresenter {
-
-
-    private static Activity purchaseActivity;
     private static Context mContext;
 
     /**
      * 展示支付渠道
      * @param activity
      */
-    public static void showPurchasePage(Activity activity, PurchaseBean purchaseBean){
-        purchaseActivity = activity;
+//    public static void showPurchasePage(Activity activity, PurchaseBean purchaseBean){
+//        purchaseActivity = activity;
 //        if (UserPresenter.isLogin()){
 //            Intent intent = new Intent(activity, YmPurchaseActivity.class);
 //            intent.putExtra("purchaseBean", purchaseBean);
 //            activity.startActivity(intent);
 //        }else{
-            ToastUtils.showToast(activity,activity.getString(ResourseIdUtils.getStringId("ym_text_please_login")));
-            CallbackMananger.getPayCallBack().onFailure(YmErrorCode.PAY_FAIL,activity.getString(ResourseIdUtils.getStringId("ym_text_nologin")));
+//            ToastUtils.showToast(activity,activity.getString(ResourseIdUtils.getStringId("ym_text_please_login")));
+//            CallbackMananger.getPayCallBack().onFailure(YmErrorCode.PAY_FAIL,activity.getString(ResourseIdUtils.getStringId("ym_text_nologin")));
 //        }
-
-    }
+//
+//    }
 
     public static void initPay(Activity activity){
         PurchaseModel.getInstance().initPay(activity);
@@ -58,7 +55,7 @@ public class PurchasePresenter {
 
     public static void createOrder(Context context, final PurchaseBean purchaseDate) {
         mContext = context;
-        PurchaseModel.getInstance().getVerifyData(context, new GetVerifyDataListener() {
+        PurchaseModel.getInstance().getVerifyData(mContext, new GetVerifyDataListener() {
             @Override
             public void onSuccess(String ts, String accessToken) {
                 purchaseDate.setTs(ts);
@@ -87,35 +84,19 @@ public class PurchasePresenter {
 
             @Override
             public void onCancel() {
-
+                CallbackMananger.getPayCallBack().onCancel();
             }
 
             @Override
             public void onFail(int status, String message) {
-
+                CallbackMananger.getPayCallBack().onFailure(status,message);
             }
         });
 
     }
-    public static void startPay(Context context, final PurchaseBean purchaseDate ) {
-//        PurchaseModel.getInstance().getVerifyData(context, new GetVerifyDataListener() {
-//            @Override
-//            public void onSuccess(String ts, String accessToken) {
-//                purchaseDate.setTs(ts);
-//                purchaseDate.setAccessToken(accessToken);
-//
-//
-//            }
-//
-//            @Override
-//            public void onFail(int status, String message) {
-//                CallbackMananger.getPayCallBack().onFailure(status, message);
-//            }
-//        });
-        startPay(purchaseDate);
-    }
-    public static void startPay(PurchaseBean purchaseDate){
-        PurchaseModel.getInstance().startPay(mContext, purchaseDate, new PayStateListener() {
+
+    public static void startPay(final Context context, PurchaseBean purchaseDate){
+        PurchaseModel.getInstance().startPay(context, purchaseDate, new PayStateListener() {
             @Override
             public void onSuccess() {
                 CallbackMananger.getPayCallBack().onSuccess("onSuccess");
@@ -123,18 +104,14 @@ public class PurchasePresenter {
 
             @Override
             public void onCancel() {
-
+                CallbackMananger.getPayCallBack().onCancel();
             }
 
             @Override
             public void onFail(int status, String message) {
-
+                CallbackMananger.getPayCallBack().onFailure(status,message);
             }
         });
-    }
-
-    public static void destroy(Activity activity) {
-        PurchaseModel.getInstance().destroy(activity);
     }
 
 }

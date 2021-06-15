@@ -94,13 +94,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     }
 
 
-
-
-
-
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -181,7 +174,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v.getId()==btInit.getId()){
-            //YmSdkApi.getInstance().setDebugMode(true);
+//            YmSdkApi.getInstance().setDebugMode(true);
             DaoUtils daoUtils = new DaoUtils(this);
             List<LocalPurchaseBean> localPurchaseBeans = daoUtils.queryAll();
             Log.i(TAG, "onClick: ");
@@ -193,8 +186,9 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                     uid = dataBean.getUid();
                     String loginToken = dataBean.getLoginToken();
                     String nickName = dataBean.getNickName();
+                    String loginType = dataBean.getLoginType();
                     Logger.i("ysfjen login onSuccess:"+(String)o.toString());
-                    ToastUtils.showToast(MainActivity2.this,"login is success");
+//                    ToastUtils.showToast(MainActivity2.this,"login is success");
                 }
 
                 @Override
@@ -215,7 +209,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
             YmSdkApi.getInstance().logout(this);
         }else if(btPay.getId()==v.getId()){
 
-            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ym.ysfjtest02"), new PayCallBack() {
+            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.1usd"), new PayCallBack() {
                 @Override
                 public void onSuccess(Object o) {
                     Log.i(TAG, "onSuccess: 支付成功");
@@ -274,7 +268,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 }
             });
         }else if (btProduct1.getId()==v.getId()){
-            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ym.ysfjtest01"), new PayCallBack() {
+            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.1usd"), new PayCallBack() {
                 @Override
                 public void onSuccess(Object o) {
                     Log.i(TAG, "onSuccess: 支付成功");
@@ -291,7 +285,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 }
             });
         }else if (btProduct2.getId()==v.getId()){
-            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ym.ysfjtest02"), new PayCallBack() {
+            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.1usd"), new PayCallBack() {
                 @Override
                 public void onSuccess(Object o) {
                     Log.i(TAG, "onSuccess: 支付成功");
@@ -341,15 +335,15 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         parasign.put("product_name",productName);
         parasign.put("product_price",productPrice);
         parasign.put("game_order_no",orderId);
-        return YmSignUtils.getYmSign(parasign,"CE40D7B08558ED0BBD1C653276C91E44");
+        return YmSignUtils.getYmSign(parasign,"618AD3E8BB014660504C7931EB518FDF");
 
     }
 
     private void setFullScreen() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         if (android.os.Build.VERSION.SDK_INT > 18) {
 
             getWindow().getDecorView().setSystemUiVisibility(
