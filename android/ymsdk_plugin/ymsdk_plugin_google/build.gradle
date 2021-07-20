@@ -44,31 +44,37 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    //开发依赖
-    api project(':ymsdk_utlis')
-    // Import the BoM for the Firebase platform
-    api platform('com.google.firebase:firebase-bom:26.5.0')
-    api 'com.google.firebase:firebase-analytics'
-    // Declare the dependency for the Firebase Authentication library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-    api 'com.google.firebase:firebase-auth'
+    if (project.hasProperty("compileGooglePlugin")&&compileGooglePlugin.toBoolean()){
+        //正式编译依赖
+        print "google plugin compileOnly----------------"
 
-    // Also declare the dependency for the Google Play services library and specify its version
-    api 'com.google.android.gms:play-services-auth:19.0.0'
+        compileOnly project(':ymsdk_utlis')
+        compileOnly platform('com.google.firebase:firebase-bom:26.5.0')
+        compileOnly 'com.google.firebase:firebase-analytics'
+        compileOnly 'com.google.firebase:firebase-auth'
 
-    api 'com.android.billingclient:billing:3.0.0'
+        compileOnly 'com.google.android.gms:play-services-auth:19.0.0'
 
-    api 'org.greenrobot:greendao:3.3.0' // add library
+        compileOnly 'com.android.billingclient:billing:3.0.0'
 
-    //正式编译依赖
-//    compileOnly project(':ymsdk_utlis')
-//    compileOnly platform('com.google.firebase:firebase-bom:26.5.0')
-//    compileOnly 'com.google.firebase:firebase-analytics'
-//    compileOnly 'com.google.firebase:firebase-auth'
-//
-//    compileOnly 'com.google.android.gms:play-services-auth:19.0.0'
-//
-//    compileOnly 'com.android.billingclient:billing:3.0.0'
-//
-//    compileOnly 'org.greenrobot:greendao:3.3.0' // add library
+        compileOnly 'org.greenrobot:greendao:3.3.0' // add library
+    }else {
+        //开发依赖
+        print "google plugin api----------------"
+
+        api project(':ymsdk_utlis')
+        // Import the BoM for the Firebase platform
+        api platform('com.google.firebase:firebase-bom:26.5.0')
+        api 'com.google.firebase:firebase-analytics'
+        // Declare the dependency for the Firebase Authentication library
+        // When using the BoM, you don't specify versions in Firebase library dependencies
+        api 'com.google.firebase:firebase-auth'
+
+        // Also declare the dependency for the Google Play services library and specify its version
+        api 'com.google.android.gms:play-services-auth:19.0.0'
+
+        api 'com.android.billingclient:billing:3.0.0'
+
+        api 'org.greenrobot:greendao:3.3.0' // add library
+    }
 }

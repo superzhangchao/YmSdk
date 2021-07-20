@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
+import com.ym.game.sdk.presenter.UserPresenter;
 import com.ym.game.utils.ImageUtils;
 
 import androidx.annotation.NonNull;
@@ -47,7 +48,7 @@ public class AccountManagementFragment extends UserBaseFragment implements View.
     @Override
     public void onClick(View v) {
         if(v.getId() == ymImClose.getId()){
-            finishActivity();
+            cancelBindAndFinish();
         }else if (v.getId() == ymBtBind.getId()){
             AccountBindFragment accountBindFragment = getFragmentByName(baseActivity, AccountBindFragment.class);
             redirectFragment(accountBindFragment);
@@ -59,7 +60,17 @@ public class AccountManagementFragment extends UserBaseFragment implements View.
 
     @Override
     public boolean onBackPressed() {
+        cancelBind();
         return BackHandlerHelper.handleBackPress(this);
+    }
+
+    protected void cancelBindAndFinish(){
+        UserPresenter.cancelBind();
+        baseActivity.finish();
+    }
+
+    protected void cancelBind(){
+        UserPresenter.cancelBind();
     }
 
     protected void finishActivity(){

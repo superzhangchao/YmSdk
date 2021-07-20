@@ -14,6 +14,7 @@
     <color name="edit_text">@android:color/white</color>
 
 
+    <color name="ym_bg_color">#af000000</color>
     <color name="ym_edit_name">#727272</color>
     <color name="ym_xieyi">#2a8dfc</color>
 

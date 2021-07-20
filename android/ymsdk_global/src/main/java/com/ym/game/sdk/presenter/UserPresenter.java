@@ -7,6 +7,7 @@ import android.content.Intent;
 
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.ym.game.net.bean.ResultAccoutBean;
 
@@ -180,7 +181,7 @@ public class UserPresenter {
                 @Override
                 public void onFail(int status,String message) {
                     ToastUtils.showToast(userView.getContext(),message);
-                    CallbackMananger.getBindCallBack().onFailure(status,message);
+//                    CallbackMananger.getBindCallBack().onFailure(status,message);
                 }
             });
         }else {
@@ -206,7 +207,7 @@ public class UserPresenter {
             @Override
             public void onFail(int status, String message) {
                 ToastUtils.showToast(userView.getContext(),message);
-                CallbackMananger.getBindCallBack().onFailure(status,message);
+//                CallbackMananger.getBindCallBack().onFailure(status,message);
             }
         });
     }
@@ -225,6 +226,17 @@ public class UserPresenter {
         }
     }
 
+    public static void switchByBind(Activity activity) {
+        if (UserModel.getInstance().isLogin()){
+            UserModel.getInstance().logout(activity);
+            CallbackMananger.getBindCallBack().onSwitch();
+        }
+    }
+
+    public static void cancelBind(){
+        CallbackMananger.getBindCallBack().onCancel();
+    }
+
     public static void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         UserModel.getInstance().onActivityResult(activity,requestCode,resultCode,data);
     }
@@ -232,6 +244,7 @@ public class UserPresenter {
     public static void onRequestPermissionsResult(YmUserActivity ymUserActivity, int requestCode, String[] permissions, int[] grantResults) {
 
     }
+
 
 
 }

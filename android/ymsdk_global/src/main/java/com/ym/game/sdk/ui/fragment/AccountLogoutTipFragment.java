@@ -52,13 +52,23 @@ public class AccountLogoutTipFragment extends UserBaseFragment implements View.O
         if (v.getId() == ymImBack.getId()){
             back();
         }else if (v.getId() == ymImClose.getId()){
-            finishActivity();
+            cancelBindAndFinish();
         }else if(v.getId() == ymBtCancel.getId()){
-            finishActivity();
+            cancelBindAndFinish();
         }else if (v.getId() == ymBtConfirm.getId()){
             //TODO:
-            UserPresenter.logout(baseActivity);
+            UserPresenter.switchByBind(baseActivity);
+            finishActivity();
         }
+    }
+
+    protected void cancelBindAndFinish(){
+        UserPresenter.cancelBind();
+        baseActivity.finish();
+    }
+
+    protected void cancelBind(){
+        UserPresenter.cancelBind();
     }
 
     /**
@@ -71,7 +81,6 @@ public class AccountLogoutTipFragment extends UserBaseFragment implements View.O
     protected void finishActivity(){
         baseActivity.finish();
     }
-
 
     @Override
     public boolean onBackPressed() {

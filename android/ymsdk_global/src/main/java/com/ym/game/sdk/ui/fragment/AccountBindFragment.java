@@ -12,6 +12,7 @@ import com.ym.game.sdk.bean.AccountBean;
 import com.ym.game.sdk.common.utils.ResourseIdUtils;
 import com.ym.game.sdk.presenter.UserPresenter;
 
+import com.ym.game.utils.CommonUtils;
 import com.ym.game.utils.ImageUtils;
 
 import androidx.annotation.NonNull;
@@ -58,19 +59,23 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
         if (view.getId()==ymImBack.getId()){
             back();
         }else if (view.getId()== ymImClose.getId()){
-            finishActivity();
+            cancelBindAndFinish();
         }else if(view.getId()==imGoogleBind.getId()){
             //TODO:绑定gp
+            if (CommonUtils.isFastDoubleClick()){
+                return;
+            }
             UserPresenter.bindByType(this, YmConstants.GOOGLETYPE);
         }else if (view.getId()==imFbBind.getId()){
             //TODO:绑定fb
+            if (CommonUtils.isFastDoubleClick()){
+                return;
+            }
             UserPresenter.bindByType(this, YmConstants.FBTYPE);
         }
 
     }
-    private void cancelBind(){
 
-    }
 
 
 
@@ -80,6 +85,15 @@ public class AccountBindFragment extends UserBaseFragment implements View.OnClic
         return accountData;
     }
 
+
+    protected void cancelBindAndFinish(){
+        UserPresenter.cancelBind();
+        baseActivity.finish();
+    }
+
+    protected void cancelBind(){
+        UserPresenter.cancelBind();
+    }
 
     /**
      * 返回

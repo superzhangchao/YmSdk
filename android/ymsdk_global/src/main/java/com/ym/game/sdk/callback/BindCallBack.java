@@ -7,4 +7,6 @@ public interface BindCallBack extends CallBackListener {
     void onSuccess(Object o);
 
     void onCancel();
+
+    void onSwitch();
 }

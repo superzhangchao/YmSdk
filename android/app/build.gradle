@@ -99,42 +99,46 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+//    implementation 'com.google.android.material:material:1.1.0'
 
 
 //    implementation group: 'com.google.apis', name: 'google-api-services-androidpublisher', version: 'v3-rev142-1.25.0'
     //开发依赖
 //    implementation project(':ymsdk')
-    implementation project(':ymsdk_global')
-
+//    implementation project(':ymsdk_global')
+    print "app--------------"
     //正式依赖
-//    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-//    implementation platform('com.google.firebase:firebase-bom:26.5.0')
-//    implementation 'com.google.firebase:firebase-analytics'
-//    // Declare the dependency for the Firebase Authentication library
-//    // When using the BoM, you don't specify versions in Firebase library dependencies
-//    implementation 'com.google.firebase:firebase-auth'
-//
-//    // Also declare the dependency for the Google Play services library and specify its version
-//    implementation 'com.google.android.gms:play-services-auth:19.0.0'
-//
-//    implementation 'com.android.billingclient:billing:3.0.0'
-//
-//    implementation 'org.greenrobot:greendao:3.3.0' // add library
-//
-//    implementation 'com.facebook.android:facebook-login:4.33.0'
-//    implementation 'com.facebook.android:facebook-share:4.33.0'
+    if (project.hasProperty("app")&&app.toBoolean()){
+        implementation 'androidx.recyclerview:recyclerview:1.1.0'
+        implementation platform('com.google.firebase:firebase-bom:26.5.0')
+        implementation 'com.google.firebase:firebase-analytics'
+        // Declare the dependency for the Firebase Authentication library
+        // When using the BoM, you don't specify versions in Firebase library dependencies
+        implementation 'com.google.firebase:firebase-auth'
 
-    implementation 'com.tencent.bugly:crashreport:3.3.92'
-    //其中lat est.release指代最新版本号，也可以指定明确的版本号，例如2.1.5
-    implementation 'com.tencent.bugly:nativecrashreport:3.9.1'
+        // Also declare the dependency for the Google Play services library and specify its version
+        implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
-//    implementation (name: 'pluginmanagerImpl-release-20210524', ext: 'aar')
-//    implementation (name: 'ymsdk_global-release-20210524', ext: 'aar')
-//    implementation (name: 'pluginmanagerImpl-release-20210524', ext: 'aar')
-//    implementation (name: 'ymsdk_plugin_adjust-release-20210524', ext: 'aar')
-//    implementation (name: 'ymsdk_plugin_facebook-release-20210524', ext: 'aar')
-//    implementation (name: 'ymsdk_plugin_google-release-20210524', ext: 'aar')
-//    implementation (name: 'ymsdk_utlis-release-20210524', ext: 'aar')
+        implementation 'com.android.billingclient:billing:3.0.0'
 
+        implementation 'org.greenrobot:greendao:3.3.0' // add library
+
+        implementation 'com.facebook.android:facebook-login:4.33.0'
+        implementation 'com.facebook.android:facebook-share:4.33.0'
+
+        implementation 'com.tencent.bugly:crashreport:3.3.92'
+        //其中lat est.release指代最新版本号，也可以指定明确的版本号，例如2.1.5
+        implementation 'com.tencent.bugly:nativecrashreport:3.9.1'
+
+        implementation (name: 'pluginmanagerImpl-release-20210524', ext: 'aar')
+        implementation (name: 'ymsdk_global-release-20210621-1', ext: 'aar')
+        implementation (name: 'pluginmanagerImpl-release-20210524', ext: 'aar')
+        implementation (name: 'ymsdk_plugin_adjust-release-20210524', ext: 'aar')
+        implementation (name: 'ymsdk_plugin_facebook-release-20210524', ext: 'aar')
+        implementation (name: 'ymsdk_plugin_google-release-20210524', ext: 'aar')
+        implementation (name: 'ymsdk_utlis-release-20210524', ext: 'aar')
+    }else{
+        implementation project(':ymsdk_global')
+    }
 
 }

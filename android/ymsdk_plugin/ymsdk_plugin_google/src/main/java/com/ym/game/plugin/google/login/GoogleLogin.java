@@ -74,6 +74,7 @@ public class GoogleLogin {
             initlogin(context);
         }
         mLoginBackListener = callBackListener;
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser!=null){
             updateUI(context,currentUser);
@@ -184,17 +185,20 @@ public class GoogleLogin {
                                 // Send token to your backend via HTTPS
                                 // TODO:去服务器验证
                                 String uid = user.getUid();
-                                if (uid!=null){
-                                    mLoginBackListener.onSuccess(uid);
-
-                                }else {
-                                    mLoginBackListener.onFailure(ErrorCode.FAILURE,context.getString(ResourseIdUtils.getStringId("ym_google_logintfail")));
+                                if (mLoginBackListener!=null){
+                                    if (uid!=null){
+                                        mLoginBackListener.onSuccess(uid);
+                                    }else {
+                                        mLoginBackListener.onFailure(ErrorCode.FAILURE,context.getString(ResourseIdUtils.getStringId("ym_google_logintfail")));
+                                    }
+                                    mLoginBackListener = null;
                                 }
-                                mLoginBackListener = null;
+
                             } else {
-                                // Handle error -> task.getException();//
-                                mLoginBackListener.onFailure(ErrorCode.FAILURE,task.getException().getMessage());
-                                mLoginBackListener = null;
+                                if (mLoginBackListener!=null){
+                                    mLoginBackListener.onFailure(ErrorCode.FAILURE,task.getException().getMessage());
+                                    mLoginBackListener = null;
+                                }
                             }
                         }
                     });
@@ -214,7 +218,6 @@ public class GoogleLogin {
                 String logoutMessage = context.getString(ResourseIdUtils.getStringId("ym_google_logoutsuccess"));
                 mLogoutBackListener.onSuccess(logoutMessage);
                 mLogoutBackListener = null;
-                Log.i(TAG, "updateUI: logout");
             }else if (mRevokeAccessListener!=null){
                 String revokeMessage = context.getString(ResourseIdUtils.getStringId("ym_google_revokeaccesssuccess"));
                 mRevokeAccessListener.onSuccess(revokeMessage);

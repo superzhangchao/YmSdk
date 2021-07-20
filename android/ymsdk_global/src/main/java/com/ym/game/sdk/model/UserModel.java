@@ -537,7 +537,6 @@ public class UserModel implements IUserModel {
 
     private void googlelogin(final int eventType) {
         pluginType = GOOGLEPLUGIN;
-
         GooglePluginApi.getInstance().login(mContext,null,new CallBackListener() {
             @Override
             public void onSuccess(Object o) {
@@ -562,7 +561,7 @@ public class UserModel implements IUserModel {
                     if (eventType == YmTypeConfig.LOGIN){
                         mLoginStatusListener.onFail(code,msg);
                     }else if (eventType == YmTypeConfig.BIND){
-                        mBindStatusListener.onFail(code,msg);
+                        mBindStatusListener.onFail(code,mContext.getString(ResourseIdUtils.getStringId("ym_tip_bindfail")));
                     }
                 }
             }
@@ -923,6 +922,7 @@ public class UserModel implements IUserModel {
                             if (errorCode == YmConstants.SUCCESSCODE){
                                 body.getData().setUid(mAccountBean.getUid());
                                 body.getData().setLoginToken(mAccountBean.getLoginToken());
+                                body.getData().setLoginType(mBindAccountBean.getBindType());
                                 message.what = BINDSUCCESS;
                                 message.obj = body;
 

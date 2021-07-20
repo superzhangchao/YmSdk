@@ -23,4 +23,8 @@
     <string name="ym_text_neterror">The network connection is unstable, please check the network</string>
     <string name="ym_text_disconnet">Server connection failed, please try again later</string>
     <string name="ym_text_netdata_null">Failed to get network data</string>
+
+    <string name="ym_tip_bindfail">bind is fail</string>
+
+
 </resources>

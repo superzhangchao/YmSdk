@@ -309,8 +309,10 @@ public class GooglePay implements PurchasesUpdatedListener, BillingClientStateLi
         }else if(billingResult.getResponseCode()==BillingClient.BillingResponseCode.BILLING_UNAVAILABLE){
             //Some apps may choose to make decisions based on this knowledge.
             Log.d(TAG, billingResult.getDebugMessage());
+            mInitCallBackListener.onFailure(ErrorCode.FAILURE,billingResult.getDebugMessage());
         }else {
             Log.d(TAG, billingResult.getDebugMessage());
+            mInitCallBackListener.onFailure(ErrorCode.FAILURE,billingResult.getDebugMessage());
         }
     }
 

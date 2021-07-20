@@ -3,6 +3,8 @@ package com.ym.ysfj;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
 
 import com.ym.game.net.bean.ResultAccoutBean;
 import com.ym.game.plugin.google.dao.DaoUtils;
@@ -76,6 +79,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         btSendinfo = (Button) findViewById(R.id.bt_sendinfo);
         btProduct1 = (Button) findViewById(R.id.bt_product1);
         btProduct2 = (Button) findViewById(R.id.bt_product2);
+
 
         btBind = (Button) findViewById(R.id.bt_bind);
         tv = (TextView) findViewById(R.id.tv);
@@ -249,22 +253,27 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onSuccess(Object o) {
                     Logger.i("ysfjen bind onSuccess:" + (String) o.toString());
-                    ToastUtils.showToast(MainActivity2.this,"bind is success");
+//                    ToastUtils.showToast(MainActivity2.this,"bind is success");
 
                 }
 
                 @Override
                 public void onFailure(int code, String msg) {
-                    Logger.i("ysfjen bind onFailure:" + msg);
+                    Logger.i("ysfjen btBind onFailure:" + msg);
 //                    ToastUtils.showToast(MainActivity2.this,msg);
-                    ToastUtils.showToast(MainActivity2.this,msg);
                 }
 
                 @Override
                 public void onCancel() {
-                    Logger.i("ysfjen bind onCancel:");
+                    Logger.i("ysfjen btBind onCancel:");
 
-                    ToastUtils.showToast(MainActivity2.this,"bind is cancel");
+//                    ToastUtils.showToast(MainActivity2.this,"bind is cancel");
+                }
+
+                @Override
+                public void onSwitch() {
+                    Logger.i("ysfjen btBind onSwitch:");
+
                 }
             });
         }else if (btProduct1.getId()==v.getId()){
@@ -285,22 +294,42 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 }
             });
         }else if (btProduct2.getId()==v.getId()){
-            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.1usd"), new PayCallBack() {
+//            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.1usd"), new PayCallBack() {
+//                @Override
+//                public void onSuccess(Object o) {
+//                    Log.i(TAG, "onSuccess: 支付成功");
+//                }
+//
+//                @Override
+//                public void onCancel() {
+//                    Log.i(TAG, "onCancel: 支付取消");
+//                }
+//
+//                @Override
+//                public void onFailure(int code, String msg) {
+//                    Log.i(TAG, "onFailure: 支付失败");
+//                }
+//            });
+            android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("提示");
+            builder.setMessage("网络异常，无法下载");
+            builder.setCancelable(false);
+            builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
                 @Override
-                public void onSuccess(Object o) {
-                    Log.i(TAG, "onSuccess: 支付成功");
-                }
-
-                @Override
-                public void onCancel() {
-                    Log.i(TAG, "onCancel: 支付取消");
-                }
-
-                @Override
-                public void onFailure(int code, String msg) {
-                    Log.i(TAG, "onFailure: 支付失败");
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
                 }
             });
+
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            if (!this.isFinishing()) {
+                builder.show();
+            }
         }
     }
 
