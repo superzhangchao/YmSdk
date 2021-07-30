@@ -72,6 +72,8 @@ dependencies {
 
         api project(':ymsdk_plugin_facebook')
         api project(':ymsdk_plugin_google')
+        api project(':ymsdk_plugin_adjust')
+
     }
 
 }

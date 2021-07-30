@@ -13,8 +13,6 @@ import android.text.TextUtils;
 
 import com.ym.game.net.api.YmApi;
 import com.ym.game.net.api.YmApiService;
-import com.ym.game.plugin.google.dao.DaoUtils;
-import com.ym.game.plugin.google.dao.LocalPurchaseBean;
 import com.ym.game.sdk.callback.BindCallBack;
 import com.ym.game.sdk.callback.ExitCallBack;
 import com.ym.game.sdk.callback.ShareCallBack;
@@ -38,18 +36,14 @@ import com.ym.game.sdk.config.Config;
 
 
 import com.ym.game.sdk.constants.YmConstants;
-import com.ym.game.sdk.constants.YmLanguageEnum;
-import com.ym.game.sdk.constants.Ymlanguage;
+
+
+import com.ym.game.sdk.invoke.plugin.AdjustDataPluginApi;
 import com.ym.game.sdk.invoke.plugin.FBPluginApi;
-import com.ym.game.sdk.invoke.plugin.GooglePluginApi;
 import com.ym.game.sdk.presenter.PurchasePresenter;
 import com.ym.game.sdk.presenter.UserPresenter;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.Nullable;
@@ -99,7 +93,7 @@ public class YmSdkApi {
         Config.setGameId(gameId);
         initDate();
         initLanguage();
-        initGoogleAd();
+
 
         if (sApiHandler == null) {
             HandlerThread ht = new HandlerThread("project_sdk_thread",
@@ -112,15 +106,11 @@ public class YmSdkApi {
             public void run() {
                 //4、加载功能插件
                 PluginManager.init(context).loadAllPlugins();
-
-
+                AdjustDataPluginApi.getInstance().init(context);
 
             }
         };
         sApiHandler.post(r);
-    }
-
-    private void initGoogleAd() {
     }
 
     private void initDate() {
@@ -212,8 +202,11 @@ public class YmSdkApi {
 
     }
 
-    public void trackEvent(String eventName){
-
+    public void trackEvent(Context context,String eventName){
+        Map<String,Object> map = new HashMap<>();
+        map.put("eventName",eventName);
+        FBPluginApi.getInstance().reportEvent(context,map);
+        AdjustDataPluginApi.getInstance().trackEvent("aaa");
     }
 
 //    public void reportRoleInfo(RoleInfo roleInfo){

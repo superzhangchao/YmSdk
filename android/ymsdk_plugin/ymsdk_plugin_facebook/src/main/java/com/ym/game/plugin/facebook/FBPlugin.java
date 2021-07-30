@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.ym.game.plugin.facebook.event.FBEevent;
 import com.ym.game.plugin.facebook.login.FBLogin;
 import com.ym.game.plugin.facebook.share.FBShare;
 import com.ym.game.sdk.common.base.interfaces.CallBackListener;
@@ -43,6 +44,10 @@ public class FBPlugin extends Plugin {
     public void share(Context context,Map<String,Object> shareMap,CallBackListener callBackListener){
         eventType = shareEvent;
         FBShare.getInstance().share(context,shareMap,callBackListener);
+    }
+
+    public void fbReportEvent(Context context,Map<String,Object> eventParam){
+        FBEevent.getInstance().reportManuallyEvents(context,eventParam);
     }
     @Override
     public void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {

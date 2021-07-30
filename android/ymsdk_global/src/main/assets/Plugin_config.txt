@@ -4,13 +4,19 @@
              "plugin_name": "plugin_facebook",
              "class_name": "com.ym.game.plugin.facebook.FBPlugin",
              "description": "脸书功能插件",
-             "version": "4.33.0"
+             "version": "8.9"
          },
          {
              "plugin_name": "plugin_google",
              "class_name": "com.ym.game.plugin.google.GooglePlugin",
              "description": "google功能插件",
              "version": "19.0.0"
+         },
+         {
+            "plugin_name": "plugin_adjust",
+            "class_name": "com.ym.game.plugin.adjust.AdjustDataPlugin",
+            "description": "adjust功能插件",
+            "version": "4.27.0"
          }
     ]
 }

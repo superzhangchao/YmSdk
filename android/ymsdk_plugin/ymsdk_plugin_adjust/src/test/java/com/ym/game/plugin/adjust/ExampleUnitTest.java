@@ -1,4 +1,4 @@
-package com.ym.game.ymsdk.plugin.adjust;
+package com.ym.game.plugin.adjust;
 
 import org.junit.Test;
 

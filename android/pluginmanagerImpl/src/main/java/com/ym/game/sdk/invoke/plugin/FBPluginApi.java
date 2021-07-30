@@ -44,6 +44,12 @@ public class FBPluginApi extends PluginReflectApi {
         }
     }
 
+    public void reportEvent(Context context,Map<String,Object> eventMap){
+        if (fbPlugin!=null){
+            invoke(fbPlugin,"fbReportEvent",new Class[]{Context.class,Map.class},new Object[]{context,eventMap});
+        }
+    }
+
     public void share(Context context,Map<String,Object> shareMap,CallBackListener callBackListener){
         if (fbPlugin!=null) {
             invoke(fbPlugin, "share", new Class[]{Context.class, Map.class, CallBackListener.class}, new Object[]{context, shareMap, callBackListener});

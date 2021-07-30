@@ -154,7 +154,7 @@ public class UserPresenter {
 
     private static void loginSuccess(Context context,ResultAccoutBean resultAccountBean) {
         if (TextUtils.equals(resultAccountBean.getData().getLoginType(),YmConstants.GUSETTYPE)){
-            ToastUtils.showToast(context,"游客账号容易丢失，请及时绑定正式账号");
+            ToastUtils.showToast(context,context.getString(ResourseIdUtils.getStringId("ym_text_gusetlogin_tip")));
 
             //TODO:需要主动弹出实名认证界面暂缓发送登录结果
         }

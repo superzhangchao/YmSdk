@@ -209,6 +209,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
             });
 
         }else if (btSendinfo.getId()==v.getId()){
+            YmSdkApi.getInstance().trackEvent(this,"event_1");
         }else if(btLogout.getId() ==v.getId()) {
             YmSdkApi.getInstance().logout(this);
         }else if(btPay.getId()==v.getId()){

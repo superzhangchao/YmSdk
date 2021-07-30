@@ -1,44 +1,40 @@
-package com.ym.game.ymsdk.plugin.adjust.analytics;
+package com.ym.game.plugin.adjust.event;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.adjust.sdk.Adjust;
 import com.adjust.sdk.AdjustConfig;
-import com.adjust.sdk.AdjustEvent;
-import com.adjust.sdk.LogLevel;
-import com.adjust.sdk.OnDeeplinkResponseListener;
 
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class AdjustAnalytics {
+public class AdjustEvent {
 
-    private volatile static AdjustAnalytics INSTANCE;
+    private volatile static AdjustEvent INSTANCE;
 
-    public static AdjustAnalytics getInstance() {
+    public static AdjustEvent getInstance() {
         if (INSTANCE == null) {
-            synchronized (AdjustAnalytics.class) {
+            synchronized (AdjustEvent.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new AdjustAnalytics();
+                    INSTANCE = new AdjustEvent();
                 }
             }
         }
         return INSTANCE;
     }
 
-    public void init(Application context, Map<String,String> initMap){
-        String adjustToken = initMap.get("adjustToken");
-        String environment = initMap.get("environment");
+    public void init(Application context){
+//        String adjustToken = initMap.get("adjustToken");
+//        String environment = initMap.get("environment");
+        String adjustToken = "vfryvg2lxkow";
 //        String appToken = "{YourAppToken}";
 //        String environment = AdjustConfig.ENVIRONMENT_SANDBOX;
-//        String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
+        String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
         AdjustConfig config = new AdjustConfig(context, adjustToken, environment);
 //        AdjustConfig config = new AdjustConfig(context, adjustToken, environment,true);//设置第三个参数为true就开启
         // Evaluate the deeplink to be launched.
@@ -75,14 +71,16 @@ public class AdjustAnalytics {
     }
 
     public void trackEvent(String eventToken){
-        AdjustEvent adjustEvent = new AdjustEvent("abc123");
+        //测试事件  rod_VIP_5
+        com.adjust.sdk.AdjustEvent adjustEvent = new com.adjust.sdk.AdjustEvent("4fcywd");
         Adjust.trackEvent(adjustEvent);
     }
 
     //跟踪收入
-    public void TrackEventWithRevenue(String eventToken,double revenue,String currency){
-        AdjustEvent adjustEvent = new AdjustEvent(eventToken);
+    public void trackEventWithRevenue(String eventToken,double revenue,String currency){
+        com.adjust.sdk.AdjustEvent adjustEvent = new com.adjust.sdk.AdjustEvent(eventToken);
         adjustEvent.setRevenue(revenue, currency);
+//        adjustEvent.setOrderId("{OrderId}");
         Adjust.trackEvent(adjustEvent);
     }
 
