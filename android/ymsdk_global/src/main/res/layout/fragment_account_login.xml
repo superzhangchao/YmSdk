@@ -7,10 +7,11 @@
 
 
     <Button
-        android:id="@+id/ym_gplogin"
+        android:id="@+id/ym_gtlogin"
         android:layout_width="@dimen/ym_loginbt_width"
         android:layout_height="@dimen/ym_loginbt_height"
-        android:background="@mipmap/ym_gplogin"
+        android:background="@mipmap/ym_gtlogin"
+        android:visibility="invisible"
         android:layout_centerInParent="true"/>
 
 
@@ -19,16 +20,14 @@
         android:layout_width="@dimen/ym_loginbt_width"
         android:layout_height="@dimen/ym_loginbt_height"
         android:background="@mipmap/ym_fblogin"
-        android:layout_above="@+id/ym_gplogin"
-        android:layout_marginBottom="@dimen/ym_margin20"
+        android:layout_above="@+id/ym_gtlogin"
         android:layout_centerHorizontal="true"/>
     <Button
-        android:id="@+id/ym_gtlogin"
+        android:id="@+id/ym_gplogin"
         android:layout_width="@dimen/ym_loginbt_width"
         android:layout_height="@dimen/ym_loginbt_height"
-        android:background="@mipmap/ym_gtlogin"
-        android:layout_marginTop="@dimen/ym_margin20"
-        android:layout_below="@id/ym_gplogin"
+        android:background="@mipmap/ym_gplogin"
+        android:layout_below="@id/ym_gtlogin"
         android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

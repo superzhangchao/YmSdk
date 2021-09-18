@@ -220,9 +220,9 @@ public class YmSdkApi {
 
     }
 
-    public void bind(Activity activity, BindCallBack bindCallBak){
-        CallbackMananger.setBindCallBack(bindCallBak);
-        UserPresenter.showBindActiviy(activity);
+    private void bind(Activity activity, BindCallBack bindCallBak){
+//        CallbackMananger.setBindCallBack(bindCallBak);
+//        UserPresenter.showBindActiviy(activity);
     }
 
     public void logout(Activity activity){

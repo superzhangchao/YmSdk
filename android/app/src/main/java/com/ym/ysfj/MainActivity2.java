@@ -250,33 +250,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
             });
         }else if (btBind.getId()==v.getId()) {
 
-            YmSdkApi.getInstance().bind(this, new BindCallBack() {
-                @Override
-                public void onSuccess(Object o) {
-                    Logger.i("ysfjen bind onSuccess:" + (String) o.toString());
-//                    ToastUtils.showToast(MainActivity2.this,"bind is success");
-
-                }
-
-                @Override
-                public void onFailure(int code, String msg) {
-                    Logger.i("ysfjen btBind onFailure:" + msg);
-//                    ToastUtils.showToast(MainActivity2.this,msg);
-                }
-
-                @Override
-                public void onCancel() {
-                    Logger.i("ysfjen btBind onCancel:");
-
-//                    ToastUtils.showToast(MainActivity2.this,"bind is cancel");
-                }
-
-                @Override
-                public void onSwitch() {
-                    Logger.i("ysfjen btBind onSwitch:");
-
-                }
-            });
         }else if (btProduct1.getId()==v.getId()){
             YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.1usd"), new PayCallBack() {
                 @Override

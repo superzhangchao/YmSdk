@@ -156,7 +156,6 @@ public class UserPresenter {
         if (TextUtils.equals(resultAccountBean.getData().getLoginType(),YmConstants.GUSETTYPE)){
             ToastUtils.showToast(context,context.getString(ResourseIdUtils.getStringId("ym_text_gusetlogin_tip")));
 
-            //TODO:需要主动弹出实名认证界面暂缓发送登录结果
         }
         CallbackMananger.getLoginCallBack().onSuccess(resultAccountBean.getData());
         //PurchasePresenter.checkPurchaseState(context);

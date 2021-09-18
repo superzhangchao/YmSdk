@@ -34,7 +34,7 @@ public class AccountLoginFragment extends UserBaseFragment implements View.OnCli
         ymGtlogin = (Button) view.findViewById(ResourseIdUtils.getId("ym_gtlogin"));
         ymGplogin.setOnClickListener(this);
         ymFblogin.setOnClickListener(this);
-        ymGtlogin.setOnClickListener(this);
+//        ymGtlogin.setOnClickListener(this);
         return view;
     }
 

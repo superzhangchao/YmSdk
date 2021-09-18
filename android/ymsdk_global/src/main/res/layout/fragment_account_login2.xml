@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:id="@+id/ll_content1"
+        android:layout_width="@dimen/ym_content_width"
+        android:layout_height="@dimen/ym_content_heigth"
+        android:layout_centerInParent="true"
+        android:background="@color/ym_bg_color"
+        android:orientation="vertical">
+
+        <include layout="@layout/ym_view_title" />
+
+        <LinearLayout
+            android:id="@+id/ll_content"
+            android:layout_width="@dimen/ym_content_width"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@mipmap/ym_bg">
+
+            <!--登录分割线-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/ym_line_height"
+                android:layout_marginTop="@dimen/ym_margin10">
+
+                <TextView
+                    android:id="@+id/ym_login_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/edit_bg"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_f13"
+                    android:text="Login Account"/>
+
+                <ImageView
+                    android:layout_width="@dimen/ym_line_width"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/ym_login_title"
+                    android:layout_marginEnd="@dimen/ym_margin1"
+                    android:src="@mipmap/ym_fenjiexian"/>
+
+                <ImageView
+                    android:id="@+id/fengjiexian_right"
+                    android:layout_width="@dimen/ym_line_width"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/ym_margin1"
+                    android:layout_toEndOf="@id/ym_login_title"
+                    android:src="@mipmap/ym_fenjiexian"/>
+
+            </RelativeLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/ym_margin50"
+                android:layout_marginRight="@dimen/ym_margin50"
+                android:layout_marginTop="55dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ll_google_bind"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/im_google_bind"
+                        android:layout_width="@dimen/ym_margin50"
+                        android:layout_height="@dimen/ym_margin50"
+                        android:src="@mipmap/ym_gpbind"
+                        android:layout_marginStart="@dimen/ym_margin40"
+                        android:gravity="center_horizontal" />
+
+                    <TextView
+                        android:id="@+id/tv_gp_bind"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/ym_margin5"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/edit_bg"
+                        android:visibility="visible"
+                        android:textSize="@dimen/text_size_f12"
+                        android:text="@string/ym_tv_gpbind"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_fb_bind"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:visibility="visible">
+
+
+                    <ImageView
+                        android:id="@+id/im_fb_bind"
+                        android:layout_width="@dimen/ym_margin50"
+                        android:layout_height="@dimen/ym_margin50"
+                        android:src="@mipmap/ym_fbbind"
+                        android:layout_marginStart="@dimen/ym_margin40"
+                        android:gravity="center_horizontal" />
+
+                    <TextView
+                        android:id="@+id/tv_fb_bind"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/ym_margin5"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/edit_bg"
+                        android:visibility="visible"
+                        android:textSize="@dimen/text_size_f12"
+                        android:text="@string/ym_tv_fbbind"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
