@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ym_tv_accounttitle">账号管理</string>
+    <string name="ym_accountmessage">&#160;&#160;&#160;&#160;我们建议您关联帐号确保其安全性。如果您想在多台设备上游玩，请关联帐号并使用“切换帐号”功能登录到其他设备。</string>
+    <string name="ym_tv_bind">关联</string>
+    <string name="ym_tv_switch">切换</string>
+    <string name="ym_tv_linktitle">关联账号</string>
+    <string name="ym_bindmessage">您正在以游客身份登录，我们建议您关联以下帐号。</string>
+    <string name="ym_tv_gpbind">谷歌</string>
+    <string name="ym_tv_fbbind">脸书</string>
+    <string name="ym_tv_tiptitle">提示</string>
+    <string name="ym_tipmessage">不关联账号并注销，您的账号可能会丢失。</string>
+    <string name="ym_tv_cancel">取消</string>
+    <string name="ym_tv_confirm">确认</string>
+
+
+    <string name="ym_nickname_google">谷歌</string>
+    <string name="ym_nickname_facebook">脸书</string>
+    <string name="ym_nickname_guest">游客</string>
+    <string name="ym_text_noguest">只有游客身份可以绑定账号。</string>
+    <string name="ym_text_please_login">请登录账号</string>
+    <string name="ym_text_nologin">未登录</string>
+    <string name="ym_text_neterror">网络连接不稳定，请检查网络</string>
+    <string name="ym_text_order_error">订单参数错误</string>
+    <string name="ym_text_no_paytype">支付模块缺失</string>
+    <string name="ym_text_disconnet">服务器连接失败，请稍后再试</string>
+    <string name="ym_text_netdata_null">网络数据获取失败</string>
+    <string name="ym_text_gusetlogin_tip">游客账号容易丢失，请及时绑定正式账号</string>
+
+    <string name="ym_tip_bindfail">绑定失败</string>
+</resources>

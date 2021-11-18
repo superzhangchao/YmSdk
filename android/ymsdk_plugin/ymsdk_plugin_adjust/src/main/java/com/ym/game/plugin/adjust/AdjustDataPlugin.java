@@ -24,7 +24,7 @@ public class AdjustDataPlugin extends Plugin {
         AdjustEvent.getInstance().trackEvent(eventToken);
     }
 
-    public void trackEventWithRevenue(String eventToken,double revenue,String currency){
-        AdjustEvent.getInstance().trackEventWithRevenue(eventToken,revenue,currency);
+    public void trackEventWithRevenue(String eventToken,double revenue,String orderId,String currency){
+        AdjustEvent.getInstance().trackEventWithRevenue(eventToken,revenue,orderId,currency);
     }
 }

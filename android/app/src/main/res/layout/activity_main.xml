@@ -24,7 +24,7 @@
                 android:id="@+id/bt_login"
                 android:layout_width="200dp"
                 android:layout_height="50dp"
-                android:text="登入" />
+                android:text="登录" />
 
             <Button
                 android:id="@+id/bt_logout"

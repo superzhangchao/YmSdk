@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ym.game.plugin.adjust">
+
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+
+
     <application>
 
 

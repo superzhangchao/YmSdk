@@ -41,7 +41,7 @@ dependencies {
         print "adjust plugin compileOnly----------------"
 
         compileOnly project(':ymsdk_utlis')
-        compileOnly 'com.adjust.sdk:adjust-android:4.27.0'
+        compileOnly 'com.adjust.sdk:adjust-android:4.28.7'
         compileOnly 'com.android.installreferrer:installreferrer:2.2'
         compileOnly 'com.google.android.gms:play-services-ads-identifier:17.0.0'
     }else {
@@ -49,7 +49,7 @@ dependencies {
         print "adjust plugin api----------------"
 
         api project(':ymsdk_utlis')
-        api 'com.adjust.sdk:adjust-android:4.27.0'
+        api 'com.adjust.sdk:adjust-android:4.28.7'
         api 'com.android.installreferrer:installreferrer:2.2'
         api 'com.google.android.gms:play-services-ads-identifier:17.0.0'
     }

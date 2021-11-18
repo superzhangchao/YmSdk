@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 
+import com.ym.game.plugin.google.analytics.GoogleAnalytics;
 import com.ym.game.plugin.google.login.GoogleLogin;
 import com.ym.game.plugin.google.pay.GooglePay;
 import com.ym.game.sdk.common.base.interfaces.CallBackListener;
@@ -39,6 +40,17 @@ public class GooglePlugin  extends Plugin {
         GoogleLogin.getInstance().revokeAccess(context,callBackListener);
     }
 
+
+    public void googleInitReportEvent(Context context){
+        GoogleAnalytics.getInstance().initAnalytics(context);
+    }
+
+    public void googleReportEvent(Context context,String eventName,String roleId,String roleName,String roleLevel){
+        GoogleAnalytics.getInstance().report(context,eventName,roleId,roleName,roleLevel);
+    }
+    public void googleReportEventWithPurchase(Context context,String roleId,String roleName,String roleLevel,String productName,String productId,double price){
+        GoogleAnalytics.getInstance().reportWithPurchase(context,roleId,roleName, roleLevel, productName, productId,price);
+    }
     public void googlepay(Context context,Map<String,Object> payMap,CallBackListener callBackListener,CallBackListener getGPVerifyParamListener){
         eventType = payEvent;
         GooglePay.getInstance().initPay(context, new CallBackListener() {

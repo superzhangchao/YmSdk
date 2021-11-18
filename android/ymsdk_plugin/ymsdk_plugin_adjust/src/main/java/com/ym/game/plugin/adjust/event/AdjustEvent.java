@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 public class AdjustEvent {
 
     private volatile static AdjustEvent INSTANCE;
-
+    private String adjustToken = "v9k3vlxukqo0";
     public static AdjustEvent getInstance() {
         if (INSTANCE == null) {
             synchronized (AdjustEvent.class) {
@@ -29,10 +29,7 @@ public class AdjustEvent {
     }
 
     public void init(Application context){
-//        String adjustToken = initMap.get("adjustToken");
-//        String environment = initMap.get("environment");
-        String adjustToken = "vfryvg2lxkow";
-//        String appToken = "{YourAppToken}";
+
 //        String environment = AdjustConfig.ENVIRONMENT_SANDBOX;
         String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
         AdjustConfig config = new AdjustConfig(context, adjustToken, environment);
@@ -71,16 +68,16 @@ public class AdjustEvent {
     }
 
     public void trackEvent(String eventToken){
-        //测试事件  rod_VIP_5
-        com.adjust.sdk.AdjustEvent adjustEvent = new com.adjust.sdk.AdjustEvent("4fcywd");
+
+        com.adjust.sdk.AdjustEvent adjustEvent = new com.adjust.sdk.AdjustEvent(eventToken);
         Adjust.trackEvent(adjustEvent);
     }
 
     //跟踪收入
-    public void trackEventWithRevenue(String eventToken,double revenue,String currency){
+    public void trackEventWithRevenue(String eventToken,double revenue,String orderId,String currency){
         com.adjust.sdk.AdjustEvent adjustEvent = new com.adjust.sdk.AdjustEvent(eventToken);
         adjustEvent.setRevenue(revenue, currency);
-//        adjustEvent.setOrderId("{OrderId}");
+        adjustEvent.setOrderId(orderId);
         Adjust.trackEvent(adjustEvent);
     }
 

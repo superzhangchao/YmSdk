@@ -30,13 +30,26 @@ public class FBEevent {
     }
 
 
-    public void reportManuallyEvents(Context context,Map<String,Object> params){
-        String eventName = (String) params.get("eventName");
+
+
+    public void report(Context context,String eventName,String roleId,String roleName,String roleLevel){
         AppEventsLogger logger = AppEventsLogger.newLogger(context);
-        logger.logEvent(AppEventsConstants.EVENT_NAME_COMPLETED_REGISTRATION);
         Bundle bundle = new Bundle();
-        bundle.putString("dataKey","2");
-        logger.logEvent(eventName,bundle);
+        bundle.putString("roleId",roleId);
+        bundle.putString("roleName",roleName);
+        bundle.putString("roleLevel",roleLevel);
+        logger.logEvent(eventName);
     }
 
+    public void reportWithPurchase(Context context,String roleId,String roleName,String roleLevel,String productName,String productId,double price){
+        AppEventsLogger logger = AppEventsLogger.newLogger(context);
+        Bundle bundle = new Bundle();
+        bundle.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, "USD");
+        bundle.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, productName);
+        bundle.putString(AppEventsConstants.EVENT_PARAM_CONTENT_ID, productId);
+
+        logger.logEvent(AppEventsConstants.EVENT_NAME_ADDED_PAYMENT_INFO,
+                price,
+                bundle);
+    }
 }

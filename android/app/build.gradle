@@ -123,20 +123,18 @@ dependencies {
 
         implementation 'org.greenrobot:greendao:3.3.0' // add library
 
-        implementation 'com.facebook.android:facebook-login:4.33.0'
-        implementation 'com.facebook.android:facebook-share:4.33.0'
+        implementation 'com.facebook.android:facebook-android-sdk:[8,9)'
 
 //        implementation 'com.tencent.bugly:crashreport:3.3.92'
 //        //其中lat est.release指代最新版本号，也可以指定明确的版本号，例如2.1.5
 //        implementation 'com.tencent.bugly:nativecrashreport:3.9.1'
 
-        implementation (name: 'pluginmanagerImpl-release-20210524', ext: 'aar')
-//        implementation (name: 'ymsdk_global-release-20210621-1', ext: 'aar')
-//        implementation (name: 'pluginmanagerImpl-release-20210524', ext: 'aar')
-        implementation (name: 'ymsdk_plugin_adjust-release-20210524', ext: 'aar')
-        implementation (name: 'ymsdk_plugin_facebook-release-20210524', ext: 'aar')
-        implementation (name: 'ymsdk_plugin_google-release-20210524', ext: 'aar')
-        implementation (name: 'ymsdk_utlis-release-20210524', ext: 'aar')
+        implementation (name: 'pluginmanagerImpl-20211117', ext: 'aar')
+        implementation (name: 'ymsdk_global-20211117', ext: 'aar')
+        implementation (name: 'ymsdk_plugin_adjust-20211117', ext: 'aar')
+        implementation (name: 'ymsdk_plugin_facebook-20211117', ext: 'aar')
+        implementation (name: 'ymsdk_plugin_google-20211117', ext: 'aar')
+        implementation (name: 'ymsdk_utlis-20211117', ext: 'aar')
     }else{
         print "app--------------"
         implementation project(':ymsdk_global')

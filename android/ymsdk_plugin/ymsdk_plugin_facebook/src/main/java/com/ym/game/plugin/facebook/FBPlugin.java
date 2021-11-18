@@ -46,8 +46,11 @@ public class FBPlugin extends Plugin {
         FBShare.getInstance().share(context,shareMap,callBackListener);
     }
 
-    public void fbReportEvent(Context context,Map<String,Object> eventParam){
-        FBEevent.getInstance().reportManuallyEvents(context,eventParam);
+    public void fbReportEvent(Context context,String eventName,String roleId,String roleName,String roleLevel){
+        FBEevent.getInstance().report(context,eventName,roleId,roleName,roleLevel);
+    }
+    public void fbReportEventWithPurchase(Context context,String roleId,String roleName,String roleLevel,String productName,String productId,double price){
+        FBEevent.getInstance().reportWithPurchase(context,roleId,roleName, roleLevel, productName, productId,price);
     }
     @Override
     public void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {

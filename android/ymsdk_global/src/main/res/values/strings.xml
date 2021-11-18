@@ -1,15 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="ym_tv_accounttitle">Account Management</string>
-    <string name="ym_accountmessage">&#160;&#160;&#160;&#160;We suggest you link your account to ensure its security. If you want to play games on multiple devices, please link your account and use the "switch account" function to log in to other devices.</string>
-    <string name="ym_tv_bind">Link Account</string>
+    <string name="ym_accountmessage">&#160;&#160;&#160;&#160;We suggest you link your account to ensure its security. If you want to play games on multiple devices, please link your account and use the "Switch Account" function to log in to other devices.</string>
+    <string name="ym_tv_bind">Link</string>
     <string name="ym_tv_switch">Switch</string>
-    <string name="ym_tv_linktitle">Link to Account</string>
-    <string name="ym_bindmessage">You are logged in as a guest user,we recommend you to link in to the following accounts.</string>
+    <string name="ym_tv_linktitle">Link Account</string>
+    <string name="ym_bindmessage">You are logged in as a guest user,we recommend you to linking in to the following accounts.</string>
     <string name="ym_tv_gpbind">Google</string>
     <string name="ym_tv_fbbind">Facebook</string>
     <string name="ym_tv_tiptitle">Tips</string>
-    <string name="ym_tipmessage">You might lose your account if you don\'t linked and logout.</string>
+    <string name="ym_tipmessage">You might lose your account if you don\'t link and logout.</string>
     <string name="ym_tv_cancel">Cancel</string>
     <string name="ym_tv_confirm">Confirm</string>
 
@@ -21,11 +21,13 @@
     <string name="ym_text_please_login">Please login Account.</string>
     <string name="ym_text_nologin">no login</string>
     <string name="ym_text_neterror">The network connection is unstable, please check the network</string>
+    <string name="ym_text_order_error">order parameter error</string>
+    <string name="ym_text_no_paytype">missing payment module</string>
     <string name="ym_text_disconnet">Server connection failed, please try again later</string>
     <string name="ym_text_netdata_null">Failed to get network data</string>
     <string name="ym_text_gusetlogin_tip">Guest account is easy to lose, please bind the official account in time.</string>
 
-    <string name="ym_tip_bindfail">bind is fail</string>
+    <string name="ym_tip_bindfail">Binding failed</string>
 
 
 </resources>

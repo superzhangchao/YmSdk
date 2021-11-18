@@ -47,9 +47,9 @@ public class AdjustDataPluginApi extends PluginReflectApi {
         }
     }
 
-    public void trackEventWithRevenue(String eventToken,double revenue,String currency){
+    public void trackEventWithRevenue(String eventToken,double revenue,String orderId,String currency){
         if (adjustPlugin!=null){
-            invoke(adjustPlugin,"trackEventWithRevenue",new Class[]{String.class,double.class,String.class},new Object[]{eventToken,revenue,currency});
+            invoke(adjustPlugin,"trackEventWithRevenue",new Class[]{String.class,double.class,String.class,String.class},new Object[]{eventToken,revenue,orderId,currency});
         }
     }
 

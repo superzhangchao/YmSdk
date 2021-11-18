@@ -167,11 +167,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId()==btInit.getId()){
-            YmSdkApi.getInstance().initEventReport(getApplication(),"toutiao",true);
+//            YmSdkApi.getInstance().initEventReport(getApplication(),"toutiao",true);
             YmSdkApi.getInstance().setDebugMode(true);
 
 
-            YmSdkApi.getInstance().registerEvent();
+//            YmSdkApi.getInstance().registerEvent();
         }else if(btLogin.getId()==v.getId()){
             YmSdkApi.getInstance().login(this, new LoginCallBack() {
                 @Override
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     Log.i(TAG, "onSuccess: "+resultAccoutBean.getData().toString());
                     tv.setText(resultAccoutBean.getData().toString());
-                    YmSdkApi.getInstance().loginEvent(resultAccoutBean.getData().getUid());
+//                    YmSdkApi.getInstance().loginEvent(resultAccoutBean.getData().getUid());
                     ToastUtils.showToast(MainActivity.this,resultAccoutBean.getData().toString());
                 }
 
@@ -244,7 +244,7 @@ YmSdkApi.getInstance().pay(this,getPurchaseBean(), new PayCallBack() {
     public void onSuccess(Object o) {
         Log.i(TAG, "onSuccess: ");
         PurchaseBean purchaseBean = (PurchaseBean) o;
-        YmSdkApi.getInstance().paySuccessEvent(purchaseBean.getPlatformOrderId(),purchaseBean.getPayType(),"CNY",0.01f);
+//        YmSdkApi.getInstance().paySuccessEvent(purchaseBean.getPlatformOrderId(),purchaseBean.getPayType(),"CNY",0.01f);
     }
 
     @Override
@@ -274,7 +274,7 @@ YmSdkApi.getInstance().pay(this,getPurchaseBean(), new PayCallBack() {
         int productPrice = (int) (Double.parseDouble("0.01")*100);
         String gameSign = getGameSign("itemId_60","新手装备大礼包",productPrice+"",orderId,
                 "s1","147258","张三","1","gt-1258");
-        YmSdkApi.getInstance().createOrder(orderId,"CNY",0.01f);
+//        YmSdkApi.getInstance().createOrder(orderId,"CNY",0.01f);
         PurchaseBean purchaseBean = new PurchaseBean.PurchaseBeanBuilder()
                 .setProductDesc("新手装备大礼包")
                 .setProductId("itemId_60")

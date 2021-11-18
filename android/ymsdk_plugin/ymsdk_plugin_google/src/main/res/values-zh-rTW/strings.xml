@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ym_google_logintfail">登錄失敗</string>
+    <string name="ym_google_logoutsuccess">登錄成功</string>
+    <string name="ym_google_revokeaccesssuccess">撤銷成功</string>
+    <string name="ym_google_pay_ordererror">訂單參數異常</string>
+    <string name="ym_google_pay_cancel">支付取消</string>
+    <string name="ym_google_pay_fail">支付失敗</string>
+</resources>

@@ -28,7 +28,7 @@ public class GooglePluginApi extends PluginReflectApi {
         return INSTANCE;
     }
 
-    //接入google登入
+    //接入google登录
     public void login(Context context, Map<String,Object> map, CallBackListener callBackListener){
         if (googlePlugin != null) {
             invoke(googlePlugin, "googleLogin", new Class<?>[]{Context.class, Map.class, CallBackListener.class},
@@ -49,6 +49,26 @@ public class GooglePluginApi extends PluginReflectApi {
         }
     }
 
+
+    public void initReportEvent(Context context) {
+        if (googlePlugin!=null){
+            invoke(googlePlugin,"googleInitReportEvent",new Class[]{Context.class},
+                    new Object[]{context});
+        }
+    }
+
+    public void reportEvent(Context context,String eventName,String roleId,String roleName,String roleLevel) {
+        if (googlePlugin!=null){
+            invoke(googlePlugin,"googleReportEvent",new Class[]{Context.class,String.class,String.class,String.class,String.class},
+                    new Object[]{context, eventName,roleId, roleName, roleLevel});
+        }
+    }
+    public void reportEventWithPurchase(Context context,String roleId,String roleName,String roleLevel,String productName,String productId,double price) {
+        if (googlePlugin!=null){
+            invoke(googlePlugin,"googleReportEventWithPurchase",new Class[]{Context.class,String.class,String.class,String.class,String.class,String.class,double.class},
+                    new Object[]{context, roleId, roleName, roleLevel, productName, productId,price});
+        }
+    }
 
     public void pay(Context context,Map<String,Object> map,CallBackListener callBackListener,CallBackListener getGPVerifyParamListener){
         if (googlePlugin != null){

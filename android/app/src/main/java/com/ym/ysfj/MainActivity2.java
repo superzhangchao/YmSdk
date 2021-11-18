@@ -21,6 +21,7 @@ import com.ym.game.plugin.google.dao.DaoUtils;
 import com.ym.game.plugin.google.dao.LocalPurchaseBean;
 import com.ym.game.sdk.YmSdkApi;
 import com.ym.game.sdk.bean.PurchaseBean;
+import com.ym.game.sdk.bean.TrackingEventBean;
 import com.ym.game.sdk.callback.BindCallBack;
 import com.ym.game.sdk.callback.ExitCallBack;
 import com.ym.game.sdk.callback.LoginCallBack;
@@ -209,12 +210,25 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
             });
 
         }else if (btSendinfo.getId()==v.getId()){
-            YmSdkApi.getInstance().trackEvent(this,"event_1");
+            TrackingEventBean trackingEventBean = new TrackingEventBean.TrackingEventBeanBuilder()
+                    .setEventName("CompleteRegistration")
+                    .setEventToken("a2navn")
+                    .setRoleId("123")
+                    .setRoleName("zhangsan")
+                    .setRoleLevel("18")
+                    .setProductId("123456")
+                    .setProductName("123456商品")
+                    .setPrice(1.22)
+                    .setCurrency("USD")
+                    .setOrderId("1234567")
+                    .build();
+            YmSdkApi.getInstance().trackEvent(this,trackingEventBean);
+//            YmSdkApi.getInstance().trackEventWithPurchase(this,trackingEventBean);
         }else if(btLogout.getId() ==v.getId()) {
             YmSdkApi.getInstance().logout(this);
         }else if(btPay.getId()==v.getId()){
 
-            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.1usd"), new PayCallBack() {
+            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.5usd"), new PayCallBack() {
                 @Override
                 public void onSuccess(Object o) {
                     Log.i(TAG, "onSuccess: 支付成功");
@@ -249,9 +263,10 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 }
             });
         }else if (btBind.getId()==v.getId()) {
-
+            String language = YmSdkApi.getInstance().getLanguage();
+            Log.i(TAG, "onClick: "+language);
         }else if (btProduct1.getId()==v.getId()){
-            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.1usd"), new PayCallBack() {
+            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.5usd"), new PayCallBack() {
                 @Override
                 public void onSuccess(Object o) {
                     Log.i(TAG, "onSuccess: 支付成功");
@@ -311,12 +326,12 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         //"com.ym.ysfjtest02"
         int random = (int) (Math.random() * 1000);
         int productPrice = (int) (Double.parseDouble("0.99")*100);
-        String gameSign = getGameSign(productId,"新手装备大礼包",productPrice+"","g123456"+random,
+        String gameSign = getGameSign(productId,"新手装备大礼包",productPrice+"","g1234567"+random,
                 "s1","147258","张三","1","gt-1258");
         PurchaseBean purchaseBean = new PurchaseBean.PurchaseBeanBuilder()
                 .setUserId(uid)
                 .setPayType("google")
-                .setGameOrderId("g123456"+random)
+                .setGameOrderId("g1234567"+random)
                 .setProductId(productId)
                 .setServerId("s1")
                 .setRoleId("147258")

@@ -62,7 +62,6 @@ public class GoogleLogin {
         // [END config_signin]
 
         mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
-
         // [START initialize_auth]
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -90,7 +89,6 @@ public class GoogleLogin {
         mLogoutBackListener = callBackListener;
         mAuth.signOut();
 //        FirebaseAuth.getInstance().signOut();
-
         // Google sign out
         mGoogleSignInClient.signOut().addOnCompleteListener(((Activity) context),
                 new OnCompleteListener<Void>() {

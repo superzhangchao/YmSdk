@@ -13,6 +13,8 @@ import android.text.TextUtils;
 
 import com.ym.game.net.api.YmApi;
 import com.ym.game.net.api.YmApiService;
+import com.ym.game.plugin.google.GooglePlugin;
+import com.ym.game.sdk.bean.TrackingEventBean;
 import com.ym.game.sdk.callback.BindCallBack;
 import com.ym.game.sdk.callback.ExitCallBack;
 import com.ym.game.sdk.callback.ShareCallBack;
@@ -40,6 +42,7 @@ import com.ym.game.sdk.constants.YmConstants;
 
 import com.ym.game.sdk.invoke.plugin.AdjustDataPluginApi;
 import com.ym.game.sdk.invoke.plugin.FBPluginApi;
+import com.ym.game.sdk.invoke.plugin.GooglePluginApi;
 import com.ym.game.sdk.presenter.PurchasePresenter;
 import com.ym.game.sdk.presenter.UserPresenter;
 
@@ -107,7 +110,7 @@ public class YmSdkApi {
                 //4、加载功能插件
                 PluginManager.init(context).loadAllPlugins();
                 AdjustDataPluginApi.getInstance().init(context);
-
+                GooglePluginApi.getInstance().initReportEvent(context);
             }
         };
         sApiHandler.post(r);
@@ -117,7 +120,7 @@ public class YmSdkApi {
 
     }
 
-    private void initLanguage() {
+    public void initLanguage() {
         String deviceLang = DevicesUtils.getDeviceLang();
 
         for (String lang: ymlanguages) {
@@ -143,70 +146,17 @@ public class YmSdkApi {
         }
     }
 
-    public void initEventReport(Application application,String channel,boolean isDebug){
 
-
+    public void trackEvent(Context context, TrackingEventBean eventData){
+        GooglePluginApi.getInstance().reportEvent(context,eventData.mEventName,eventData.mRoleId,eventData.mRoleName,eventData.mRoleLevel);
+        FBPluginApi.getInstance().reportEvent(context,eventData.mEventName,eventData.mRoleId,eventData.mRoleName,eventData.mRoleLevel);
+        AdjustDataPluginApi.getInstance().trackEvent(eventData.mEventToken);
     }
 
-    public void testNet(){
-        String localTs = System.currentTimeMillis()+"";
-        Call<String> token = YmApi.getInstance().getTime();
-        token.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()){
-                    String body = response.body();
-                    Logger.i("获取当前时间成功："+body);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void testNet2(){
-        RetrofitFactory.setBaseUrl(Config.TESTBASEURL);
-        String localTs = System.currentTimeMillis()+"";
-        Call<String> token = ApiFactory.getFactory().create(YmApiService.class).getTime();
-        token.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()){
-                    String body = response.body();
-                    Logger.i("获取当前时间成功："+body);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-            }
-        });
-    }
-    public void registerEvent(){
-
-    }
-
-    public void loginEvent(String uid){
-
-    }
-
-    public void createOrder(String orderId,String  currencyType,float currencyAmount){
-
-    }
-    public void paySuccessEvent(String orderId,String paymentType,String  currencyType,float currencyAmount){
-        //sdk支付订单 paymentType支付类型  货币单位：CNY人民币 货币金额：单位元 类型float
-
-    }
-
-    public void trackEvent(Context context,String eventName){
-        Map<String,Object> map = new HashMap<>();
-        map.put("eventName",eventName);
-        FBPluginApi.getInstance().reportEvent(context,map);
-        AdjustDataPluginApi.getInstance().trackEvent("aaa");
+    public void trackEventWithPurchase(Context context, TrackingEventBean eventData){
+        GooglePluginApi.getInstance().reportEventWithPurchase(context,eventData.mRoleId,eventData.mRoleName,eventData.mRoleLevel,eventData.mProductName,eventData.mProductName,eventData.mPrice);
+        FBPluginApi.getInstance().reportEventWithPurchase(context,eventData.mRoleId,eventData.mRoleName,eventData.mRoleLevel,eventData.mProductName,eventData.mProductName,eventData.mPrice);
+        AdjustDataPluginApi.getInstance().trackEventWithRevenue(eventData.mEventToken,eventData.mPrice,eventData.mOrderId,eventData.mCurrency);
     }
 
 //    public void reportRoleInfo(RoleInfo roleInfo){
@@ -243,6 +193,7 @@ public class YmSdkApi {
             return;
         }
 
+        //暂时只有google支付一种，插件不存在就不支持支付
         if (PluginManager.getInstance().getPlugin("plugin_google") ==null){
             payCallBack.onFailure(YmErrorCode.PAY_FAIL,activity.getString(ResourseIdUtils.getStringId("ym_text_no_paytype")));
             ToastUtils.showToast(activity,activity.getString(ResourseIdUtils.getStringId("ym_text_no_paytype")));

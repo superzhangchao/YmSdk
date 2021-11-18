@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ym_tv_accounttitle">帳號管理</string>
+    <string name="ym_accountmessage">&#160;&#160;&#160;&#160;我們建議您關聯帳號確保其安全性。 如果您想在多臺設備上遊玩，請關聯帳號並使用“切換帳號”功能登錄到其他設備。</string>
+    <string name="ym_tv_bind">關聯</string>
+    <string name="ym_tv_switch">切換</string>
+    <string name="ym_tv_linktitle">關聯帳號</string>
+    <string name="ym_bindmessage">您正在以遊客身份登錄，我們建議您關聯以下帳號。</string>
+    <string name="ym_tv_gpbind">Google</string>
+    <string name="ym_tv_fbbind">Facebook</string>
+    <string name="ym_tv_tiptitle">提示</string>
+    <string name="ym_tipmessage">不關聯帳號並註銷，您的帳號可能會遺失。</string>
+    <string name="ym_tv_cancel">取消</string>
+    <string name="ym_tv_confirm">確認</string>
+
+
+    <string name="ym_nickname_google">Google</string>
+    <string name="ym_nickname_facebook">Facebook</string>
+    <string name="ym_nickname_guest">遊客</string>
+    <string name="ym_text_noguest">只有遊客身份可以綁定帳號</string>
+    <string name="ym_text_please_login">請登錄帳號</string>
+    <string name="ym_text_nologin">未登錄</string>
+    <string name="ym_text_neterror">網絡連接不穩定，請檢查網絡</string>
+    <string name="ym_text_order_error">訂單參數錯誤</string>
+    <string name="ym_text_no_paytype">支付模塊缺失</string>
+    <string name="ym_text_disconnet">服務器連接失敗，請稍後再試</string>
+    <string name="ym_text_netdata_null">網路資料獲取失敗</string>
+    <string name="ym_text_gusetlogin_tip">遊客帳號容易遺失，請及時綁定正式帳號</string>
+
+    <string name="ym_tip_bindfail">綁定失敗</string>
+</resources>
