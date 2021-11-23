@@ -16,8 +16,8 @@ public class AdjustDataPlugin extends Plugin {
         LogUtils.d(TAG,"init " + getClass().getSimpleName());
     }
 
-    public void initAdjust(Context context){
-        AdjustEvent.getInstance().init((Application) context);
+    public void initAdjust(Context context,boolean debug){
+        AdjustEvent.getInstance().init((Application) context, debug);
     }
 
     public void trackEvent(String eventToken){

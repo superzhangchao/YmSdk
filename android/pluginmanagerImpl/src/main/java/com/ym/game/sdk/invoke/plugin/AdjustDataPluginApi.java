@@ -32,11 +32,11 @@ public class AdjustDataPluginApi extends PluginReflectApi {
     /**
      * 调用调用adjust初始化
      */
-    public void init(Context context) {
+    public void init(Context context,boolean debug) {
 
         if (adjustPlugin != null) {
-            invoke(adjustPlugin, "initAdjust", new Class<?>[]{Context.class},
-                    new Object[]{context});
+            invoke(adjustPlugin, "initAdjust", new Class<?>[]{Context.class,boolean.class},
+                    new Object[]{context,debug});
         }
 
     }

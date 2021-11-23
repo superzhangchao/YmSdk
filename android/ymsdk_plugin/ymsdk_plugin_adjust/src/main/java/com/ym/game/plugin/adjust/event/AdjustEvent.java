@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.adjust.sdk.Adjust;
 import com.adjust.sdk.AdjustConfig;
+import com.adjust.sdk.LogLevel;
 
 
 import androidx.annotation.NonNull;
@@ -28,10 +29,13 @@ public class AdjustEvent {
         return INSTANCE;
     }
 
-    public void init(Application context){
-
-//        String environment = AdjustConfig.ENVIRONMENT_SANDBOX;
+    public void init(Application context,boolean debug){
         String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
+
+        if (debug){
+             environment = AdjustConfig.ENVIRONMENT_SANDBOX;
+
+        }
         AdjustConfig config = new AdjustConfig(context, adjustToken, environment);
 //        AdjustConfig config = new AdjustConfig(context, adjustToken, environment,true);//设置第三个参数为true就开启
         // Evaluate the deeplink to be launched.
@@ -48,7 +52,10 @@ public class AdjustEvent {
 //        });
 
         Adjust.onCreate(config);
-//        config.setLogLevel(LogLevel.VERBOSE); // enable all logs
+        if (debug){
+            config.setLogLevel(LogLevel.VERBOSE); // enable all logs
+
+        }
 //        config.setLogLevel(LogLevel.DEBUG); // disable verbose logs
 //        config.setLogLevel(LogLevel.INFO); // disable debug logs (default)
 //        config.setLogLevel(LogLevel.WARN); // disable info logs

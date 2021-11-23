@@ -66,6 +66,7 @@ public class YmSdkApi {
 
     private String[] ymlanguages= {"zh_CN", "zh_TW", "en", "ja", "ko", "vi", "th"};
     private String setLang = YmConstants.EN;
+    private boolean mDebug;
 
     public static YmSdkApi getInstance() {
 
@@ -89,14 +90,14 @@ public class YmSdkApi {
      * @param gameId
      * @param
      */
-    public void initPlatform(final Context context, String gameId,String gameKey) {
+    public void initPlatform(final Context context, String gameId, String gameKey, final boolean debug) {
 
 
 
+        mDebug = debug;
         Config.setGameId(gameId);
         initDate();
         initLanguage();
-
 
         if (sApiHandler == null) {
             HandlerThread ht = new HandlerThread("project_sdk_thread",
@@ -109,7 +110,7 @@ public class YmSdkApi {
             public void run() {
                 //4、加载功能插件
                 PluginManager.init(context).loadAllPlugins();
-                AdjustDataPluginApi.getInstance().init(context);
+                AdjustDataPluginApi.getInstance().init(context,debug);
                 GooglePluginApi.getInstance().initReportEvent(context);
             }
         };
