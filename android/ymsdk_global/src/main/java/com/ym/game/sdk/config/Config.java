@@ -4,7 +4,7 @@ package com.ym.game.sdk.config;
 public class Config {
     private static boolean isInit;
     private static String gameId;
-    public final static String RELEASEURL = "http://128.1.138.170:80";
+    public final static String RELEASEURL = "https://ysfj-us-sdk.loologames.com";
     public final static String TESTBASEURL = "http://180.167.128.34:19090/";
     public final static String DEVBASEURL = "http://192.168.0.225/";
     private static String lang;

@@ -261,9 +261,7 @@ YmSdkApi.getInstance().pay(this,getPurchaseBean(), new PayCallBack() {
 //            int realNameStatus = YmSdkApi.getInstance().getRealNameStatus();
 //            ToastUtils.showToast(this,"AuthStatus:"+realNameStatus);
         }else if (btTestnet1.getId()==v.getId()) {
-            YmSdkApi.getInstance().testNet();
         }else if (btTestnet2.getId()==v.getId()){
-            YmSdkApi.getInstance().testNet2();
         }
     }
 

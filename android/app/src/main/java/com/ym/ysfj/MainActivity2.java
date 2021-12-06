@@ -228,7 +228,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
             YmSdkApi.getInstance().logout(this);
         }else if(btPay.getId()==v.getId()){
 
-            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.5usd"), new PayCallBack() {
+            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.1usd"), new PayCallBack() {
                 @Override
                 public void onSuccess(Object o) {
                     Log.i(TAG, "onSuccess: 支付成功");
@@ -266,7 +266,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
             String language = YmSdkApi.getInstance().getLanguage();
             Log.i(TAG, "onClick: "+language);
         }else if (btProduct1.getId()==v.getId()){
-            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.5usd"), new PayCallBack() {
+            YmSdkApi.getInstance().pay(this, getPurchaseBean("com.ysfjen.1usd"), new PayCallBack() {
                 @Override
                 public void onSuccess(Object o) {
                     Log.i(TAG, "onSuccess: 支付成功");

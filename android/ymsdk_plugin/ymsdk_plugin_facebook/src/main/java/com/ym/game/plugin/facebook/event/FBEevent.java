@@ -8,6 +8,8 @@ import com.facebook.appevents.AppEventsConstants;
 import com.facebook.appevents.AppEventsLogger;
 import com.ym.game.sdk.common.base.interfaces.CallBackListener;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.Map;
 
 public class FBEevent {
@@ -43,13 +45,15 @@ public class FBEevent {
 
     public void reportWithPurchase(Context context,String roleId,String roleName,String roleLevel,String productName,String productId,double price){
         AppEventsLogger logger = AppEventsLogger.newLogger(context);
+        BigDecimal bigDecimalPrice = new BigDecimal(price);
+        Currency currency =  Currency.getInstance("USD");
         Bundle bundle = new Bundle();
-        bundle.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, "USD");
-        bundle.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, productName);
-        bundle.putString(AppEventsConstants.EVENT_PARAM_CONTENT_ID, productId);
+        bundle.putString("roleId", roleId);
+        bundle.putString("roleName", roleName);
+        bundle.putString("roleLevel", roleLevel);
+        bundle.putString("productName", productName);
+        bundle.putString("productId", productId);
+        logger.logPurchase(bigDecimalPrice,currency,bundle);
 
-        logger.logEvent(AppEventsConstants.EVENT_NAME_ADDED_PAYMENT_INFO,
-                price,
-                bundle);
     }
 }
